@@ -1211,9 +1211,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SugarDash.Presentation::SugarDash.Presentation.IntroCuttoonView
   panels:
+  - {fileID: 21300000, guid: 098afe97ceba42129c9efde7947a769c, type: 3}
   - {fileID: 21300000, guid: ca55bb6f3b094e45846ad5fa3eb1d783, type: 3}
   font: {fileID: 12800000, guid: cc8e976697e7f46a1bf8a4f40f873b1f, type: 3}
   showEveryLaunch: 0
+  showSkipButton: 0
   backgroundColor: {r: 1, g: 0.98, b: 0.94, a: 1}
   buttonColor: {r: 0.29, g: 0.2, b: 0.17, a: 0.85}
   buttonTextColor: {r: 1, g: 1, b: 1, a: 1}

@@ -8,7 +8,7 @@ namespace SugarDash.Presentation
     /// <summary>
     /// 인트로 컷툰. 처음 실행해 유형을 고른 직후 타이틀 화면 위에 컷툰을 한 칸씩 보여 준다.
     /// 화면을 누르면 다음 칸, 마지막 칸에서 누르거나 건너뛰기를 누르면 닫히고 타이틀이 보인다.
-    /// 그림이 한 장이면 건너뛰기와 쪽 번호 없이 화면을 한 번 누르면 닫힌다.
+    /// 그림이 한 장이면 쪽 번호 없이 화면을 한 번 누르면 닫힌다. 건너뛰기 버튼은 Show Skip Button을 켰을 때만 보인다.
     /// 연출만이다. 게임 흐름(GameFlowController)을 읽기만 하고 명령을 보내지 않는다. 혈당·기록과 관계없다.
     /// 화면 오브젝트(캔버스, 그림, 버튼)는 처음 열 때 코드로 만든다. 프리팹이 생기면 바꾼다.
     /// </summary>
@@ -21,6 +21,8 @@ namespace SugarDash.Presentation
         [SerializeField] private Font font;
         [Tooltip("켜면 앱을 켤 때마다 타이틀 앞에서 보여 준다(확인용). 끄면 처음 유형을 고른 직후에만 보여 준다.")]
         [SerializeField] private bool showEveryLaunch;
+        [Tooltip("그림이 여러 장일 때 건너뛰기 버튼을 보여 준다. 끄면 화면을 눌러 끝까지 넘긴다.")]
+        [SerializeField] private bool showSkipButton;
 
         [Header("모양")]
         [SerializeField] private Color backgroundColor = new Color(1f, 0.98f, 0.94f);
@@ -102,9 +104,9 @@ namespace SugarDash.Presentation
         {
             _panelImage.sprite = panels[_index];
             _hintText.text = IsLast(_index, panels.Length) ? lastHint : nextHint;
-            // 그림이 한 장이면 쪽 번호와 건너뛰기를 숨긴다(한 번 누르면 닫히므로 필요 없다).
+            // 그림이 한 장이면 쪽 번호를 숨긴다. 건너뛰기는 켜 두었고 그림이 여러 장일 때만 보인다.
             _pageText.gameObject.SetActive(panels.Length > 1);
-            _skipButton.SetActive(panels.Length > 1);
+            _skipButton.SetActive(showSkipButton && panels.Length > 1);
             _pageText.text = (_index + 1) + " / " + panels.Length;
         }
 
