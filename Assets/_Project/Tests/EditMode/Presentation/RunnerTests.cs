@@ -218,6 +218,18 @@ namespace SugarDash.Presentation.Tests
         }
 
         [Test]
+        public void Slide_AgainWhileSliding_RestartsAndCountsEachPress()
+        {
+            _player.Slide();
+            _player.Advance(_player.SlideSec * 0.8);
+            _player.Slide();
+            Assert.That(_player.SlideCount, Is.EqualTo(2));
+
+            _player.Advance(_player.SlideSec * 0.8);
+            Assert.That(_player.IsSliding, Is.True);
+        }
+
+        [Test]
         public void Hit_SlowsDownForStumbleSec()
         {
             Assert.That(_player.CurrentSpeed, Is.EqualTo(_player.RunSpeed));

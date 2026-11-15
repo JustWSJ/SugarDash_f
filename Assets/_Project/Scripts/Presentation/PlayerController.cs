@@ -77,6 +77,8 @@ namespace SugarDash.Presentation
         public float X => _x;
         public bool IsAirborne => _jumpLeft > 0;
         public bool IsSliding => _slideLeft > 0;
+        /// <summary>슬라이드를 시작한 횟수. 슬라이드 중에 다시 눌러도 늘어나서, 화면이 동작을 처음부터 다시 틀 때 쓴다.</summary>
+        public int SlideCount { get; private set; }
         public bool IsStumbling => _stumbleLeft > 0;
         /// <summary>이번 프레임의 달리기 속도. 트랙이 이 속도로 다가온다.</summary>
         public float CurrentSpeed => _run != null && _run.IsResting ? 0f : IsStumbling ? _speed * stumbleSpeedFactor : _speed;
@@ -147,6 +149,7 @@ namespace SugarDash.Presentation
             if (Resting) return;
             _jumpLeft = 0;
             _slideLeft = slideSec;
+            SlideCount++;
         }
 
         /// <summary>GameBootstrapper가 RunController.Tick 직후 worldDt로 부른다. 0이면 아무것도 변하지 않는다.</summary>

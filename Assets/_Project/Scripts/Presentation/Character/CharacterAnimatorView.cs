@@ -17,15 +17,19 @@ namespace SugarDash.Presentation
         private static readonly int IsRunningId = Animator.StringToHash("IsRunning");
         private static readonly int IsAirborneId = Animator.StringToHash("IsAirborne");
         private static readonly int IsSlidingId = Animator.StringToHash("IsSliding");
+        private static readonly int SlideStateId = Animator.StringToHash("Slide");
 
         private RunController _run;
         private PlayerController _player;
+        private int _lastSlideCount;
+        private bool _wasSliding;
 
         public void Init(RunController run, PlayerController player)
         {
             _run = run ?? throw new ArgumentNullException(nameof(run));
             _player = player ?? throw new ArgumentNullException(nameof(player));
             if (animator == null) animator = GetComponentInChildren<Animator>();
+            _lastSlideCount = player.SlideCount;
         }
 
         private void LateUpdate()
@@ -43,6 +47,11 @@ namespace SugarDash.Presentation
             animator.SetBool(IsAirborneId, airborne);
             animator.SetBool(IsSlidingId, sliding);
             animator.speed = frozen && (airborne || sliding) ? 0f : 1f;
+
+            // 슬라이드 중에 다시 누르면 IsSliding이 계속 켜져 있어 상태가 바뀌지 않는다. 동작을 처음부터 다시 튼다.
+            if (sliding && _wasSliding && _player.SlideCount != _lastSlideCount) animator.Play(SlideStateId, 0, 0f);
+            _lastSlideCount = _player.SlideCount;
+            _wasSliding = sliding;
         }
     }
 }
