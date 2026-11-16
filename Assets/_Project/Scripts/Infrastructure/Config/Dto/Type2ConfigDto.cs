@@ -4,7 +4,7 @@ using UnityEngine.Scripting;
 
 namespace SugarDash.Infrastructure.Config.Dto
 {
-    // 2형 설정 파일 전용 DTO. 1형 전용 키(측정기, 표시 지연, 4단계, 급하강, 흔들림)는 두지 않는다.
+    // 2형 설정 파일 전용 DTO. 1형 전용 키(측정기, 게이지 경고, 4단계, 급하강, 흔들림)는 두지 않는다.
     // 그런 키가 있으면 MissingMemberHandling.Error로 거부된다. 값이 없음(PLACEHOLDER)은 nullable로 표현한다.
 
     [Preserve]
@@ -15,12 +15,21 @@ namespace SugarDash.Infrastructure.Config.Dto
         public string Unit { get; set; }
         public Type2TimeDto Time { get; set; }
         public GlucoseDto Glucose { get; set; }
+        public Type2DisplayDto Display { get; set; }
         public Type2SectionDto Type2 { get; set; }
         public List<FoodDto> Foods { get; set; }
         public Type2RunnerDto Runner { get; set; }
         public EliminationDto Elimination { get; set; }
         public Type2ScoreDto Score { get; set; }
         public List<SectionDto> Sections { get; set; }
+    }
+
+    // 2형 혈당바. 게이지 경고 기준(warningThreshold)은 1형 전용이라 두지 않는다.
+    [Preserve]
+    public sealed class Type2DisplayDto
+    {
+        public double? DelaySec { get; set; }
+        public double? BarGreenFrom { get; set; }
     }
 
     [Preserve]

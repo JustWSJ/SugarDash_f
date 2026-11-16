@@ -33,12 +33,14 @@ namespace SugarDash.Domain.Config
         /// </summary>
         public static GameConfig ForType2(string configVersion, string unit, double timeScale,
             GlucoseLevelConfig levels, IReadOnlyList<SnackConfig> foods, Type2Config type2,
-            EliminationConfig elimination, ScoreConfig score, IReadOnlyList<SectionConfig> sections)
+            EliminationConfig elimination, ScoreConfig score, IReadOnlyList<SectionConfig> sections,
+            double displayDelaySec, double barGreenFrom)
         {
-            // 2형에서 쓰지 않음: 재측정, 표시 지연, 급하강, 재발, 4단계 제한 시간, 처치량, 화면 흔들림.
+            // 2형에서 쓰지 않음: 재측정, 게이지 경고, 급하강, 재발, 4단계 제한 시간, 처치량, 화면 흔들림.
+            // 표시 지연은 쓴다: 혈당바가 늦게 따라와 몸의 신호(notice)가 바 색보다 먼저 온다.
             var glucose = new GlucoseConfig(
                 new TimeConfig(timeScale, 0, "", 0), levels, new RecurrenceConfig(0),
-                new DisplayConfig(0, double.NegativeInfinity), new SuddenDropConfig(0, 0, 0), foods);
+                new DisplayConfig(displayDelaySec, double.NegativeInfinity, barGreenFrom), new SuddenDropConfig(0, 0, 0), foods);
             var hypo = new HypoConfig(0, 0, 0, 0, type2.GuardianPromptTimeLimitSec, type2.ResumeCountdownSec,
                 type2.GraceSec, type2.AnswerFeedbackSec, type2.GuardianSnackId, new DoseConfig(0, 0, 0));
             return new GameConfig(configVersion, unit, glucose, hypo, new HyperConfig(type2.TellTimeLimitSec),

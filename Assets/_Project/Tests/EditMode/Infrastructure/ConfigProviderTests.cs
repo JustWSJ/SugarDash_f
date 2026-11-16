@@ -31,6 +31,7 @@ namespace SugarDash.Infrastructure.Tests
     ""hyperThreshold"": 180, ""hyperReleaseMargin"": 20, ""baseDecayPerSec"": 0.3, ""runDecayPerSec"": 0.7,
     ""normalRangeMin"": 72, ""normalRangeMax"": 180
   },
+  ""display"": { ""delaySec"": 4, ""barGreenFrom"": 90 },
   ""type2"": {
     ""highHoldSec"": 4, ""lowHoldSec"": 4, ""noticeSec"": 2, ""tellTimeLimitSec"": 8,
     ""guardianPromptTimeLimitSec"": 5, ""answerFeedbackSec"": 1, ""resumeCountdownSec"": 3, ""graceSec"": 3,
@@ -66,7 +67,7 @@ namespace SugarDash.Infrastructure.Tests
     ""normalRangeMax"": 250
   },
   ""recurrence"": { ""cooldownSec"": 10 },
-  ""display"": { ""delaySec"": 3, ""warningThreshold"": 80 },
+  ""display"": { ""delaySec"": 3, ""warningThreshold"": 80, ""barGreenFrom"": 90 },
   ""hypo"": {
     ""step1TimeLimitSec"": 5, ""step2TimeLimitSec"": 5, ""step3TimeLimitSec"": 5, ""step4TimeLimitSec"": 5,
     ""guardianPromptTimeLimitSec"": 5, ""resumeCountdownSec"": 1, ""graceSec"": 3, ""answerFeedbackSec"": 0,
@@ -413,6 +414,8 @@ namespace SugarDash.Infrastructure.Tests
             Assert.That(juice.AbsorbSec, Is.EqualTo(2).Within(1e-9));
             Assert.That(juice.TotalRise, Is.EqualTo(30));
             Assert.That(config.Type2.NoticeSec, Is.EqualTo(2));
+            Assert.That(config.Glucose.Display.DelaySec, Is.EqualTo(4));
+            Assert.That(config.Glucose.Display.BarGreenFrom, Is.EqualTo(90));
             Assert.That(config.Type2.JuiceChoiceFoodId, Is.EqualTo("juice"));
             Assert.That(config.Hyper.NotifyTimeLimitSec, Is.EqualTo(config.Type2.TellTimeLimitSec));
             Assert.That(config.Runner.TrackSnackIntervalMinSec, Is.EqualTo(config.Type2.FoodRowIntervalMinSec));

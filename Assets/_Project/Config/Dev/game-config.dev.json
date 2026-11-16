@@ -10,7 +10,7 @@
     "baseDecayPerSec": 0.5, "runDecayPerSec": 1, "normalRangeMin": 72, "normalRangeMax": 135
   },
   "recurrence": { "cooldownSec": 10 },
-  "display": { "delaySec": 3, "warningThreshold": 80 },
+  "display": { "delaySec": 3, "warningThreshold": 80, "barGreenFrom": 90 },
   "hypo": {
     "step1TimeLimitSec": 8, "step2TimeLimitSec": 8, "step3TimeLimitSec": 8, "step4TimeLimitSec": 8,
     "guardianPromptTimeLimitSec": 5, "resumeCountdownSec": 3, "graceSec": 3, "answerFeedbackSec": 1,

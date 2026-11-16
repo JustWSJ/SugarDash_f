@@ -46,6 +46,7 @@ namespace SugarDash.Domain.Tests
 
         public double DelaySec = 3;
         public double WarningThreshold = 80;
+        public double BarGreenFrom = 90;
 
         public double SuddenDropChancePerSec = 0;
         public double SuddenDropAmount = 30;
@@ -87,6 +88,8 @@ namespace SugarDash.Domain.Tests
         // 2형 설정(BuildType2). 나머지 공유 값은 위 필드를 쓴다.
         public double HighHoldSec = 2;
         public double LowHoldSec = 2;
+        /// <summary>2형 표시 지연. 불변식(지연 ≥ 유지 시간)에 맞춰 유지 시간과 같게 둔다.</summary>
+        public double Type2DisplayDelaySec = 2;
         public double NoticeSec = 1;
         public double TellTimeLimitSec = 5;
         public string JuiceChoiceFoodId = "juice";
@@ -124,7 +127,7 @@ namespace SugarDash.Domain.Tests
             new GlucoseLevelConfig(Initial, Min, Max, HypoThreshold, HypoReleaseMargin, HyperThreshold,
                 HyperReleaseMargin, BaseDecayPerSec, RunDecayPerSec, NormalRangeMin, NormalRangeMax ?? HyperThreshold),
             new RecurrenceConfig(CooldownSec),
-            new DisplayConfig(DelaySec, WarningThreshold),
+            new DisplayConfig(DelaySec, WarningThreshold, BarGreenFrom),
             new SuddenDropConfig(SuddenDropChancePerSec, SuddenDropAmount, SuddenDropDurationSec),
             Snacks.Select(s => new SnackConfig(s.Id, s.Kind, s.TotalRise, s.OnsetSec, s.AbsorbSec, s.Source))
                 .ToList());
@@ -152,7 +155,8 @@ namespace SugarDash.Domain.Tests
                 RestDurationSec),
             new EliminationConfig(GlucoseLow, GlucoseHigh),
             BuildScore(),
-            Sections.ToList());
+            Sections.ToList(),
+            Type2DisplayDelaySec, BarGreenFrom);
 
         private ScoreConfig BuildScore()
         {

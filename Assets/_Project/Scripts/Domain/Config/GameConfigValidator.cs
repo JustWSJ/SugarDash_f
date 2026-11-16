@@ -56,6 +56,7 @@ namespace SugarDash.Domain.Config
             if (!(g.Display.WarningThreshold >= levels.HypoThreshold))
                 errors.Add($"display.warningThreshold ≥ glucose.hypoThreshold 이어야 한다 " +
                            $"({g.Display.WarningThreshold} < {levels.HypoThreshold})");
+            ValidateBarGreenFrom(errors, g.Display, levels);
 
             // 6. chancePerSec는 1초당 확률이므로 1을 넘을 수 없다.
             if (!(g.SuddenDrop.ChancePerSec >= 0 && g.SuddenDrop.ChancePerSec <= 1))
@@ -214,6 +215,15 @@ namespace SugarDash.Domain.Config
         }
 
         // 2형 불변식(설계 8.3절). 1형 전용 규칙(측정기, 표시 지연, 4단계, 급하강, 흔들림)은 검사하지 않는다.
+        // 아래쪽 색 바뀜 구간(hypoThreshold → barGreenFrom)이 있어야 하고, 초록 구간이 적정 범위 위쪽 끝을 넘지 않는다.
+        private static void ValidateBarGreenFrom(List<string> errors, DisplayConfig display, GlucoseLevelConfig levels)
+        {
+            if (!(levels.HypoThreshold < display.BarGreenFrom && display.BarGreenFrom <= levels.NormalRangeMax))
+                errors.Add($"glucose.hypoThreshold < display.barGreenFrom ≤ glucose.normalRangeMax 이어야 한다 " +
+                           $"(hypoThreshold={levels.HypoThreshold}, barGreenFrom={display.BarGreenFrom}, " +
+                           $"normalRangeMax={levels.NormalRangeMax})");
+        }
+
         private static void ValidateType2(List<string> errors, GameConfig config)
         {
             var levels = config.Glucose.Levels;
@@ -260,6 +270,15 @@ namespace SugarDash.Domain.Config
                 errors.Add($"glucose: hypoThreshold ≤ normalRangeMin < normalRangeMax ≤ hyperThreshold 이어야 한다 " +
                            $"(hypoThreshold={levels.HypoThreshold}, normalRangeMin={levels.NormalRangeMin}, " +
                            $"normalRangeMax={levels.NormalRangeMax}, hyperThreshold={levels.HyperThreshold})");
+
+            // 혈당바: 늦게 따라오는 바 색보다 몸의 신호(notice)가 먼저 오도록 지연 ≥ 유지 시간.
+            var display = config.Glucose.Display;
+            NonNegative(errors, "display.delaySec", display.DelaySec);
+            double holdSec = Math.Max(t2.HighHoldSec, t2.LowHoldSec);
+            if (!(display.DelaySec >= holdSec))
+                errors.Add($"display.delaySec ≥ max(type2.highHoldSec, type2.lowHoldSec) 이어야 한다 " +
+                           $"({display.DelaySec} < {holdSec})");
+            ValidateBarGreenFrom(errors, display, levels);
 
             // 4
             NonNegative(errors, "type2.highHoldSec", t2.HighHoldSec);

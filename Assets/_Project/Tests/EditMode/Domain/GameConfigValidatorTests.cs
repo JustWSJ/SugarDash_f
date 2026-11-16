@@ -60,6 +60,8 @@ namespace SugarDash.Domain.Tests
             yield return Case("EmptyBagChanceInType2", "emptyBagChance", b => b.WithScenes(new SceneConfig("a", TimeOfDay.Morning, 50, true, new SceneOverrides(emptyBagChance: 0.5))));
             yield return Case("NormalRangeMaxNotAboveMin", "normalRangeMax", b => b.NormalRangeMax = 80);
             yield return Case("HighHoldNegative", "type2.highHoldSec", b => b.HighHoldSec = -1);
+            yield return Case("DisplayDelayBelowHold", "display.delaySec ≥ max", b => b.LowHoldSec = 3);
+            yield return Case("BarGreenFromAtHypo", "display.barGreenFrom", b => b.BarGreenFrom = 70);
             yield return Case("NoticeNegative", "type2.noticeSec", b => b.NoticeSec = -1);
             yield return Case("TellLimitZero", "type2.tellTimeLimitSec", b => b.TellTimeLimitSec = 0);
             yield return Case("GuardianPromptZero", "type2.guardianPromptTimeLimitSec", b => b.GuardianPromptTimeLimitSec = 0);
@@ -116,6 +118,8 @@ namespace SugarDash.Domain.Tests
             yield return Case("SnackAbsorbZero", b => b.SnackById("cracker").AbsorbSec = 0);
             yield return Case("DelayNegative", b => b.DelaySec = -1, 2);
             yield return Case("WarningBelowHypo", b => b.WarningThreshold = 60);
+            yield return Case("BarGreenFromAtHypo", b => b.BarGreenFrom = 70);
+            yield return Case("BarGreenFromAboveNormalMax", b => b.BarGreenFrom = 260);
             yield return Case("DropChanceNegative", b => b.SuddenDropChancePerSec = -0.1);
             yield return Case("DropChanceAboveOne", b => b.SuddenDropChancePerSec = 1.5);
             yield return Case("DropAmountZero", b => b.SuddenDropAmount = 0);
@@ -132,7 +136,7 @@ namespace SugarDash.Domain.Tests
             yield return Case("NormalRangeNotBelowHyper", b => { b.NormalRangeMin = 250; b.DoseProper = 8; b.DoseOver = 9; });
             yield return Case("NormalRangeMaxAboveHyper", b => b.NormalRangeMax = 251);
             yield return Case("EmptyBagChanceAboveOne", b => b.WithScenes(new SceneConfig("a", TimeOfDay.Morning, 50, true, new SceneOverrides(emptyBagChance: 1.5))));
-            yield return Case("NormalRangeMaxNotAboveMin", b => b.NormalRangeMax = 80);
+            yield return Case("NormalRangeMaxNotAboveMin", b => b.NormalRangeMax = 80, 2); // + barGreenFrom 90 > normalRangeMax
             yield return Case("RecheckNotLongerThanDelay", b => { b.DelaySec = 6; b.Step1TimeLimitSec = 7; }, 2);
             yield return Case("FastForwardTickZero", b => b.FastForwardTickSimSec = 0);
             yield return Case("FastForwardTickNotBelowDelay", b => b.FastForwardTickSimSec = 3);

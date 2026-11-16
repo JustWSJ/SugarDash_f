@@ -133,7 +133,8 @@ namespace SugarDash.Infrastructure.Config
                 var display = Section(dto.Display, "display");
                 var displayConfig = new DisplayConfig(
                     Number(display?.DelaySec, "display.delaySec", display),
-                    Number(display?.WarningThreshold, "display.warningThreshold", display));
+                    Number(display?.WarningThreshold, "display.warningThreshold", display),
+                    Number(display?.BarGreenFrom, "display.barGreenFrom", display));
 
                 var hypo = Section(dto.Hypo, "hypo");
                 var doses = hypo == null ? null : Section(hypo.Doses, "hypo.doses");
@@ -235,6 +236,10 @@ namespace SugarDash.Infrastructure.Config
                     Number(glucose?.NormalRangeMin, "glucose.normalRangeMin", glucose),
                     Number(glucose?.NormalRangeMax, "glucose.normalRangeMax", glucose));
 
+                var display = Section(dto.Display, "display");
+                double displayDelaySec = Number(display?.DelaySec, "display.delaySec", display);
+                double barGreenFrom = Number(display?.BarGreenFrom, "display.barGreenFrom", display);
+
                 var t2 = Section(dto.Type2, "type2");
                 var runner = Section(dto.Runner, "runner");
                 var type2 = new Type2Config(
@@ -281,7 +286,7 @@ namespace SugarDash.Infrastructure.Config
                 var sections = MapSections(dto.Sections);
 
                 return GameConfig.ForType2(configVersion, unit, timeScale, levels, foods, type2,
-                    eliminationConfig, score, sections);
+                    eliminationConfig, score, sections, displayDelaySec, barGreenFrom);
             }
 
             private ScoreConfig MapType2Score(Type2ScoreDto score)

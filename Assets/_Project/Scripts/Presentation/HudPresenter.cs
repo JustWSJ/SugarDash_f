@@ -10,12 +10,16 @@ using UnityEngine.UI;
 namespace SugarDash.Presentation
 {
     /// <summary>
-    /// 표시 혈당바, 게이지 경고, 측정기 버튼. 혈당바는 표시 혈당(지연된 값)만 보여 주고,
-    /// 측정기를 누르면 그때의 실제 혈당을 보여 준다.
+    /// 표시 혈당바, 게이지 경고, 측정기 버튼. 혈당바는 두 유형 모두 표시 혈당(지연된 값)만 보여 주고,
+    /// 표시 혈당에 따라 초록 → 노랑 → 빨강으로 색이 바뀐다(BarColor). 측정기를 누르면 그때의 실제 혈당을 보여 준다.
     /// </summary>
     public sealed class HudPresenter : MonoBehaviour
     {
         [SerializeField] private Slider glucoseBar;
+        [Header("혈당바 색")]
+        [SerializeField] private Color barGreen = new Color(0.30f, 0.75f, 0.35f);
+        [SerializeField] private Color barYellow = new Color(0.98f, 0.80f, 0.20f);
+        [SerializeField] private Color barRed = new Color(0.90f, 0.25f, 0.20f);
         [SerializeField] private Text glucoseText;
         [SerializeField] private Text warningText;
         [SerializeField] private Button meterButton;
@@ -31,6 +35,7 @@ namespace SugarDash.Presentation
         private RunController _run;
         private GameFlowController _flow;
         private int _shownRunCount;
+        private Image _barFill;
         // 측정 결과 글자를 지울 시각(Time.time). 보여 주는 글자가 없으면 음수.
         private float _meterTextHideAt = -1;
 
@@ -44,6 +49,7 @@ namespace SugarDash.Presentation
             glucoseBar.minValue = (float)levels.Min;
             glucoseBar.maxValue = (float)levels.Max;
             glucoseBar.interactable = false;
+            if (glucoseBar.fillRect != null) _barFill = glucoseBar.fillRect.GetComponent<Image>();
             meterText.text = "";
             meterButton.onClick.AddListener(OnMeter);
 
@@ -87,12 +93,16 @@ namespace SugarDash.Presentation
 
             if (_meterTextHideAt >= 0 && Time.time >= _meterTextHideAt) ClearMeterText();
 
-            // 2형에는 측정기·표시 혈당 지연·게이지 경고가 없다. 혈당바는 실제 혈당을 보여 주고 측정 관련 표시는 숨긴다.
+            // 2형에는 측정기·게이지 경고가 없어 측정 관련 표시는 숨긴다.
+            // 혈당바는 두 유형 모두 표시 혈당이다. 2형도 늦게 따라와 몸의 신호(notice)가 바 색보다 먼저 온다.
             bool type2 = _run.TrackType == TrackType.Type2;
             meterButton.gameObject.SetActive(!type2);
             meterText.enabled = !type2;
-            double displayed = type2 ? _run.Actual : _run.Displayed;
+            double displayed = _run.Displayed;
             glucoseBar.value = (float)displayed;
+            var glucose = _run.CurrentConfig?.Glucose;
+            if (_barFill != null && glucose != null)
+                _barFill.color = BarColor(displayed, glucose.Levels, glucose.Display.BarGreenFrom, barRed, barYellow, barGreen);
             glucoseText.text = $"{displayed:0} mg/dL";
             warningText.enabled = !type2 && _run.IsGaugeWarningOn;
 
@@ -114,6 +124,28 @@ namespace SugarDash.Presentation
             // '잠시 멈춤'은 일시정지 메뉴가 버튼 위에 보여 준다(PauseMenuView).
             statusText.text = _run.Phase == HypoPhase.ResumeCountdown && _run.IsEmptyBag ? HudText.PackFastSugar : "";
         }
+
+        /// <summary>
+        /// 혈당바 색. hypoThreshold 이하와 hyperThreshold 이상은 빨강, barGreenFrom~normalRangeMax는 초록이고,
+        /// 그 사이는 빨강 → 노랑 → 초록(가운데가 노랑)으로 점점 바뀐다.
+        /// </summary>
+        public static Color BarColor(double glucose, GlucoseLevelConfig levels, double barGreenFrom,
+            Color red, Color yellow, Color green)
+        {
+            if (glucose < barGreenFrom)
+                return Blend(Progress(glucose, levels.HypoThreshold, barGreenFrom), red, yellow, green);
+            if (glucose > levels.NormalRangeMax)
+                return Blend(Progress(glucose, levels.HyperThreshold, levels.NormalRangeMax), red, yellow, green);
+            return green;
+        }
+
+        // danger(빨강)에서 safe(초록)까지 어디쯤인지 0~1. danger 너머는 0.
+        private static float Progress(double glucose, double danger, double safe) =>
+            safe == danger ? 1f : Mathf.Clamp01((float)((glucose - danger) / (safe - danger)));
+
+        // 0 빨강, 0.5 노랑, 1 초록.
+        private static Color Blend(float t, Color red, Color yellow, Color green) =>
+            t < 0.5f ? Color.Lerp(red, yellow, t * 2f) : Color.Lerp(yellow, green, (t - 0.5f) * 2f);
 
         /// <summary>튜토리얼 조작 잠금에서 측정기가 허용되는지. 일반 판은 All이라 항상 허용된다.</summary>
         public static bool IsMeterAllowed(TutorialControls allowed) => (allowed & TutorialControls.Meter) != 0;

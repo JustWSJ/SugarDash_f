@@ -11,6 +11,7 @@
     "normalRangeMin": 70,
     "normalRangeMax": 180
   },
+  "display": { "delaySec": 4, "barGreenFrom": 90 },
   "type2": {
     "highHoldSec": 4,
     "lowHoldSec": 4,

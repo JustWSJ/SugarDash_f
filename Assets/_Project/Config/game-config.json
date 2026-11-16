@@ -22,7 +22,7 @@
     "normalRangeMax": 180
   },
   "recurrence": { "cooldownSec": 10 },
-  "display": { "delaySec": 3, "warningThreshold": 80 },
+  "display": { "delaySec": 3, "warningThreshold": 80, "barGreenFrom": 90 },
   "hypo": {
     "step1TimeLimitSec": 10,
     "step2TimeLimitSec": 10,

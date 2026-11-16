@@ -72,6 +72,7 @@ namespace SugarDash.Infrastructure.Config.Dto
     {
         public double? DelaySec { get; set; }
         public double? WarningThreshold { get; set; }
+        public double? BarGreenFrom { get; set; }
     }
 
     [Preserve]

@@ -2,7 +2,7 @@
 
 - 브랜치: `feat/glucose-model`
 - 상태: 설계 확정, 수치는 PLACEHOLDER (담당자 결정 전까지 `null`)
-- 범위: 1형 주행 기준이다. 2형도 GlucoseModel(`dBG/dt` 합산식, 음식 흡수)을 그대로 쓰지만 별도 설정 파일(`game-config.type2.json`)과 규칙을 갖는다. 2형 혈당과 설정은 `docs/type-select.md` 4절과 8절, 방향은 `docs/type-tracks.md`를 본다. 이 문서의 표시 혈당 지연, 측정기, 4단계, 급하강은 1형 전용이다.
+- 범위: 1형 주행 기준이다. 2형도 GlucoseModel(`dBG/dt` 합산식, 음식 흡수)을 그대로 쓰지만 별도 설정 파일(`game-config.type2.json`)과 규칙을 갖는다. 2형 혈당과 설정은 `docs/type-select.md` 4절과 8절, 방향은 `docs/type-tracks.md`를 본다. 이 문서의 측정기, 4단계, 급하강은 1형 전용이다. 표시 혈당 지연은 2형도 쓴다(혈당바만, 불변식 26).
 - 단위: 혈당 mg/dL, 시간은 명시하지 않으면 게임 초(game seconds)
 
 ## 1. 혈당 변화 방식
@@ -259,6 +259,10 @@ PLACEHOLDER는 `null`로 둔다. 로더는 `null` 필드의 경로를 모두 모
 
 ### 8.4 고혈당 설정
 20. `hyper.notifyTimeLimitSec > 0` (`docs/hyper-event.md`)
+
+### 8.5 혈당바
+26. 2형: `display.delaySec ≥ 0`, `display.delaySec ≥ max(type2.highHoldSec, type2.lowHoldSec)`. 바 색보다 몸의 신호가 먼저 오게 한다.
+27. 두 유형: `hypoThreshold < display.barGreenFrom ≤ normalRangeMax`
 
 구간별 1단계 제한 시간 배율이 생기면(2순위) "모든 구간에서 `step1TimeLimitSec × 배율 > delaySec`"를 추가한다.
 

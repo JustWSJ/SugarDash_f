@@ -8,6 +8,7 @@
     "hyperThreshold": 180, "hyperReleaseMargin": 20,
     "baseDecayPerSec": 0.3, "runDecayPerSec": 0.7, "normalRangeMin": 72, "normalRangeMax": 180
   },
+  "display": { "delaySec": 4, "barGreenFrom": 90 },
   "type2": {
     "highHoldSec": 4, "lowHoldSec": 4, "noticeSec": 2, "tellTimeLimitSec": 8,
     "guardianPromptTimeLimitSec": 5, "answerFeedbackSec": 1, "resumeCountdownSec": 3, "graceSec": 3,
