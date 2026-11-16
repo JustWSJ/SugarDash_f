@@ -30,6 +30,27 @@ namespace SugarDash.Presentation.Tests
         }
 
         [Test]
+        public void IntroCuttoon_Arrows()
+        {
+            // 두 장: 첫 장은 다음 화살표만, 둘째 장은 앞 장 화살표와 다음 화살표(누르면 닫힘).
+            Assert.That(IntroCuttoonView.HasBack(0), Is.False);
+            Assert.That(IntroCuttoonView.IsLast(0, 2), Is.False);
+            Assert.That(IntroCuttoonView.HasBack(1), Is.True);
+            Assert.That(IntroCuttoonView.IsLast(1, 2), Is.True);
+            Assert.That(IntroCuttoonView.IsLast(0, 1), Is.True, "한 장이면 첫 장에서 닫힌다");
+        }
+
+        [Test]
+        public void IntroCuttoon_OpensBeforeTypeSelectOnce()
+        {
+            Assert.That(IntroCuttoonView.ShouldOpen(FlowScreen.TypeSelect, false, false), Is.True, "처음 실행이면 유형 선택 앞에서");
+            Assert.That(IntroCuttoonView.ShouldOpen(FlowScreen.TypeSelect, true, false), Is.False, "한 번만");
+            Assert.That(IntroCuttoonView.ShouldOpen(FlowScreen.Title, false, false), Is.False, "두 번째 실행부터는 열지 않는다");
+            Assert.That(IntroCuttoonView.ShouldOpen(FlowScreen.Title, false, true), Is.True, "매번 보기(확인용)");
+            Assert.That(IntroCuttoonView.ShouldOpen(FlowScreen.Running, false, true), Is.False);
+        }
+
+        [Test]
         public void TutorialPrompt_Visibility()
         {
             foreach (TutorialStage s in System.Enum.GetValues(typeof(TutorialStage)))

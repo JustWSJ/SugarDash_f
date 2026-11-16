@@ -1217,13 +1217,11 @@ MonoBehaviour:
   showEveryLaunch: 0
   showSkipButton: 0
   backgroundColor: {r: 1, g: 0.98, b: 0.94, a: 1}
-  buttonColor: {r: 0.29, g: 0.2, b: 0.17, a: 0.85}
-  buttonTextColor: {r: 1, g: 1, b: 1, a: 1}
+  buttonColor: {r: 0.96, g: 0.88, b: 0.72, a: 1}
+  buttonTextColor: {r: 0.29, g: 0.2, b: 0.17, a: 1}
   hintColor: {r: 0.29, g: 0.2, b: 0.17, a: 1}
   sortingOrder: 500
   skipLabel: "\uAC74\uB108\uB6F0\uAE30"
-  nextHint: "\uD654\uBA74\uC744 \uB204\uB974\uBA74 \uB2E4\uC74C\uC73C\uB85C \uB118\uC5B4\uAC00\uC694"
-  lastHint: "\uD654\uBA74\uC744 \uB204\uB974\uBA74 \uC2DC\uC791\uD574\uC694"
 --- !u!4 &1614547516
 Transform:
   m_ObjectHideFlags: 0
