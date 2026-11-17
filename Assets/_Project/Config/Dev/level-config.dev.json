@@ -1,0 +1,10 @@
+{
+  "configVersion": "dev-not-real-level",
+  "xp": { "perRun": 10, "scoreRate": 0.1 },
+  "levels": [
+    { "level": 2, "xpTotal": 20 },
+    { "level": 3, "xpTotal": 60 },
+    { "level": 4, "xpTotal": 120 },
+    { "level": 5, "xpTotal": 200 }
+  ]
+}

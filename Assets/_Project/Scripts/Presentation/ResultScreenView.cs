@@ -14,6 +14,8 @@ namespace SugarDash.Presentation
         [SerializeField] private GameObject root;
         [SerializeField] private Text titleText;
         [SerializeField] private Text summaryText;
+        [Tooltip("경험치·레벨 오름 줄. 비워 두면 보이지 않는다.")]
+        [SerializeField] private Text levelText;
         [SerializeField] private Button retryButton;
         [SerializeField] private Button titleButton;
 
@@ -54,12 +56,15 @@ namespace SugarDash.Presentation
             {
                 titleText.text = ResultScreenText.TutorialTitle;
                 summaryText.text = "";
+                if (levelText != null) levelText.text = "";
                 root.SetActive(true);
                 return;
             }
             var result = _flow.LastResult;
             titleText.text = ResultScreenText.Title(result);
             summaryText.text = ResultScreenText.Summary(result, _flow.LastScore, _flow.BestScore, _flow.IsNewBest);
+            if (levelText != null)
+                levelText.text = LevelText.ResultLines(_flow.XpGained, _flow.LeveledUp, _flow.Level);
             root.SetActive(true);
         }
 

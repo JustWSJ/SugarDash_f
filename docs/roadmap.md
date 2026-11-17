@@ -67,6 +67,7 @@
 | 구조 | 튜토리얼 규칙 코드와 빈 틀: 튜토리얼 판 결정·건너뛰기·다시하기, 안내 순서(`TutorialController`), 연습 모드, 기록하지 않는 판, 안내 중 조작 잠금, 통과할 레인 강조, 화면 터치로 설명 창 넘기기, 빈 틀 `TutorialPromptView`·`TutorialLaneHighlightView`, 조립·개발 씬 문서. 개발 씬 확인은 [dev-scene.md](dev-scene.md) 6.11, 9.13절 | [tutorial.md](tutorial.md) | 완료 |
 | 구조 | 일시정지 메뉴(버튼 숨김 조건, 계속하기 3-2-1, 타이틀로, 앱 복귀 시 메뉴)와 탈락 장면(장면 시간, 탈락 이유 세 갈래, 흔들림 약하게), 빈 틀 `PauseMenuView`·`EliminationSpeechView`·`GuardianArrivalView`, 조립·개발 씬 문서. 개발 씬 확인은 [dev-scene.md](dev-scene.md) 6.14~6.16, 9.15절 | [pause-elimination.md](pause-elimination.md) | 완료 |
 | 구조 | 장애물 패턴: 패턴 묶음 에셋(`TrackPatternSet`)과 지나갈 수 있는지 자동 확인, 패턴 고르기·놓기, 1형 1단계 쉬운 패턴만, 간식·음식 줄·쉬는 곳 주변 비움, 처음 패턴 6개, 조립·개발 씬 문서. 개발 씬 확인은 [dev-scene.md](dev-scene.md) 9.16절 | [track-patterns.md](track-patterns.md) | 완료 |
+| 구조 | 플레이어 레벨: 경험치·레벨 규칙과 검증, 진행 저장, 결과 화면 경험치 줄, 타이틀 왼쪽 위 레벨 표시 | [level.md](level.md) | 완료 |
 | 팀원1(캐릭터) | 주인공 모델, 기본 애니메이션(달리기, 점프, 슬라이드, 옆 이동) | | 시작 가능 |
 | 팀원1(캐릭터) | 2형 상태 애니메이션: 지친 표정·느린 걸음·처진 자세(고혈당·저혈당), 앉아 쉬기. 체형은 바꾸지 않음. 연출 방향은 출처 확인 뒤 고칠 수 있음 | [type-tracks.md](type-tracks.md) 5절 | 시작 가능 |
 | 팀원1(캐릭터) | `CharacterStateView` 채우기: 보통·쉬는 중·지침(높음)·지침(낮음) 상태를 애니메이터에 연결 | `Assets/_Project/Scripts/Presentation/Character/CharacterStateView.cs`, [type-select.md](type-select.md) 11절 | 시작 가능 |
@@ -94,6 +95,7 @@
 | 구조(화면) | `EliminationSpeechView` 채우기: 탈락 장면 말풍선 그림, 어른 쪽 꼬리, 나타나는 연출 | `Assets/_Project/Scripts/Presentation/Screen/EliminationSpeechView.cs`, [pause-elimination.md](pause-elimination.md) 3.2·5절 | 진행 중(구조). 나타나는 연출·깜빡임·유형 강조는 넣음, 그림이 남음 |
 | 구조(화면) | 음식 8종 표시 이름: 문구 파일 `FoodText`(선택 패널 버튼, 양 묻는 제목, 고른 뒤 문구). "을/를"은 받침에 맞춰 붙음 | `Assets/_Project/Scripts/Presentation/FoodText.cs` | 완료 |
 | 구조(화면) | 선택지 그림(2D): 음식 8종, 측정기, 양(조금·알맞게·많이), 어른에게 알리기, 다시 재기 | [food-evidence.md](food-evidence.md) | 시작 가능 |
+| 구조(화면) | 레벨 표시 그림: 타이틀 왼쪽 위 원·경험치 상자·채움 막대, 레벨 오름 연출. 지금은 자리 채움 도형 | `Assets/_Project/Art/UI/Screens/TitleScreen.prefab`, [level.md](level.md) 5절 | 시작 가능 |
 | 구조(화면) | 화면 전환 덮개 `ScreenFadeView`: 화면이 바뀔 때 흰 덮개가 0.25초 동안 걷힘. 그림을 씌워도 그대로 동작 | [dev-scene.md](dev-scene.md) 6.17절 | 완료 |
 | 기획 | 탈락 장면 말풍선 문구 확정(`EliminationText`). 지금은 자리 채움 초안. 아이를 탓하지 않고 의학 설명을 넣지 않음 | `Assets/_Project/Scripts/Presentation/EliminationText.cs`, [pause-elimination.md](pause-elimination.md) 3.2절 | 시작 가능 |
 | 기획 | 습관 순간 말풍선 문구 확정(`HabitPromptText`). 지금은 자리 채움 초안 | `Assets/_Project/Scripts/Presentation/HabitPromptText.cs`, [section2.md](section2.md) 7.1절 | 시작 가능 |
@@ -133,6 +135,7 @@
 | 음식 목록(햄버거, 치킨, 물, 주스 등)과 음식별 혈당 영향, 1형 빠른 당·느린 당 종류, 출처 | 결정, 의학 | 등급 방식으로 정함: 음식별 등급과 1형 빠른 당(주스·탄산음료)·느린 당(크래커·사과)은 [food-evidence.md](food-evidence.md). 발췌 원문 대조(담당자)와 등급별 게임 수치가 남음. 설정 `source` 칸은 대조 뒤 채움 | 음식 표시 이름·그림, 선택지 그림, 음식 아이템 확장 |
 | 1형 주행에서 일반 음식을 혈당에 어떻게 반영할지(게임은 인슐린 투여를 다루지 않음) | 결정, 의학 | 정함: 1형 트랙에는 간식(주스·탄산음료·크래커·사과)만, 일반 음식은 2형만([type-tracks.md](type-tracks.md) 6절) | 없음 |
 | 의학 출처의 해당 장·페이지 | 의학 | 판본·장·쪽 정리함([medical-sources.md](medical-sources.md)). ADA 6·14장 쪽, 국문 전문 쪽, ADA 소아 수면 권고는 미확인 | 음식 목록, 2형 규칙, 퀴즈 문항 작성 |
+| 레벨 수치(판마다 경험치, 레벨별 필요 경험치) | 결정 | 미정. 빌드 설정은 `null`이라 레벨 기능이 꺼져 있음([level.md](level.md), [game-values.md](game-values.md) 8절) | 레벨 기능 켜기 |
 | 설정 화면의 다른 항목(소리 등) | 기획 | 설정 화면에는 유형 바꾸기와 튜토리얼 다시하기만 있음 | 없음(항목이 생길 때만) |
 | 증상 연출 추가 여부: 1형 흐림, 고혈당 쪽 연출 | 기획, 의학 | 1형 저혈당 화면 흔들림만 있음 | 증상 연출 추가 |
 | 고혈당 알리기 화면 문구와 선택지 추가 여부 | 기획 | 개발용 문구("혈당이 높아요. 어떻게 할까요?") | 화면 문구 검토 |

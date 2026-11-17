@@ -1329,6 +1329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: SugarDash.Bootstrap::SugarDash.Bootstrap.GameBootstrapper
   buildConfig: {fileID: 4900000, guid: 906fa45badc594b7f8633026d110abcf, type: 3}
   buildConfigType2: {fileID: 4900000, guid: f2e2240b448df4552bae5d89d70113c3, type: 3}
+  levelConfig: {fileID: 4900000, guid: c47a8ba94e70946378ea2b3929bacce0, type: 3}
   useDevConfigInEditor: 1
   hud: {fileID: 963224970}
   choicePanel: {fileID: 1038721152}

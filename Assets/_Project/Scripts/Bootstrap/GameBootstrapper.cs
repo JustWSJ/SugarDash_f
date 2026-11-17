@@ -8,6 +8,7 @@ using SugarDash.Domain.Director;
 using SugarDash.Domain.Events;
 using SugarDash.Domain.Glucose;
 using SugarDash.Domain.Hypo;
+using SugarDash.Domain.Level;
 using SugarDash.Domain.Scoring;
 using SugarDash.Infrastructure;
 using SugarDash.Infrastructure.Config;
@@ -30,8 +31,12 @@ namespace SugarDash.Bootstrap
 
         private const string DevConfigType2Path = "_Project/Config/Dev/game-config.type2.dev.json";
 
+        private const string DevLevelConfigPath = "_Project/Config/Dev/level-config.dev.json";
+
         [SerializeField] private TextAsset buildConfig;
         [SerializeField] private TextAsset buildConfigType2;
+        [Tooltip("레벨 설정(level-config.json). 비어 있거나 값이 정해지지 않았으면 레벨 기능(경험치)을 끈다.")]
+        [SerializeField] private TextAsset levelConfig;
         [Tooltip("에디터에서 실행할 때 개발용 임시 설정(실제 수치 아님)을 쓴다. 빌드에서는 무시한다.")]
         [SerializeField] private bool useDevConfigInEditor = true;
         [SerializeField] private HudPresenter hud;
@@ -146,7 +151,9 @@ namespace SugarDash.Bootstrap
             _tutorial = new TutorialController(_run, tutorialGlucoseMoveSec, tutorialRetryTextSec);
             _flow = new GameFlowController(_run, new ReportQueryService(logDirectory),
                 new SettingsRepository(Path.Combine(Application.persistentDataPath, "settings.json")), profiles,
-                _tutorial, Mathf.Max(0f, pauseCountdownSec), Mathf.Max(0f, eliminationSceneSec));
+                _tutorial, Mathf.Max(0f, pauseCountdownSec), Mathf.Max(0f, eliminationSceneSec),
+                TryLoadLevelConfig(),
+                new PlayerProgressRepository(Path.Combine(Application.persistentDataPath, "player-progress.json")));
 
             // HUD 막대 범위는 1형 levels를 쓴다. 2형의 min/max가 다르면 주행마다 다시 묶어야 한다.
             _subscriptions.Add(hud.Bind(_run, _flow, _bus, _config.Glucose.Levels));
@@ -365,6 +372,35 @@ namespace SugarDash.Bootstrap
                 Debug.LogError(label + " 설정을 읽지 못했다: " + e.GetType().Name + " " + e.Message);
                 config = null;
                 return false;
+            }
+        }
+
+        /// <summary>레벨 설정을 읽는다. 없거나 값이 비었거나 규칙에 어긋나면 경고만 남기고 null(레벨 기능 끔).</summary>
+        private LevelConfig TryLoadLevelConfig()
+        {
+            try
+            {
+                string json = ReadConfigJson(levelConfig, DevLevelConfigPath);
+                if (json == null)
+                {
+                    Debug.LogWarning("levelConfig가 비어 있어 레벨 기능(경험치)을 끈다.");
+                    return null;
+                }
+                return new LevelConfigProvider(json).Load();
+            }
+            catch (ConfigValidationException e)
+            {
+                // 값이 아직 정해지지 않은 빌드 설정은 빈 값만 있다. 그때는 경고로 끝낸다.
+                if (e.Violations.Count > 0)
+                    Debug.LogError("레벨 설정이 규칙에 맞지 않아 레벨 기능을 끈다: " + string.Join(" | ", e.Violations));
+                else
+                    Debug.LogWarning("레벨 설정에 빈 값이 있어 레벨 기능을 끈다: " + string.Join(", ", e.MissingPaths));
+                return null;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("레벨 설정을 읽지 못해 레벨 기능을 끈다: " + e.GetType().Name + " " + e.Message);
+                return null;
             }
         }
 

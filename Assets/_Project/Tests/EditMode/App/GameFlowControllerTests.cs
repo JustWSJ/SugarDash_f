@@ -6,6 +6,7 @@ using SugarDash.Domain.Director;
 using SugarDash.Domain.Events;
 using SugarDash.Domain.Glucose;
 using SugarDash.Domain.Hypo;
+using SugarDash.Domain.Level;
 using SugarDash.Domain.Metrics;
 using SugarDash.Domain.Ports;
 using SugarDash.Domain.Records;
@@ -96,8 +97,24 @@ namespace SugarDash.App.Tests
             }
         }
 
+        private sealed class FakeProgress : IPlayerProgressStore
+        {
+            public int Xp;
+            public int XpSaves;
+            public int LoadTotalXp() => Xp;
+
+            public void SaveTotalXp(int totalXp)
+            {
+                XpSaves++;
+                Xp = totalXp;
+            }
+        }
+
         private FakeBest _best;
         private FakeBest _best2;
+        private FakeProgress _progress;
+        private SugarDash.Domain.Config.ScoreConfig _score1;
+        private SugarDash.Domain.Config.ScoreConfig _score2;
         private FakeSettings _settings;
         private FakeLog _log;
         private FakeQuery _query;
@@ -148,8 +165,101 @@ namespace SugarDash.App.Tests
             _best2 = new FakeBest();
             _settings = new FakeSettings { Stored = TrackType.Type1 };
             _tutorial = new TutorialController(_run, 3, 1.5);
+            _score1 = config.Score;
+            _score2 = config2.Score;
             _flow = new GameFlowController(_run, _query, _settings, Profiles(config.Score, config2.Score), _tutorial,
                 PauseCountdownSec, eliminationSceneSec);
+        }
+
+        // 테스트 전용 레벨 표. 실제 게임 수치가 아니다. 판마다 10 + 점수 × 0(점수와 상관없이 10).
+        private static LevelConfig TestLevels() => new LevelConfig("test-level", 10, 0, new[]
+        {
+            new LevelStep(2, 10),
+            new LevelStep(3, 30),
+        });
+
+        /// <summary>레벨 기능을 켠 흐름으로 바꾼다. 시작 전에 부른다.</summary>
+        private void EnableLevels(int xp = 0)
+        {
+            _progress = new FakeProgress { Xp = xp };
+            _flow = new GameFlowController(_run, _query, _settings, Profiles(_score1, _score2), _tutorial,
+                PauseCountdownSec, 0, TestLevels(), _progress);
+        }
+
+        [Test]
+        public void Begin_LoadsSavedXp()
+        {
+            EnableLevels(xp: 35);
+            _flow.Begin();
+
+            Assert.That(_flow.TotalXp, Is.EqualTo(35));
+            Assert.That(_flow.Level, Is.EqualTo(3));
+            Assert.That(_flow.NextLevelXp, Is.Null, "마지막 레벨");
+        }
+
+        [Test]
+        public void Levels_Off_NoXp()
+        {
+            StartType1();
+            HitObstacleOnce();
+
+            Assert.That(_flow.HasLevels, Is.False);
+            Assert.That(_flow.XpGained, Is.Null);
+            Assert.That(_flow.Level, Is.EqualTo(1));
+            Assert.That(_flow.TotalXp, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Levels_RecordedRun_AddsXpAndLevelsUp()
+        {
+            EnableLevels(xp: 5);
+            StartType1();
+            Assert.That(_flow.Level, Is.EqualTo(1));
+            Assert.That(_flow.NextLevelXp, Is.EqualTo(10));
+
+            HitObstacleOnce();
+
+            Assert.That(_flow.XpGained, Is.EqualTo(10));
+            Assert.That(_flow.TotalXp, Is.EqualTo(15));
+            Assert.That(_progress.Xp, Is.EqualTo(15));
+            Assert.That(_flow.LeveledUp, Is.True);
+            Assert.That(_flow.Level, Is.EqualTo(2));
+            Assert.That(_flow.LevelStartXp, Is.EqualTo(10));
+            Assert.That(_flow.NextLevelXp, Is.EqualTo(30));
+
+            _flow.Retry();
+            Assert.That(_flow.XpGained, Is.Null, "새 판을 열면 결과 값을 지운다");
+            HitObstacleOnce();
+            Assert.That(_flow.TotalXp, Is.EqualTo(25));
+            Assert.That(_flow.LeveledUp, Is.False);
+        }
+
+        [Test]
+        public void Levels_QuitToTitle_NoXp()
+        {
+            EnableLevels();
+            StartType1();
+            _flow.OpenPauseMenu();
+            _flow.QuitToTitle();
+
+            Assert.That(_flow.TotalXp, Is.EqualTo(0));
+            Assert.That(_progress.XpSaves, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Levels_TutorialRun_NoXp()
+        {
+            EnableLevels();
+            _settings.TutorialPending = true;
+            StartType1();
+            DriveToDone();
+            TFrames(10);
+            _run.HitObstacle();
+            TFrames(1);
+
+            Assert.That(_flow.IsTutorialResult, Is.True);
+            Assert.That(_flow.XpGained, Is.Null);
+            Assert.That(_progress.XpSaves, Is.EqualTo(0));
         }
 
         private IReadOnlyDictionary<TrackType, TrackTypeProfile> Profiles(

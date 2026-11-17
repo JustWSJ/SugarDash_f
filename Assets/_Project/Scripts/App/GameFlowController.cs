@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using SugarDash.Domain.Config;
 using SugarDash.Domain.Hypo;
+using SugarDash.Domain.Level;
 using SugarDash.Domain.Metrics;
 using SugarDash.Domain.Ports;
 using SugarDash.Domain.Scoring;
@@ -14,6 +15,7 @@ namespace SugarDash.App
     /// 주행 중에는 일시정지 메뉴(계속하기, 타이틀로)를 연다.
     /// 결과도 기록과 같은 출처에서 계산한다(지표는 저장하지 않고 조회할 때 계산).
     /// 점수 설정·최고 점수 저장소·설정 버전은 방금 달린 유형의 프로필을 쓴다.
+    /// 레벨 설정이 있으면 기록한 판이 끝날 때 경험치를 더한다(두 유형이 같은 레벨, docs/level.md).
     /// 잘못된 화면에서 부른 명령은 무시한다.
     /// </summary>
     public sealed class GameFlowController
@@ -25,6 +27,8 @@ namespace SugarDash.App
         private readonly TutorialController _tutorial;
         private readonly double _pauseCountdownSec;
         private readonly double _eliminationSceneSec;
+        private readonly LevelConfig _level;
+        private readonly IPlayerProgressStore _progress;
         private bool _begun;
         private bool _tutorialPending;
         // 메뉴를 열 때 세계가 달리고 있었다. 계속하기에서 3-2-1을 보여 줄지 정한다.
@@ -33,7 +37,8 @@ namespace SugarDash.App
 
         public GameFlowController(RunController run, ILogQuery query, ISettingsStore settings,
             IReadOnlyDictionary<TrackType, TrackTypeProfile> profiles, TutorialController tutorial,
-            double pauseCountdownSec, double eliminationSceneSec)
+            double pauseCountdownSec, double eliminationSceneSec,
+            LevelConfig level = null, IPlayerProgressStore progress = null)
         {
             if (!(pauseCountdownSec >= 0) || double.IsInfinity(pauseCountdownSec))
                 throw new ArgumentOutOfRangeException(nameof(pauseCountdownSec), pauseCountdownSec, "0 이상의 유한수여야 한다");
@@ -52,6 +57,12 @@ namespace SugarDash.App
             _profiles = profiles;
             _pauseCountdownSec = pauseCountdownSec;
             _eliminationSceneSec = eliminationSceneSec;
+            // 레벨 설정이 비어 있거나(값을 정하기 전) 저장소가 없으면 레벨 기능을 끈다.
+            if (level != null && progress != null)
+            {
+                _level = level;
+                _progress = progress;
+            }
         }
 
         /// <summary>지금 보여 주는 화면.</summary>
@@ -100,6 +111,27 @@ namespace SugarDash.App
         /// <summary>결과 화면이 튜토리얼 판의 결과다. 점수·최고 점수·요약은 모두 null이다.</summary>
         public bool IsTutorialResult { get; private set; }
 
+        /// <summary>레벨 기능이 켜져 있다. 꺼져 있으면 경험치가 없다.</summary>
+        public bool HasLevels => _level != null;
+
+        /// <summary>누적 경험치. 레벨 기능이 꺼져 있으면 0.</summary>
+        public int TotalXp { get; private set; }
+
+        /// <summary>지금 레벨(1부터). 레벨 기능이 꺼져 있으면 1.</summary>
+        public int Level => _level == null ? 1 : LevelRules.LevelOf(TotalXp, _level);
+
+        /// <summary>지금 레벨이 시작된 누적 경험치. 경험치 막대의 왼쪽 끝.</summary>
+        public int LevelStartXp => _level == null ? 0 : LevelRules.LevelStartXp(Level, _level);
+
+        /// <summary>다음 레벨이 되는 누적 경험치. 경험치 막대의 오른쪽 끝. 마지막 레벨이거나 레벨 기능이 꺼져 있으면 null.</summary>
+        public int? NextLevelXp => _level == null ? null : LevelRules.NextLevelXp(Level, _level);
+
+        /// <summary>마지막 판에서 받은 경험치. 결과 화면에서만 값이 있다(튜토리얼 판, 레벨 기능 꺼짐은 null).</summary>
+        public int? XpGained { get; private set; }
+
+        /// <summary>마지막 판으로 레벨이 올랐다.</summary>
+        public bool LeveledUp { get; private set; }
+
         /// <summary>저장된 유형이 없으면 유형 선택, 있으면 타이틀로 시작한다. 주행은 바로 시작하지 않는다.</summary>
         public void Begin()
         {
@@ -108,6 +140,7 @@ namespace SugarDash.App
             _begun = true;
             CurrentType = _settings.LoadTrackType();
             _tutorialPending = _settings.LoadTutorialPending();
+            if (_level != null) TotalXp = _progress.LoadTotalXp();
             Screen = CurrentType == null ? FlowScreen.TypeSelect : FlowScreen.Title;
         }
 
@@ -274,6 +307,7 @@ namespace SugarDash.App
             var record = runId == null ? null : _query.LoadRun(runId);
             LastResult = record == null ? null : MetricsCalculator.Summarize(record);
             UpdateScores(record, profile);
+            AddXp();
             Screen = FlowScreen.Result;
         }
 
@@ -284,6 +318,19 @@ namespace SugarDash.App
             IsNewBest = LastScore != null && (prev == null || LastScore > prev);
             if (IsNewBest) profile.Best.Save(profile.ConfigVersion, LastScore.Value);
             BestScore = IsNewBest ? LastScore : prev;
+        }
+
+        /// <summary>기록한 판의 경험치를 더하고 레벨이 올랐는지 정한다. 경험치는 깎이지 않는다.</summary>
+        private void AddXp()
+        {
+            if (_level == null) return;
+
+            int before = Level;
+            int gained = LevelRules.XpForRun(LastScore, _level);
+            TotalXp = LevelRules.AddXp(TotalXp, gained);
+            _progress.SaveTotalXp(TotalXp);
+            XpGained = gained;
+            LeveledUp = Level > before;
         }
 
         /// <summary>결과 화면을 닫고 같은 유형으로 새 주행을 연다.</summary>
@@ -312,6 +359,8 @@ namespace SugarDash.App
             BestScore = null;
             IsNewBest = false;
             IsTutorialResult = false;
+            XpGained = null;
+            LeveledUp = false;
         }
 
         /// <summary>씬 파괴·앱 종료 시 열린 주행의 기록을 닫는다.</summary>

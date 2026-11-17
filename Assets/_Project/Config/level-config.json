@@ -1,0 +1,10 @@
+{
+  "configVersion": "level-1",
+  "xp": { "perRun": null, "scoreRate": null },
+  "levels": [
+    { "level": 2, "xpTotal": null },
+    { "level": 3, "xpTotal": null },
+    { "level": 4, "xpTotal": null },
+    { "level": 5, "xpTotal": null }
+  ]
+}
