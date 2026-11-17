@@ -27,11 +27,13 @@ namespace SugarDash.Presentation
 
         [Header("모양")]
         [SerializeField] private Color backgroundColor = new Color(1f, 0.98f, 0.94f);
-        [Tooltip("버튼 바탕. 컷툰 그림의 종이 색 톤에 맞춘다.")]
-        [SerializeField] private Color buttonColor = new Color(0.96f, 0.88f, 0.72f);
-        [Tooltip("버튼 글자·화살표와 버튼 테두리 색")]
-        [SerializeField] private Color buttonTextColor = new Color(0.29f, 0.2f, 0.17f);
-        [SerializeField] private Color hintColor = new Color(0.29f, 0.2f, 0.17f);
+        [Tooltip("버튼 바탕. 다른 화면의 기본 버튼(흰색)과 맞춘다(docs/ui-style.md).")]
+        [SerializeField] private Color buttonColor = Color.white;
+        [Tooltip("버튼 글자·화살표 색")]
+        [SerializeField] private Color buttonTextColor = new Color(0.17f, 0.18f, 0.2f);
+        [SerializeField] private Color hintColor = new Color(0.17f, 0.18f, 0.2f);
+        [Tooltip("버튼 바탕 그림(둥근 상자, 테두리 포함, 9-slice). 비워 두면 네모에 테두리 선을 두른다.")]
+        [SerializeField] private Sprite buttonSprite;
         [SerializeField] private int sortingOrder = 500;
         [SerializeField] private string skipLabel = "건너뛰기";
 
@@ -168,7 +170,7 @@ namespace SugarDash.Presentation
 
             var skip = AddImage("Skip", _root.transform, buttonColor, new Vector2(0.66f, 0.915f), new Vector2(0.96f, 0.975f));
             skip.gameObject.AddComponent<Button>().onClick.AddListener(Close);
-            AddOutline(skip);
+            StyleButton(skip);
             _skipButton = skip.gameObject;
             AddText("Label", skip.transform, 38, buttonTextColor, Vector2.zero, Vector2.one).text = skipLabel;
         }
@@ -185,11 +187,24 @@ namespace SugarDash.Presentation
             rect.anchoredPosition = offset;
             rect.sizeDelta = size;
             image.gameObject.AddComponent<Button>().onClick.AddListener(onClick);
-            AddOutline(image);
+            StyleButton(image);
             return image;
         }
 
-        // 컷툰 칸의 테두리처럼 진한 색 테두리를 둘러 밝은 배경 위에서도 버튼이 보이게 한다.
+        // 둥근 상자 그림이 있으면 그것을 쓰고(테두리가 그림에 들어 있다), 없으면 테두리 선을 두른다.
+        private void StyleButton(Image image)
+        {
+            if (buttonSprite == null)
+            {
+                AddOutline(image);
+                return;
+            }
+            image.sprite = buttonSprite;
+            image.type = Image.Type.Sliced;
+            image.pixelsPerUnitMultiplier = 1.2f;
+        }
+
+        // 진한 색 테두리를 둘러 밝은 배경 위에서도 버튼이 보이게 한다(둥근 상자 그림이 없을 때).
         private void AddOutline(Image image)
         {
             var outline = image.gameObject.AddComponent<Outline>();
@@ -251,6 +266,7 @@ namespace SugarDash.Presentation
             text.fontSize = size;
             text.color = color;
             text.alignment = TextAnchor.MiddleCenter;
+            text.alignByGeometry = true;
             text.raycastTarget = false;
             return text;
         }

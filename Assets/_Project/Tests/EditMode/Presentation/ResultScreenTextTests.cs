@@ -81,9 +81,9 @@ namespace SugarDash.Presentation.Tests
             Assert.That(none, Is.Not.Empty);
             Assert.That(none, Does.Not.Contain("\n"));
 
-            var onlyLow = Lines(ResultScreenText.Summary(Type2Summary(new bool[0], new[] { true })));
-            Assert.That(onlyLow.Length, Is.EqualTo(1));
-            Assert.That(onlyLow[0], Does.Contain("1"));
+            var onlyLow = Lines(ResultScreenText.Summary(Type2Summary(new bool[0], new[] { false, true })));
+            Assert.That(onlyLow.Length, Is.EqualTo(1), "높을 때 줄은 없다");
+            Assert.That(onlyLow[0], Does.Contain("2").And.Contain("1"));
         }
 
         [Test]
@@ -184,12 +184,16 @@ namespace SugarDash.Presentation.Tests
 
             var lines = Lines(ResultScreenText.Summary(result));
             var partialLines = Lines(ResultScreenText.Summary(partial));
-            Assert.That(lines.Length, Is.EqualTo(2));
+            Assert.That(lines.Length, Is.EqualTo(3));
             Assert.That(lines[0], Does.Contain("2"));
             Assert.That(lines[1], Does.Contain("2"));
-            // 모두 해낸 줄은 일부만 해낸 줄과 글이 다르고, 격려 줄이 없다.
+            // 모두 해낸 줄은 일부만 해낸 줄과 글이 다르고, 맨 아래는 격려 대신 칭찬이다.
             Assert.That(lines[0], Is.Not.EqualTo(partialLines[0]));
             Assert.That(lines[1], Is.Not.EqualTo(partialLines[1]));
+            Assert.That(lines[2], Is.EqualTo(ResultScreenText.Closing(result)));
+            Assert.That(ResultScreenText.IsPraise(result), Is.True);
+            Assert.That(ResultScreenText.IsPraise(partial), Is.False);
+            Assert.That(ResultScreenText.Closing(partial), Is.Null, "일부만 해냈으면 마무리 줄이 없다");
         }
 
         [Test]
@@ -201,32 +205,30 @@ namespace SugarDash.Presentation.Tests
         }
 
         [Test]
-        public void Summary_WithScore_StartsWithScoreLines()
+        public void Praise_NeedsAtLeastOneEvent()
         {
-            var lines = Lines(ResultScreenText.Summary(Summary(RunOutcome.Eliminated), 123.9, 200, false));
-
-            Assert.That(lines.Length, Is.EqualTo(3));
-            Assert.That(lines[0], Does.Contain("123").And.Not.Contain("124"));
-            Assert.That(lines[1], Does.Contain("200"));
-            Assert.That(lines[2], Is.EqualTo(ResultScreenText.Summary(Summary(RunOutcome.Eliminated))));
+            Assert.That(ResultScreenText.IsPraise(Summary(RunOutcome.Eliminated)), Is.False, "대처할 일이 없던 판");
+            Assert.That(ResultScreenText.Closing(Summary(RunOutcome.Eliminated)), Is.Null);
+            Assert.That(ResultScreenText.IsPraise(Type2Summary(new[] { true }, new bool[0])), Is.True);
+            Assert.That(ResultScreenText.Closing(Type2Summary(new[] { false }, new bool[0])), Is.Not.Null.And.Not.Empty);
         }
 
         [Test]
-        public void Summary_NewBest_AddsLine()
+        public void ScoreCardTexts()
         {
-            var plain = Lines(ResultScreenText.Summary(Summary(RunOutcome.Eliminated), 300.2, 300.2, false));
-            var lines = Lines(ResultScreenText.Summary(Summary(RunOutcome.Eliminated), 300.2, 300.2, true));
-
-            Assert.That(lines.Length, Is.EqualTo(plain.Length + 1));
-            Assert.That(lines[2], Is.Not.Empty);
-            Assert.That(lines[2], Is.Not.EqualTo(plain[2]));
+            Assert.That(ResultScreenText.ScoreValue(123.9), Is.EqualTo("123"));
+            Assert.That(ResultScreenText.BestChip(200, 150, false), Is.EqualTo("최고 200"));
+            Assert.That(ResultScreenText.BestChip(320.5, 300.7, true), Is.EqualTo("이전 최고 점수 300"));
+            Assert.That(ResultScreenText.BestChip(320, null, true), Is.Empty, "처음 기록이면 이전 점수가 없다");
+            Assert.That(ResultScreenText.BestChip(null, null, false), Is.Empty);
         }
 
         [Test]
-        public void Summary_NoScore_HasNoScoreLines()
+        public void ColorClosing_ColorsOnlyLastLine()
         {
-            Assert.That(ResultScreenText.Summary(Summary(RunOutcome.Eliminated), null, 200, false),
-                Is.EqualTo(ResultScreenText.Summary(Summary(RunOutcome.Eliminated))));
+            var colored = ResultScreenView.ColorClosing("a\nb", "b", UnityEngine.Color.red);
+            Assert.That(colored, Is.EqualTo("a\n<color=#FF0000>b</color>"));
+            Assert.That(ResultScreenView.ColorClosing("a", null, UnityEngine.Color.red), Is.EqualTo("a"));
         }
 
         [Test]
@@ -234,7 +236,8 @@ namespace SugarDash.Presentation.Tests
         {
             var texts = new[]
             {
-                ResultScreenText.Summary(Summary(RunOutcome.Eliminated, Event(false)), 10, 20, true),
+                ResultScreenText.Summary(Summary(RunOutcome.Eliminated, Event(false))),
+                ResultScreenText.Summary(WithHyper(Summary(RunOutcome.Eliminated, Event(true)), true)),
                 ResultScreenText.Summary(WithHyper(Summary(RunOutcome.Eliminated, Event(true)), false)),
                 ResultScreenText.Summary(Type2Summary(new[] { false }, new[] { true, false })),
             };

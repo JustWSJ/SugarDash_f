@@ -21,6 +21,14 @@ namespace SugarDash.Presentation.Tests
         }
 
         [Test]
+        public void ChoiceTimeBar_ClampsFraction()
+        {
+            Assert.That(HypoChoicePanel.TimeBarFill(0.25), Is.EqualTo(0.25f));
+            Assert.That(HypoChoicePanel.TimeBarFill(1.5), Is.EqualTo(1f));
+            Assert.That(HypoChoicePanel.TimeBarFill(-1), Is.EqualTo(0f));
+        }
+
+        [Test]
         public void BarColor_GreenInRange_RedAtThresholds_YellowHalfway()
         {
             // 픽스처: hypoThreshold 70, barGreenFrom 90, normalRangeMax 180, hyperThreshold 250.

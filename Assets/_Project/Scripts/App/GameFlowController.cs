@@ -99,6 +99,9 @@ namespace SugarDash.App
         /// <summary>결과 화면에 보여 줄 최고 점수(이번 점수 포함). 없으면 null.</summary>
         public double? BestScore { get; private set; }
 
+        /// <summary>이번 판 전의 최고 점수. 결과 화면의 "이전 최고 점수"에 쓴다. 기록이 없었으면 null.</summary>
+        public double? PreviousBest { get; private set; }
+
         /// <summary>이번 점수가 최고 점수를 새로 넘었다.</summary>
         public bool IsNewBest { get; private set; }
 
@@ -333,6 +336,7 @@ namespace SugarDash.App
             IsNewBest = LastScore != null && (prev == null || LastScore > prev);
             if (IsNewBest) profile.Best.Save(profile.ConfigVersion, LastScore.Value);
             BestScore = IsNewBest ? LastScore : prev;
+            PreviousBest = prev;
         }
 
         /// <summary>기록한 판의 경험치를 더하고 레벨이 올랐는지 정한다. 경험치는 깎이지 않는다.</summary>
@@ -372,6 +376,7 @@ namespace SugarDash.App
             LastResult = null;
             LastScore = null;
             BestScore = null;
+            PreviousBest = null;
             IsNewBest = false;
             IsTutorialResult = false;
             XpGained = null;

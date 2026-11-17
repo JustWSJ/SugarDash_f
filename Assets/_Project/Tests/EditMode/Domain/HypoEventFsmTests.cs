@@ -179,6 +179,21 @@ namespace SugarDash.Domain.Tests
         }
 
         [Test]
+        public void DecisionTimeLeftFraction_CountsDownInChoicePhases()
+        {
+            var h = Triggered();
+            Assert.That(h.Fsm.DecisionTimeLeftFraction, Is.Null, "1단계(측정기)는 막대가 없다");
+
+            h.Fsm.PressMeter();
+            Assert.That(h.Fsm.DecisionTimeLeftFraction, Is.EqualTo(1).Within(Eps));
+            h.Frames(2);
+            Assert.That(h.Fsm.DecisionTimeLeftFraction, Is.EqualTo(0.6).Within(Eps), "2단계 5초 중 2초");
+
+            h.Fsm.SetPractice(true);
+            Assert.That(h.Fsm.DecisionTimeLeftFraction, Is.Null, "연습 모드는 시간 초과가 없다");
+        }
+
+        [Test]
         public void Respond_HelpInstead_SkipsPrompt_UsesGuardianSnack()
         {
             var h = AtRespond();

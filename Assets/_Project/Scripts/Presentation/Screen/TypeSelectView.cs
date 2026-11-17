@@ -14,6 +14,8 @@ namespace SugarDash.Presentation
         [SerializeField] private GameObject root;
         [SerializeField] private Text titleText;
         [SerializeField] private Text guideText;
+        [Tooltip("두 버튼 아래 작은 안내 띠의 글자.")]
+        [SerializeField] private Text noteText;
         [SerializeField] private Button type1Button;
         [SerializeField] private Button type2Button;
 
@@ -27,6 +29,7 @@ namespace SugarDash.Presentation
             _flow = flow ?? throw new ArgumentNullException(nameof(flow));
             if (titleText != null) titleText.text = "어떤 당뇨가 있나요?";
             if (guideText != null) guideText.text = "보호자와 함께 골라 주세요";
+            if (noteText != null) noteText.text = "나중에 설정에서 바꿀 수 있어요";
             if (type1Button != null) type1Button.onClick.AddListener(OnType1);
             else Debug.LogWarning("TypeSelectView: type1Button이 비어 있다. 씬에서 연결해야 한다.");
             if (type2Button != null) type2Button.onClick.AddListener(OnType2);

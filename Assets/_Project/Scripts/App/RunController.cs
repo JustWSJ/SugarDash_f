@@ -104,6 +104,8 @@ namespace SugarDash.App
         /// <summary>재개 카운트다운의 남은 시간(초). 카운트다운 중이 아니면 0.</summary>
         public double ResumeCountdownRemaining =>
             _holdCountdown > 0 ? _holdCountdown : _session?.Fsm.ResumeCountdownRemaining ?? 0;
+        /// <summary>선택 패널 단계의 제한 시간 중 남은 비율(1 → 0). 남은 시간 막대용. 해당 없으면 null.</summary>
+        public double? DecisionTimeLeftFraction => _session?.Fsm.DecisionTimeLeftFraction;
         /// <summary>3단계에서 양을 고를 간식.</summary>
         public string DoseSnackId => _session?.Fsm.DoseSnackId;
         /// <summary>지금(또는 방금 끝난) 저혈당 이벤트가 빈 간식 가방인지(docs/section3.md 5절).</summary>

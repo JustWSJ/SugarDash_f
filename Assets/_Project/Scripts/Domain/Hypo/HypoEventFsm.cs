@@ -111,6 +111,33 @@ namespace SugarDash.Domain.Hypo
                 ? Math.Max(0, _deadline - _model.DecisionTime)
                 : 0;
 
+        /// <summary>
+        /// 선택 패널 단계(2~4단계, 알리기 대기, 고혈당·저혈당 알리기)의 제한 시간 중 남은 비율(1 → 0). 화면의 남은 시간 막대에만 쓴다.
+        /// 그 단계가 아니거나, 결과 문구 창이 열려 있거나, 연습 모드(시간 초과 없음)면 null.
+        /// </summary>
+        public double? DecisionTimeLeftFraction
+        {
+            get
+            {
+                if (IsPractice || IsShowingAnswerFeedback) return null;
+                switch (Phase)
+                {
+                    case HypoPhase.Respond:
+                    case HypoPhase.Dose:
+                    case HypoPhase.Remeasure:
+                    case HypoPhase.Notify:
+                    case HypoPhase.GuardianPrompt:
+                    case HypoPhase.HyperNotify:
+                    case HypoPhase.LowNotify:
+                        double span = _deadline - _phaseStart;
+                        if (span <= 0) return 0;
+                        return Math.Max(0, Math.Min(1, (_deadline - _model.DecisionTime) / span));
+                    default:
+                        return null;
+                }
+            }
+        }
+
         /// <summary>결과 문구 창이 붙는 대처 중 단계(1단계·고혈당 알리기·유예 제외).</summary>
         private bool IsCoping
         {

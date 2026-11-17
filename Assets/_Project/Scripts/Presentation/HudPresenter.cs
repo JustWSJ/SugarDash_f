@@ -11,7 +11,7 @@ namespace SugarDash.Presentation
 {
     /// <summary>
     /// 표시 혈당바, 게이지 경고, 측정기 버튼. 혈당바는 두 유형 모두 표시 혈당(지연된 값)만 보여 주고,
-    /// 표시 혈당에 따라 초록 → 노랑 → 빨강으로 색이 바뀐다(BarColor). 측정기를 누르면 그때의 실제 혈당을 보여 준다.
+    /// 표시 혈당에 따라 바 전체(채움) 색이 초록 → 노랑 → 빨강으로 바뀐다(BarColor). 측정기를 누르면 그때의 실제 혈당을 보여 준다.
     /// </summary>
     public sealed class HudPresenter : MonoBehaviour
     {
@@ -29,6 +29,10 @@ namespace SugarDash.Presentation
         [SerializeField] private Text scoreText;
         [Tooltip("재개 카운트다운 숫자(3·2·1). 비워 두면 표시하지 않는다.")]
         [SerializeField] private Text countdownText;
+        [Tooltip("카운트다운 숫자 뒤의 원. 숫자가 있을 때만 켠다.")]
+        [SerializeField] private GameObject countdownBadge;
+        [Tooltip("상태 글 뒤의 띠. 글이 있을 때만 켠다.")]
+        [SerializeField] private GameObject statusBadge;
         [Tooltip("측정 결과 글자를 보여 주는 시간(초). 지나면 지운다.")]
         [SerializeField] private float meterTextShowSec = 3f;
 
@@ -36,6 +40,7 @@ namespace SugarDash.Presentation
         private GameFlowController _flow;
         private int _shownRunCount;
         private Image _barFill;
+        private GlucoseConfig _rangeConfig;
         // 측정 결과 글자를 지울 시각(Time.time). 보여 주는 글자가 없으면 음수.
         private float _meterTextHideAt = -1;
 
@@ -101,6 +106,7 @@ namespace SugarDash.Presentation
             double displayed = _run.Displayed;
             glucoseBar.value = (float)displayed;
             var glucose = _run.CurrentConfig?.Glucose;
+            if (glucose != null && glucose != _rangeConfig) SetRange(glucose);
             if (_barFill != null && glucose != null)
                 _barFill.color = BarColor(displayed, glucose.Levels, glucose.Display.BarGreenFrom, barRed, barYellow, barGreen);
             glucoseText.text = $"{displayed:0} mg/dL";
@@ -119,10 +125,25 @@ namespace SugarDash.Presentation
             {
                 int? number = AnswerFeedbackText.CountdownNumber(_run.ResumeCountdownRemaining);
                 countdownText.text = number.HasValue ? number.Value.ToString() : "";
+                SetActive(countdownBadge, number.HasValue);
             }
 
             // '잠시 멈춤'은 일시정지 메뉴가 버튼 위에 보여 준다(PauseMenuView).
             statusText.text = _run.Phase == HypoPhase.ResumeCountdown && _run.IsEmptyBag ? HudText.PackFastSugar : "";
+            SetActive(statusBadge, statusText.text.Length > 0);
+        }
+
+        private static void SetActive(GameObject target, bool active)
+        {
+            if (target != null && target.activeSelf != active) target.SetActive(active);
+        }
+
+        /// <summary>바의 범위를 그 유형의 혈당 범위(levels.Min ~ Max)로 맞춘다.</summary>
+        private void SetRange(GlucoseConfig glucose)
+        {
+            _rangeConfig = glucose;
+            glucoseBar.minValue = (float)glucose.Levels.Min;
+            glucoseBar.maxValue = (float)glucose.Levels.Max;
         }
 
         /// <summary>

@@ -106,7 +106,7 @@ namespace SugarDash.Presentation.Tests
         {
             foreach (FlowScreen s in System.Enum.GetValues(typeof(FlowScreen)))
             {
-                Assert.That(TitleScreenView.IsVisible(s), Is.EqualTo(s == FlowScreen.Title));
+                Assert.That(TitleScreenView.IsVisible(s), Is.EqualTo(s == FlowScreen.Title || s == FlowScreen.Settings), "설정 창은 타이틀 위에 뜬다");
                 Assert.That(TypeSelectView.IsVisible(s), Is.EqualTo(s == FlowScreen.TypeSelect));
                 Assert.That(SettingsView.IsVisible(s), Is.EqualTo(s == FlowScreen.Settings));
             }

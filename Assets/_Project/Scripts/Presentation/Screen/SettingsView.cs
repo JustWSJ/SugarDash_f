@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace SugarDash.Presentation
 {
-    /// <summary>설정 화면. Screen이 Settings일 때만 보인다. 버튼은 위에서부터 1형·2형, 인트로 다시보기, 튜토리얼 다시하기, 돌아가기. 지금 유형 버튼을 칠하고 왼쪽 위에 '지금'을 띄운다. 유형을 바꿔도 이 화면에 있고 돌아가기로 나간다.</summary>
+    /// <summary>설정 화면. Screen이 Settings일 때만 보이고, 어두워진 타이틀 위에 창으로 뜬다. 버튼은 위에서부터 1형·2형, 인트로 다시보기, 튜토리얼 다시하기, 돌아가기. 지금 유형 버튼을 칠하고 왼쪽 위에 '지금'을 띄운다. 유형을 바꿔도 이 화면에 있고 돌아가기로 나간다.</summary>
     // [빈 틀] 담당: 화면
     public sealed class SettingsView : MonoBehaviour
     {
@@ -24,7 +24,7 @@ namespace SugarDash.Presentation
         [Tooltip("2형 버튼 왼쪽 위의 '지금' 표시.")]
         [SerializeField] private GameObject type2CurrentBadge;
         [Tooltip("지금 유형 버튼을 칠할 색.")]
-        [SerializeField] private Color currentTypeColor = new Color(1f, 0.93f, 0.55f);
+        [SerializeField] private Color currentTypeColor = new Color(0.97f, 0.66f, 0.72f);
 
         private Color _type1Color = Color.white;
         private Color _type2Color = Color.white;

@@ -28,7 +28,8 @@ namespace SugarDash.Presentation
 
         private GameFlowController _flow;
 
-        public static bool IsVisible(FlowScreen screen) => screen == FlowScreen.Title;
+        /// <summary>타이틀과 설정 화면에서 보인다. 설정 창은 어두워진 타이틀 위에 뜬다.</summary>
+        public static bool IsVisible(FlowScreen screen) => screen == FlowScreen.Title || screen == FlowScreen.Settings;
 
         public static string TypeLabel(TrackType? type)
         {

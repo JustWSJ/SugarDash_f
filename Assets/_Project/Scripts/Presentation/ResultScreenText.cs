@@ -19,18 +19,30 @@ namespace SugarDash.Presentation
             return "어른이 도와주러 왔어요";
         }
 
-        public static string Summary(RunSummary result, double? score = null, double? best = null,
-            bool isNewBest = false)
+        /// <summary>점수 카드 위 작은 글.</summary>
+        public const string ScoreLabel = "이번 점수";
+        /// <summary>최고 기록을 새로 세웠을 때 점수 카드 위에 붙는 띠.</summary>
+        public const string NewBestBadge = "최고 기록!";
+
+        /// <summary>점수 카드의 큰 숫자(내림).</summary>
+        public static string ScoreValue(double score) => $"{Math.Floor(score):0}";
+
+        /// <summary>점수 카드 아래 작은 띠. 최고 기록이면 이전 최고 점수(처음이면 빈 글자), 아니면 지금 최고 점수.</summary>
+        public static string BestChip(double? best, double? previousBest, bool isNewBest)
+        {
+            if (isNewBest) return previousBest == null ? "" : $"이전 최고 점수 {Math.Floor(previousBest.Value):0}";
+            return best == null ? "" : $"최고 {Math.Floor(best.Value):0}";
+        }
+
+        /// <summary>
+        /// 대처 요약 줄. 맨 아래 줄은 마무리 줄(<see cref="Closing"/>)이 있을 때만 붙는다.
+        /// 점수는 점수 카드가 따로 보여 주므로 넣지 않는다.
+        /// </summary>
+        public static string Summary(RunSummary result)
         {
             if (result == null || result.Outcome == RunOutcome.Unfinished) return "";
 
             var lines = new List<string>();
-            if (score != null)
-            {
-                lines.Add($"점수 {Math.Floor(score.Value):0}점");
-                if (best != null) lines.Add($"최고 점수 {Math.Floor(best.Value):0}점");
-                if (isNewBest) lines.Add("새 최고 기록!");
-            }
             bool type2 = result.TrackType == TrackType.Type2;
             if (type2)
             {
@@ -48,15 +60,40 @@ namespace SugarDash.Presentation
                 if (hyper != null) lines.Add(hyper);
             }
 
-            // 하나도 해내지 못한 항목이 있으면 격려 문구를 맨 아래에 한 번만 붙인다.
-            bool anyMissed = type2
-                ? Missed(result.HyperEvents.Count, result.HyperEvents.Count(e => e.AllCorrect)) ||
-                  Missed(result.LowEvents.Count, result.LowEvents.Count(e => e.AllCorrect))
-                : Missed(result.Events.Count, result.Events.Count(e => e.AllCorrect)) ||
-                  Missed(result.HyperEvents.Count, result.HyperEvents.Count(e => e.AllCorrect));
-            if (anyMissed) lines.Add(type2 ? Type2Encouragement : Encouragement);
+            string closing = Closing(result);
+            if (closing != null) lines.Add(closing);
             return string.Join("\n", lines);
         }
+
+        /// <summary>
+        /// 요약 맨 아래 마무리 줄. 하나도 해내지 못한 항목이 있으면 격려, 대처할 일이 있었고 모두 해냈으면 칭찬, 그 밖에는 null.
+        /// </summary>
+        public static string Closing(RunSummary result)
+        {
+            if (result == null || result.Outcome == RunOutcome.Unfinished) return null;
+            bool type2 = result.TrackType == TrackType.Type2;
+            var groups = type2
+                ? new[] { (result.HyperEvents.Count, result.HyperEvents.Count(e => e.AllCorrect)), (result.LowEvents.Count, result.LowEvents.Count(e => e.AllCorrect)) }
+                : new[] { (result.Events.Count, result.Events.Count(e => e.AllCorrect)), (result.HyperEvents.Count, result.HyperEvents.Count(e => e.AllCorrect)) };
+            if (groups.Any(g => Missed(g.Item1, g.Item2))) return type2 ? Type2Encouragement : Encouragement;
+            if (IsPraise(result)) return Praise;
+            return null;
+        }
+
+        /// <summary>대처할 일(저혈당·고혈당·2형 신호)이 한 번 이상 있었고 모두 해냈는지. 마무리 줄을 칭찬 색으로 칠할 때도 쓴다.</summary>
+        public static bool IsPraise(RunSummary result)
+        {
+            if (result == null || result.Outcome == RunOutcome.Unfinished) return false;
+            bool type2 = result.TrackType == TrackType.Type2;
+            int count = type2 ? result.HyperEvents.Count + result.LowEvents.Count : result.Events.Count + result.HyperEvents.Count;
+            if (count == 0) return false;
+            return type2
+                ? result.HyperEvents.All(e => e.AllCorrect) && result.LowEvents.All(e => e.AllCorrect)
+                : result.Events.All(e => e.AllCorrect) && result.HyperEvents.All(e => e.AllCorrect);
+        }
+
+        /// <summary>모두 해냈을 때 마무리 줄.</summary>
+        private const string Praise = "정말 잘했어요!";
 
         private const string Encouragement = "다음에 더 잘해봐요!";
         /// <summary>2형 격려. 2형에서 놓치는 것은 모두 "어른에게 알리기"라 할 일을 말한다.</summary>
