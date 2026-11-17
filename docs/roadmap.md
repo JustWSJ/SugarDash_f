@@ -82,17 +82,17 @@
 | 팀원2(월드) | `TrackItemLook` 장면별 장애물 모양(운동장 축구공, 놀이터 미끄럼틀 등) | `Assets/_Project/Scripts/Presentation/World/TrackItemLook.cs`, [section2.md](section2.md) 5절 | 진행 중(우승제) |
 | 팀원2(월드) | `TutorialLaneHighlightView` 채우기: 튜토리얼에서 지나가야 할 레인을 보여 주는 띠의 모양·색·반짝임. 지금은 노란 반투명 납작한 상자 | `Assets/_Project/Scripts/Presentation/World/TutorialLaneHighlightView.cs`, [tutorial.md](tutorial.md) 3.2·8절 | 진행 중(우승제) |
 | 구조(화면) | UI 디자인 시안(타이틀, 유형 선택, 설정, 혈당바, 측정기 버튼, 점수, 선택 패널, 카운트다운, 결과 화면). 웹 시안을 정하고 프리팹에 옮김 | [ui-style.md](ui-style.md) | 완료 |
-| 구조(화면) | 타이틀·유형 선택·설정 UI: 시안을 바탕으로 `Assets/_Project/Art/UI/Screens/`의 `TitleScreen`·`TypeSelect`·`Settings` 프리팹 꾸미기(바탕 그림, 버튼 그림) | [dev-scene.md](dev-scene.md) 3.1·6.6절 | 시작 가능 |
+| 구조(화면) | 타이틀·유형 선택·설정 UI: 시안을 바탕으로 `Assets/_Project/Art/UI/Screens/`의 `TitleScreen`·`TypeSelect`·`Settings` 프리팹 꾸미기(바탕 그림, 버튼 그림) | [dev-scene.md](dev-scene.md) 3.1·6.6절 | 완료(시안 모양, [ui-style.md](ui-style.md)). 바탕 그림은 시안 그림 임시 |
 | 구조(화면) | 한글 글꼴: 모든 화면 글자를 주아(OFL)로 통일 | [dev-scene.md](dev-scene.md) 3.2절, README 5절 | 완료 |
 | 구조(화면) | 화면 문구 초안: 유형 선택 안내, 타이틀, 2형 tell, 2형 결과 요약. `docs/handoff/`에 정리 | [type-select.md](type-select.md) 2.1·4.4·9.2절 | 시작 가능 |
-| 구조(화면) | `TitleScreenView`, `TypeSelectView`, `SettingsView` 채우기: 화면 배치, 버튼 그림·소리 | `Assets/_Project/Scripts/Presentation/Screen/TitleScreenView.cs`, `TypeSelectView.cs`, `SettingsView.cs`, [type-select.md](type-select.md) 2·11절 | 진행 중(구조). 나타나는 연출·깜빡임·유형 강조는 넣음, 그림이 남음 |
+| 구조(화면) | `TitleScreenView`, `TypeSelectView`, `SettingsView` 채우기: 화면 배치, 버튼 그림·소리 | `Assets/_Project/Scripts/Presentation/Screen/TitleScreenView.cs`, `TypeSelectView.cs`, `SettingsView.cs`, [type-select.md](type-select.md) 2·11절 | 진행 중(구조). 시안 모양 넣음, 버튼 소리 남음 |
 | 구조(화면) | notice 그림: 갈증 말풍선, 화장실 아이콘(고혈당), 떨리는 손(저혈당). 근거 [notice-evidence.md](notice-evidence.md) | [type-select.md](type-select.md) 11절 | 시작 가능 |
-| 구조(화면) | `NoticeSignalView` 채우기: 고혈당 신호(갈증 말풍선, 화장실 아이콘 깜빡임), 저혈당 신호(떨리는 손) | `Assets/_Project/Scripts/Presentation/Screen/NoticeSignalView.cs`, [type-select.md](type-select.md) 11절 | 진행 중(구조). 나타나는 연출·깜빡임·유형 강조는 넣음, 그림이 남음 |
-| 구조(화면) | `SleepTransitionView` 채우기: 수면 전환(잠자는 그림, 해·달 전환). 암전 길이는 Inspector 값 | `Assets/_Project/Scripts/Presentation/Screen/SleepTransitionView.cs`, [section2.md](section2.md) 5절 | 시작 가능 |
-| 구조(화면) | `TutorialPromptView` 채우기: 화면 전체를 덮어 아래 터치를 막고 화면 터치로 넘기는 설명 창(옅은 어두운 바탕 위 불투명 흰 박스, 검정 글자), 문구, `화면을 눌러요` 안내 글자, 그림 자리, `건너뛰기`, `다시 해봐요`. `SettingsView`의 `튜토리얼 다시하기` 버튼 그림 | `Assets/_Project/Scripts/Presentation/Screen/TutorialPromptView.cs`, [tutorial.md](tutorial.md) 8절 | 진행 중(구조). 나타나는 연출·깜빡임·유형 강조는 넣음, 그림이 남음 |
-| 구조(화면) | `HabitPromptView` 채우기: 1형 혈당 재기 습관 순간의 말풍선(측정기 버튼 옆), 나타나고 사라지는 연출 | `Assets/_Project/Scripts/Presentation/Screen/HabitPromptView.cs`, [section2.md](section2.md) 7.1절 | 진행 중(구조). 나타나는 연출·깜빡임·유형 강조는 넣음, 그림이 남음 |
-| 구조(화면) | `PauseMenuView` 채우기: 일시정지 버튼 아이콘, 메뉴 배치·그림, 버튼 소리 | `Assets/_Project/Scripts/Presentation/Screen/PauseMenuView.cs`, [pause-elimination.md](pause-elimination.md) 2·5절 | 진행 중(구조). 나타나는 연출·깜빡임·유형 강조는 넣음, 그림이 남음 |
-| 구조(화면) | `EliminationSpeechView` 채우기: 탈락 장면 말풍선 그림, 어른 쪽 꼬리, 나타나는 연출 | `Assets/_Project/Scripts/Presentation/Screen/EliminationSpeechView.cs`, [pause-elimination.md](pause-elimination.md) 3.2·5절 | 진행 중(구조). 나타나는 연출·깜빡임·유형 강조는 넣음, 그림이 남음 |
+| 구조(화면) | `NoticeSignalView` 채우기: 고혈당 신호(갈증 말풍선, 화장실 아이콘 깜빡임), 저혈당 신호(떨리는 손) | `Assets/_Project/Scripts/Presentation/Screen/NoticeSignalView.cs`, [type-select.md](type-select.md) 11절 | 진행 중(구조). 흰 말풍선 모양 넣음, 그림(갈증·화장실·떨리는 손) 남음 |
+| 구조(화면) | `SleepTransitionView` 채우기: 수면 전환(잠자는 그림, 해·달 전환). 암전 길이는 Inspector 값 | `Assets/_Project/Scripts/Presentation/Screen/SleepTransitionView.cs`, [section2.md](section2.md) 5절 | 진행 중(구조). 남색 덮개와 달→해 그림 넣음, 잠자는 그림 남음 |
+| 구조(화면) | `TutorialPromptView` 채우기: 화면 전체를 덮어 아래 터치를 막고 화면 터치로 넘기는 설명 창(옅은 어두운 바탕 위 불투명 흰 박스, 검정 글자), 문구, `화면을 눌러요` 안내 글자, 그림 자리, `건너뛰기`, `다시 해봐요`. `SettingsView`의 `튜토리얼 다시하기` 버튼 그림 | `Assets/_Project/Scripts/Presentation/Screen/TutorialPromptView.cs`, [tutorial.md](tutorial.md) 8절 | 진행 중(구조). 시안 모양과 그림 자리 넣음, 안내마다 그림 남음 |
+| 구조(화면) | `HabitPromptView` 채우기: 1형 혈당 재기 습관 순간의 말풍선(측정기 버튼 옆), 나타나고 사라지는 연출 | `Assets/_Project/Scripts/Presentation/Screen/HabitPromptView.cs`, [section2.md](section2.md) 7.1절 | 완료(시안 모양, 측정기 쪽 꼬리) |
+| 구조(화면) | `PauseMenuView` 채우기: 일시정지 버튼 아이콘, 메뉴 배치·그림, 버튼 소리 | `Assets/_Project/Scripts/Presentation/Screen/PauseMenuView.cs`, [pause-elimination.md](pause-elimination.md) 2·5절 | 진행 중(구조). 시안 모양 넣음, 버튼 소리 남음 |
+| 구조(화면) | `EliminationSpeechView` 채우기: 탈락 장면 말풍선 그림, 어른 쪽 꼬리, 나타나는 연출 | `Assets/_Project/Scripts/Presentation/Screen/EliminationSpeechView.cs`, [pause-elimination.md](pause-elimination.md) 3.2·5절 | 완료(시안 모양, 아래쪽 꼬리) |
 | 구조(화면) | 음식 8종 표시 이름: 문구 파일 `FoodText`(선택 패널 버튼, 양 묻는 제목, 고른 뒤 문구). "을/를"은 받침에 맞춰 붙음 | `Assets/_Project/Scripts/Presentation/FoodText.cs` | 완료 |
 | 구조(화면) | 선택지 그림(2D): 음식 8종, 측정기, 양(조금·알맞게·많이), 어른에게 알리기, 다시 재기 | [food-evidence.md](food-evidence.md) | 시작 가능 |
 | 구조(화면) | 레벨 표시 그림: 타이틀 왼쪽 위 원·경험치 상자·채움 막대, 레벨 오름 연출. 지금은 자리 채움 도형 | `Assets/_Project/Art/UI/Screens/TitleScreen.prefab`, [level.md](level.md) 5절 | 시작 가능 |

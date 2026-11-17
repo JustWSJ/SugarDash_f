@@ -17,8 +17,16 @@ namespace SugarDash.Presentation
         [SerializeField] private Text messageText;
         [Tooltip("\"다시 해봐요\" 문구. 설명 창과 따로 보이고 숨는다.")]
         [SerializeField] private Text retryText;
-        [Tooltip("그림 자리. 안내마다 그림을 넣을 때 쓴다.")]
+        [Tooltip("\"다시 해봐요\" 글자를 감싼 띠. 있으면 글자 대신 띠째 보이고 숨는다.")]
+        [SerializeField] private GameObject retryBadge;
+        [Tooltip("그림 자리 안의 그림. 그림(sprite)이 없으면 그리지 않고 빈 자리만 보인다.")]
         [SerializeField] private Image image;
+        [Tooltip("그림 자리 안의 밀기 화살표(오른쪽을 가리키는 그림). 이동·점프·슬라이드 안내에서 미는 방향으로 돌려, 그 방향으로 움직이며 나타났다 사라지기를 되풀이한다.")]
+        [SerializeField] private Image swipeArrow;
+        [Tooltip("화살표가 한 번 움직이는 거리(가운데에서 양쪽으로 이만큼).")]
+        [SerializeField] private float swipeTravel = 45f;
+        [Tooltip("화살표가 한 번 나타났다 사라지는 시간(실제 초).")]
+        [SerializeField] private float swipePeriodSec = 1.2f;
         [Tooltip("Root에 붙는 화면 전체 버튼. 화면 아무 곳이나 눌러 넘어간다.")]
         [SerializeField] private Button tapArea;
         [Tooltip("\"화면을 눌러요\" 작은 안내 글자. 박스 아래쪽에 둔다.")]
@@ -34,6 +42,35 @@ namespace SugarDash.Presentation
         public static bool IsPromptVisible(TutorialStage stage) => stage == TutorialStage.Prompt;
         public static bool IsRetryVisible(TutorialStage stage) => stage == TutorialStage.Retry;
         public static bool AcceptsTap(float shownFor, float delay) => shownFor >= delay;
+
+        /// <summary>안내가 가르치는 미는 방향. 이동·점프·슬라이드 안내만 있고 나머지는 Vector2.zero.</summary>
+        public static Vector2 SwipeDirection(TutorialStep? step)
+        {
+            switch (step)
+            {
+                case TutorialStep.MoveLeft: return Vector2.left;
+                case TutorialStep.MoveRight: return Vector2.right;
+                case TutorialStep.Jump: return Vector2.up;
+                case TutorialStep.Slide: return Vector2.down;
+                default: return Vector2.zero;
+            }
+        }
+
+        /// <summary>
+        /// 화살표 한 번의 움직임. 주기의 앞 70% 동안 −1에서 +1로 밀려가며(처음엔 빠르고 끝에서 느려짐)
+        /// 앞 20%에 나타나고 50~70%에 사라진다. 나머지 30%는 쉰다. offset은 −1~1, alpha는 0~1.
+        /// </summary>
+        public static void SwipeFrame(float time, float periodSec, out float offset, out float alpha)
+        {
+            float phase = periodSec > 0f ? Mathf.Repeat(time, periodSec) / periodSec : 0f;
+            float move = Mathf.Clamp01(phase / 0.7f);
+            float eased = 1f - (1f - move) * (1f - move);
+            offset = -1f + 2f * eased;
+            if (phase < 0.2f) alpha = phase / 0.2f;
+            else if (phase < 0.5f) alpha = 1f;
+            else if (phase < 0.7f) alpha = 1f - (phase - 0.5f) / 0.2f;
+            else alpha = 0f;
+        }
 
         /// <summary>
         /// 설명 창이 보이기 시작한 시각을 갱신한다. 보이면 처음 보인 시각을 지키고(없으면 now), 숨으면 −1.
@@ -62,15 +99,24 @@ namespace SugarDash.Presentation
             }
             else Debug.LogWarning("TutorialPromptView: skipButton이 비어 있다. 씬에서 연결해야 한다.");
             if (retryText != null) retryText.text = TutorialText.TryAgain;
+            if (image != null) image.enabled = image.sprite != null;
+            SetActive(RetryObject, false);
             return new Unbinder(() =>
             {
                 if (tapArea != null) tapArea.onClick.RemoveListener(OnTap);
                 if (skipButton != null) skipButton.onClick.RemoveListener(OnSkip);
                 if (root != null) root.SetActive(false);
-                if (retryText != null) retryText.gameObject.SetActive(false);
+                SetActive(RetryObject, false);
                 _flow = null;
                 _shownAt = -1f;
             });
+        }
+
+        private GameObject RetryObject => retryBadge != null ? retryBadge : retryText != null ? retryText.gameObject : null;
+
+        private static void SetActive(GameObject target, bool active)
+        {
+            if (target != null && target.activeSelf != active) target.SetActive(active);
         }
 
         private static void SetLabel(Button button, string label)
@@ -110,9 +156,26 @@ namespace SugarDash.Presentation
             bool skip = IsSkipVisible(_flow.Screen, _flow.IsPauseMenuOpen, tutorial.IsGuided, tutorial.CanSkip);
             if (skipButton != null && skipButton.gameObject.activeSelf != skip) skipButton.gameObject.SetActive(skip);
 
-            bool retry = IsRetryVisible(stage);
-            if (retryText != null && retryText.gameObject.activeSelf != retry) retryText.gameObject.SetActive(retry);
-            // TODO(화면): 그림, 배치, 손가락 안내를 꾸민다. 설명 창이 나타나는 연출은 Box의 ScreenPopIn이 한다.
+            SetActive(RetryObject, IsRetryVisible(stage));
+            DrawSwipeArrow(prompt ? tutorial.Step : null);
+            // 설명 창이 나타나는 연출은 Box의 ScreenPopIn이 한다.
+        }
+
+        private void DrawSwipeArrow(TutorialStep? step)
+        {
+            if (swipeArrow == null) return;
+            var direction = SwipeDirection(step);
+            bool show = direction != Vector2.zero;
+            if (swipeArrow.gameObject.activeSelf != show) swipeArrow.gameObject.SetActive(show);
+            if (!show) return;
+            // 설명 창이 뜬 때부터 센다. 창이 다시 뜨면 화살표도 처음부터 움직인다.
+            SwipeFrame(Time.unscaledTime - _shownAt, swipePeriodSec, out float offset, out float alpha);
+            var rect = swipeArrow.rectTransform;
+            rect.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+            rect.anchoredPosition = direction * (offset * swipeTravel);
+            var color = swipeArrow.color;
+            color.a = alpha;
+            swipeArrow.color = color;
         }
     }
 }

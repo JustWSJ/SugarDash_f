@@ -14,6 +14,8 @@ namespace SugarDash.Presentation
     public sealed class NoticeSignalView : MonoBehaviour
     {
         [SerializeField] private Text signalText;
+        [Tooltip("글자를 감싼 흰 말풍선(CanvasGroup). 신호가 없으면 끈다. 말풍선은 늘 불투명하고 깜빡임은 글자에만 건다(말풍선과 꼬리가 겹친 곳이 비쳐 보이지 않게).")]
+        [SerializeField] private CanvasGroup bubble;
         [Tooltip("높음 신호가 흐려졌다 밝아지는 한 번의 시간(실제 초).")]
         [SerializeField] private float blinkPeriodSec = 1f;
         [Tooltip("깜빡일 때 가장 흐린 투명도.")]
@@ -45,6 +47,7 @@ namespace SugarDash.Presentation
             return new Unbinder(() =>
             {
                 if (signalText != null) signalText.text = "";
+                if (bubble != null) bubble.gameObject.SetActive(false);
                 _run = null;
             });
         }
@@ -53,12 +56,19 @@ namespace SugarDash.Presentation
         {
             if (_run == null) return;
             var signal = _run.ActiveSignal;
+            // 높음 신호만 깜빡인다(화장실 아이콘 깜빡임). 낮음은 가만히 둔다.
+            float alpha = signal == NoticeKind.High ? BlinkAlpha(Time.unscaledTime, blinkPeriodSec, blinkMinAlpha) : 1f;
+            if (signalText != null) signalText.text = LabelOf(signal);
+            if (bubble != null)
+            {
+                bool show = signal != null;
+                if (bubble.gameObject.activeSelf != show) bubble.gameObject.SetActive(show);
+                bubble.alpha = 1f;
+            }
             if (signalText != null)
             {
-                signalText.text = LabelOf(signal);
-                // 높음 신호만 깜빡인다(화장실 아이콘 깜빡임). 낮음은 가만히 둔다.
                 var color = signalText.color;
-                color.a = signal == NoticeKind.High ? BlinkAlpha(Time.unscaledTime, blinkPeriodSec, blinkMinAlpha) : 1f;
+                color.a = alpha;
                 signalText.color = color;
             }
             // TODO(화면): High면 갈증 말풍선과 화장실 아이콘 그림을 넣고 같은 BlinkAlpha로 깜빡인다.

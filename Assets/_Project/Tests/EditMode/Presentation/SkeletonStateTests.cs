@@ -102,6 +102,30 @@ namespace SugarDash.Presentation.Tests
         }
 
         [Test]
+        public void TutorialPrompt_SwipeDirectionPerStep()
+        {
+            Assert.That(TutorialPromptView.SwipeDirection(TutorialStep.MoveLeft), Is.EqualTo(Vector2.left));
+            Assert.That(TutorialPromptView.SwipeDirection(TutorialStep.MoveRight), Is.EqualTo(Vector2.right));
+            Assert.That(TutorialPromptView.SwipeDirection(TutorialStep.Jump), Is.EqualTo(Vector2.up));
+            Assert.That(TutorialPromptView.SwipeDirection(TutorialStep.Slide), Is.EqualTo(Vector2.down));
+            Assert.That(TutorialPromptView.SwipeDirection(TutorialStep.Snack), Is.EqualTo(Vector2.zero));
+            Assert.That(TutorialPromptView.SwipeDirection(null), Is.EqualTo(Vector2.zero));
+        }
+
+        [TestCase(0f, -1f, 0f)]
+        [TestCase(0.12f, -0.47f, 0.5f)]
+        [TestCase(0.42f, 0.5f, 1f)]
+        [TestCase(0.72f, 0.96f, 0.5f)]
+        [TestCase(0.84f, 1f, 0f)]
+        [TestCase(1.2f, -1f, 0f)]
+        public void TutorialPrompt_SwipeFrame_MovesThenFades(float time, float offset, float alpha)
+        {
+            TutorialPromptView.SwipeFrame(time, 1.2f, out float o, out float a);
+            Assert.That(o, Is.EqualTo(offset).Within(0.01f));
+            Assert.That(a, Is.EqualTo(alpha).Within(0.01f));
+        }
+
+        [Test]
         public void ScreenVisibility_PerFlowScreen()
         {
             foreach (FlowScreen s in System.Enum.GetValues(typeof(FlowScreen)))
@@ -175,6 +199,22 @@ namespace SugarDash.Presentation.Tests
         {
             Assert.That(SleepTransitionView.AlphaAt(0f, 0f, 0f), Is.EqualTo(0f));
             Assert.That(SleepTransitionView.AlphaAt(0f, 0f, 0.6f), Is.EqualTo(1f));
+        }
+
+        [TestCase(0f, 1f)]
+        [TestCase(0.5f, 1f)]
+        [TestCase(0.8f, 0.5f)]
+        [TestCase(1.1f, 0f)]
+        [TestCase(1.7f, 0f)]
+        public void SleepTransition_MoonSwapsToSunAfterHold(float elapsed, float moon)
+        {
+            Assert.That(SleepTransitionView.MoonShare(elapsed, 0.5f, 0.6f), Is.EqualTo(moon).Within(1e-4f));
+        }
+
+        [Test]
+        public void SleepTransition_MoonShare_ZeroFade()
+        {
+            Assert.That(SleepTransitionView.MoonShare(0f, 0f, 0f), Is.EqualTo(0f));
         }
 
         [Test]

@@ -88,11 +88,12 @@ Unity 에디터 기본 배치:
 | `ScreenFade` | `Assets/_Project/Art/UI/Screens/ScreenFade.prefab` | 6.17절 |
 
 - 나타나는 연출: `HabitPrompt`·`EliminationSpeech`의 `Root`, `PauseMenu`의 `MenuRoot`, `TutorialPrompt`의 `Box`에 `ScreenPopIn`(과 함께 붙는 `CanvasGroup`)이 있다. 켜질 때 0.2초 동안 흐릿하고 조금 작은 상태에서 또렷해진다(메뉴는 크기 그대로 또렷해지기만). 시간과 처음 크기는 Inspector 값이다.
-- `NoticeSignal`의 높음 신호 글자는 1초 주기로 흐려졌다 밝아진다(`Blink Period Sec`, `Blink Min Alpha`). `Settings`는 지금 유형 버튼을 `Current Type Color`로 칠한다.
+- `NoticeSignal`은 흰 말풍선(`Bubble`) 안에 신호 글자를 보여 주고, 높음 신호면 말풍선째 1초 주기로 흐려졌다 밝아진다(`Blink Period Sec`, `Blink Min Alpha`). `Settings`는 지금 유형 버튼을 `Current Type Color`로 칠한다.
 
 - **모양 고치기**: Project 창에서 프리팹을 더블클릭하면 Prefab Mode로 열린다. 거기서 고치고 저장한다(Prefab Mode는 자동 저장이 켜져 있으면 바로 저장된다). 씬은 고치지 않는다.
 - **구조 담당 팀원**: 화면에 오브젝트나 스크립트 칸을 더할 때는 Prefab Mode에서 프리팹 안에 더하고, 프리팹 안의 칸도 프리팹 안에서 연결한다. 씬에 있는 칸(`Bootstrapper`의 칸)만 씬에서 연결한다. 씬의 인스턴스에서 직접 바꾸는 것(인스턴스 오버라이드, Inspector에서 굵은 글자로 보인다)은 만들지 않는다.
 - 5~6.11절의 처음부터 만드는 순서로 이 오브젝트들을 만들었다. 참고용으로 남겨 둔다. 새로 만든다면 같은 순서를 Prefab Mode 안에서 하면 된다.
+- **지금 모양의 기준은 프리팹이다.** 표의 위치·크기·글자 크기·색은 처음 만들 때 값이고, 시안을 옮기면서 바뀌었다(그림 칸, 말풍선 꼬리, 달·해 같은 오브젝트도 더해졌다). 지금 값은 프리팹을 열어 보고, 색·모양 규칙은 [ui-style.md](ui-style.md)를 본다.
 - 프리팹 안에서 프리팹 밖(다른 화면이나 씬 오브젝트)을 가리키는 칸은 지금 없다. 나중에 생기면 씬 오버라이드로만 남으므로 지우지 않는다.
 
 ### 3.2 글꼴
@@ -344,7 +345,7 @@ Unity 에디터 기본 배치:
 2. Rect Transform 왼쪽 위 네모(Anchor Presets)를 누르고 Alt(Mac은 Option)를 누른 채 오른쪽 아래 `stretch`·`stretch`를 고른다. Left, Top, Right, Bottom이 모두 `0`이 되어 화면 전체를 덮는다.
 3. `Image`의 Color를 검은색, 알파(A) `0`으로 한다. `Raycast Target` 체크를 끈다(꺼야 아래 버튼이 눌린다).
 4. Hierarchy에서 `SleepTransition`을 `Canvas` 자식 중 **맨 아래**로 끌어 둔다(다른 UI 위에 그려진다).
-5. `Add Component` → `SleepTransitionView`. `Fade` 칸에 `SleepTransition` 자신(같은 오브젝트의 Image)을 끌어다 놓는다. `Hold Sec` `0.2`, `Fade In Sec` `0.6`은 기본값 그대로 둔다.
+5. `Add Component` → `SleepTransitionView`. `Fade` 칸에 `SleepTransition` 자신(같은 오브젝트의 Image)을 끌어다 놓는다. 시간 칸(`Hold Sec` 등)은 기본값 그대로 둔다.
 
 ## 6.11 튜토리얼 (TutorialPrompt)
 

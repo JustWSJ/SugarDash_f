@@ -93,7 +93,7 @@
 | 월드 | `World/SceneLook` | `SceneEntered`(장면 id, 때) | 장면별 맵 배경(운동장, 놀이터, 나들이, 집), 때별 조명·하늘. 지금은 바닥 색만 바뀐다 |
 | 월드 | `World/TrackItemLook` | 지금 장면 id(`SceneId`) | 장면별 장애물 모양(운동장 축구공, 놀이터 미끄럼틀 등). 1구간 일과 같은 파일이다 |
 | 화면 | `Screen/HabitPromptView` | 떠 있는 1형 습관 순간(`RunController.ActiveHabitMoment`) | 측정기 옆 말풍선 그림, 나타나고 사라지는 연출. 문구는 `HabitPromptText`(문구 파일) |
-| 화면 | `Screen/SleepTransitionView` | 하루가 넘어감(`SceneEntered`의 `dayIndex`가 오름) | 잠자는 그림이나 해·달 전환. 바로 검게 한 뒤 밝힌다(서서히 어두워지면 바뀐 맵이 먼저 보임). 길이는 Inspector 값(`Hold Sec`, `Fade In Sec`) |
+| 화면 | `Screen/SleepTransitionView` | 하루가 넘어감(`SceneEntered`의 `dayIndex`가 오름) | 잠자는 그림이나 해·달 전환. 바로 검게 한 뒤 밝힌다(서서히 어두워지면 바뀐 맵이 먼저 보임). 길이는 Inspector 값(`Hold Sec`, `Swap Sec`, `Sun Hold Sec`, `Fade In Sec`) |
 
 - 빈 틀은 받은 것을 보여 주기만 한다. 세계·혈당을 멈추거나 바꾸지 않는다.
 - 씬 연결은 [dev-scene.md](dev-scene.md) 6.9·6.10절, 확인 방법은 9.12절이다.
@@ -165,4 +165,4 @@
 
 ### 팀원3(화면)
 - `Screen/HabitPromptView`: 1형 혈당 재기 습관 순간의 말풍선. 측정기 버튼 옆에 둔다. 혈당을 읽거나 판정하지 않고 세계를 멈추지 않는다. 문구는 `HabitPromptText`의 따옴표 안만 바꾼다.
-- `Screen/SleepTransitionView`: 하루가 넘어갈 때 잠자는 그림이나 해·달 전환. 서서히 어두워지게 하지 말고 바로 검게 한 뒤 밝힌다. 이 순서는 구조라서 바꾸지 않는다(서서히 어두워지면 바뀐 맵이 먼저 보인다). 그림과 밝아지는 모습은 바꿔도 된다([team-rules.md](team-rules.md) 2.3절). 길이는 Inspector 값(`Hold Sec`, `Fade In Sec`)이다.
+- `Screen/SleepTransitionView`: 하루가 넘어갈 때 잠자는 그림이나 해·달 전환. 서서히 어두워지게 하지 말고 바로 검게 한 뒤 밝힌다. 이 순서는 구조라서 바꾸지 않는다(서서히 어두워지면 바뀐 맵이 먼저 보인다). 그림과 밝아지는 모습은 바꿔도 된다([team-rules.md](team-rules.md) 2.3절). 길이는 Inspector 값(`Hold Sec`, `Swap Sec`, `Sun Hold Sec`, `Fade In Sec`)이다.
