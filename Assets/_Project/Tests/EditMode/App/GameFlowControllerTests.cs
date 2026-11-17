@@ -187,6 +187,20 @@ namespace SugarDash.App.Tests
         }
 
         [Test]
+        public void ReplayIntro_OnlyFromSettings_GoesToTitle()
+        {
+            _flow.Begin();
+            _flow.ReplayIntro();
+            Assert.That(_flow.IntroReplayRequests, Is.EqualTo(0), "타이틀에서는 받지 않는다");
+
+            _flow.OpenSettings();
+            _flow.ReplayIntro();
+
+            Assert.That(_flow.IntroReplayRequests, Is.EqualTo(1));
+            Assert.That(_flow.Screen, Is.EqualTo(FlowScreen.Title), "컷툰이 타이틀 위를 덮고, 닫으면 타이틀이 보인다");
+        }
+
+        [Test]
         public void Begin_LoadsSavedXp()
         {
             EnableLevels(xp: 35);

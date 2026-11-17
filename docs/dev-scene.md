@@ -300,13 +300,14 @@ Unity 에디터 기본 배치:
 
 | 이름 | 만드는 메뉴 | Pos X, Pos Y | Width × Height | 그 밖의 설정 |
 | --- | --- | --- | --- | --- |
-| `TitleText` | `UI > Legacy > Text` | 0, 300 | 900 × 100 | Text 비움(코드가 `설정`을 넣는다), Font Size 52, 가운데 정렬 |
-| `Type1Button` | `UI > Legacy > Button` | -230, 20 | 420 × 120 | 자식 글자: Text `1형`, Font Size 44. `Type2Button`과 한 줄 |
-| `Type2Button` | `UI > Legacy > Button` | 230, 20 | 420 × 120 | 자식 글자: Text `2형`, Font Size 44 |
-| `TutorialButton` | `UI > Legacy > Button` | 0, -140 | 880 × 120 | 자식 글자: Font Size 40. Text는 비워 둬도 된다(코드가 `튜토리얼 다시하기`를 넣는다) |
-| `BackButton` | `UI > Legacy > Button` | 0, -300 | 880 × 120 | 자식 글자: Text `돌아가기`, Font Size 44 |
+| `TitleText` | `UI > Legacy > Text` | 0, 380 | 900 × 100 | Text 비움(코드가 `설정`을 넣는다), Font Size 52, 가운데 정렬 |
+| `Type1Button` | `UI > Legacy > Button` | -230, 100 | 420 × 120 | 자식 글자: Text `1형`, Font Size 44. `Type2Button`과 한 줄 |
+| `Type2Button` | `UI > Legacy > Button` | 230, 100 | 420 × 120 | 자식 글자: Text `2형`, Font Size 44 |
+| `IntroButton` | `UI > Legacy > Button` | 0, -60 | 880 × 120 | 자식 글자: Text `인트로 다시보기`, Font Size 40. 누르면 인트로 컷툰이 뜨고, 마지막 장에서 닫으면 타이틀 화면이 보인다 |
+| `TutorialButton` | `UI > Legacy > Button` | 0, -220 | 880 × 120 | 자식 글자: Font Size 40. Text는 비워 둬도 된다(코드가 `튜토리얼 다시하기`를 넣는다) |
+| `BackButton` | `UI > Legacy > Button` | 0, -380 | 880 × 120 | 자식 글자: Text `돌아가기`, Font Size 44 |
 
-3. `Settings`를 선택하고 `Settings View`의 칸을 연결한다: `Root`(`Settings` 아래의 `Root`), `Title Text`, `Type 1 Button`, `Type 2 Button`, `Tutorial Button`, `Back Button`, `Type 1 Current Badge`(`Type1Button` 아래 `CurrentBadge`), `Type 2 Current Badge`.
+3. `Settings`를 선택하고 `Settings View`의 칸을 연결한다: `Root`(`Settings` 아래의 `Root`), `Title Text`, `Type 1 Button`, `Type 2 Button`, `Intro Button`, `Tutorial Button`, `Back Button`, `Type 1 Current Badge`(`Type1Button` 아래 `CurrentBadge`), `Type 2 Current Badge`.
    - `Type1Button`, `Type2Button` 안에 각각 `CurrentBadge`(`UI > Legacy > Text`)를 만든다: Anchor Presets 왼쪽 위(`top`·`left`, Alt·Shift 없이)에 Pivot X `0`, Y `0`(버튼 바깥, 왼쪽 위 모서리 바로 위), Pos 0, 6, 크기 120 × 44, Text `지금`, Font Size 30, 왼쪽 아래 정렬, `Raycast Target` 끔. 처음에는 꺼 둔다(지금 유형 쪽만 코드가 켠다).
    - 버튼 줄은 모두 전체 너비 880, 높이 120이다(1형·2형 줄은 420 두 개와 간격 40). 줄 사이 세로 간격도 40이다(줄 중심 Pos Y 20, -140, -300).
    - 이미 만든 설정 화면이면 위 표대로 위치를 맞추고 `TutorialButton`을 더한다. `Tutorial Button` 칸이 비어 있으면 Console에 노란 경고 `SettingsView: tutorialButton이 비어 있다`가 뜬다.
@@ -742,7 +743,7 @@ macOS 기준 Finder에서 Cmd+Shift+G를 누르고 `~/Library/Application Suppor
 | --- | --- | --- |
 | 1 | Play | 유형 선택 화면: `어떤 당뇨가 있나요?`, `보호자와 함께 골라 주세요`, `1형`, `2형` 버튼. 주행은 아직 시작하지 않는다 |
 | 2 | `1형` | 타이틀 화면: `슈가대시` 아래 `1형`, 그 아래 `시작`, 오른쪽 위 작은 `설정` 버튼(톱니바퀴 그림 자리) |
-| 3 | `설정` | 설정 화면: `설정`, 버튼 `1형`(노란색, 왼쪽 위에 `지금`)·`2형` 한 줄, `튜토리얼 다시하기`, `돌아가기` |
+| 3 | `설정` | 설정 화면: `설정`, 버튼 `1형`(노란색, 왼쪽 위에 `지금`)·`2형` 한 줄, `인트로 다시보기`, `튜토리얼 다시하기`, `돌아가기` |
 | 4 | `2형` | 설정 화면에 그대로 있고, 노란색과 `지금`이 `2형` 버튼으로 옮겨 간다 |
 | 4-1 | `돌아가기` | 타이틀로 돌아가고 `슈가대시` 아래 글자가 `2형`이다 |
 | 5 | Play를 멈추고 다시 Play | 유형 선택 없이 바로 타이틀 화면, `2형`(고른 유형이 저장되어 있다) |

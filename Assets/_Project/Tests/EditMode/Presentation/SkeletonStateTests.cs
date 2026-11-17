@@ -51,6 +51,14 @@ namespace SugarDash.Presentation.Tests
         }
 
         [Test]
+        public void IntroCuttoon_ReplaysFromSettings()
+        {
+            Assert.That(IntroCuttoonView.ShouldReplay(FlowScreen.Title, 1, 0), Is.True, "다시보기를 누르면 타이틀 위에");
+            Assert.That(IntroCuttoonView.ShouldReplay(FlowScreen.Title, 1, 1), Is.False, "한 번 누르면 한 번");
+            Assert.That(IntroCuttoonView.ShouldReplay(FlowScreen.Running, 1, 0), Is.False);
+        }
+
+        [Test]
         public void TutorialPrompt_Visibility()
         {
             foreach (TutorialStage s in System.Enum.GetValues(typeof(TutorialStage)))

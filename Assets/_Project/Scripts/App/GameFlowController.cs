@@ -174,6 +174,21 @@ namespace SugarDash.App
             if (Screen == FlowScreen.Settings) Screen = FlowScreen.Title;
         }
 
+        /// <summary>설정 화면에서 "인트로 다시보기"를 누른 횟수. 인트로 컷툰이 이 값이 바뀌면 타이틀 위에 뜬다.</summary>
+        public int IntroReplayRequests { get; private set; }
+
+        /// <summary>
+        /// 인트로 컷툰을 다시 본다. 설정 화면에서만 받는다. 화면은 바로 타이틀로 바뀌고 컷툰이 그 위를 덮으므로,
+        /// 컷툰을 닫으면 타이틀이 보인다.
+        /// </summary>
+        public void ReplayIntro()
+        {
+            if (Screen != FlowScreen.Settings) return;
+
+            IntroReplayRequests++;
+            Screen = FlowScreen.Title;
+        }
+
         /// <summary>타이틀에서 고른 유형으로 주행을 시작한다.</summary>
         public void StartRun()
         {

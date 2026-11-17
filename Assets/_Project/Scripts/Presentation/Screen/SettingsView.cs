@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace SugarDash.Presentation
 {
-    /// <summary>설정 화면. Screen이 Settings일 때만 보인다. 지금 유형 버튼을 칠하고 왼쪽 위에 '지금'을 띄운다. 유형을 바꿔도 이 화면에 있고 돌아가기로 나간다.</summary>
+    /// <summary>설정 화면. Screen이 Settings일 때만 보인다. 버튼은 위에서부터 1형·2형, 인트로 다시보기, 튜토리얼 다시하기, 돌아가기. 지금 유형 버튼을 칠하고 왼쪽 위에 '지금'을 띄운다. 유형을 바꿔도 이 화면에 있고 돌아가기로 나간다.</summary>
     // [빈 틀] 담당: 화면
     public sealed class SettingsView : MonoBehaviour
     {
@@ -15,6 +15,8 @@ namespace SugarDash.Presentation
         [SerializeField] private Text titleText;
         [SerializeField] private Button type1Button;
         [SerializeField] private Button type2Button;
+        [Tooltip("인트로 컷툰을 다시 보는 버튼(1·2형 버튼과 튜토리얼 다시하기 사이).")]
+        [SerializeField] private Button introButton;
         [SerializeField] private Button tutorialButton;
         [SerializeField] private Button backButton;
         [Tooltip("1형 버튼 왼쪽 위의 '지금' 표시. 지금 유형일 때만 켠다.")]
@@ -42,6 +44,8 @@ namespace SugarDash.Presentation
             else Debug.LogWarning("SettingsView: type1Button이 비어 있다. 씬에서 연결해야 한다.");
             if (type2Button != null) type2Button.onClick.AddListener(OnType2);
             else Debug.LogWarning("SettingsView: type2Button이 비어 있다. 씬에서 연결해야 한다.");
+            if (introButton != null) introButton.onClick.AddListener(OnIntro);
+            else Debug.LogWarning("SettingsView: introButton이 비어 있다. 씬에서 연결해야 한다.");
             if (tutorialButton != null)
             {
                 tutorialButton.onClick.AddListener(OnTutorial);
@@ -55,6 +59,7 @@ namespace SugarDash.Presentation
             {
                 if (type1Button != null) type1Button.onClick.RemoveListener(OnType1);
                 if (type2Button != null) type2Button.onClick.RemoveListener(OnType2);
+                if (introButton != null) introButton.onClick.RemoveListener(OnIntro);
                 if (tutorialButton != null) tutorialButton.onClick.RemoveListener(OnTutorial);
                 if (backButton != null) backButton.onClick.RemoveListener(OnBack);
                 _flow = null;
@@ -63,6 +68,7 @@ namespace SugarDash.Presentation
 
         private void OnType1() => _flow?.SelectType(TrackType.Type1);
         private void OnType2() => _flow?.SelectType(TrackType.Type2);
+        private void OnIntro() => _flow?.ReplayIntro();
         private void OnTutorial() => _flow?.StartTutorial();
         private void OnBack() => _flow?.CloseSettings();
 

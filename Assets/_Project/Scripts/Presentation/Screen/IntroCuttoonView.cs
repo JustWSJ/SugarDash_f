@@ -9,6 +9,7 @@ namespace SugarDash.Presentation
     /// 인트로 컷툰. 처음 실행(저장된 유형 없음)이면 유형 선택 화면 위에 먼저 뜬다. 흐름: (인트로, 미정) → 컷툰 → 유형 선택 → 타이틀.
     /// 화면 아래 오른쪽 화살표로 다음 장, 왼쪽 화살표로 앞 장으로 가고, 쪽 번호는 두 화살표 사이에 둔다.
     /// 마지막 장에서 오른쪽 화살표를 누르거나 건너뛰기를 누르면 닫히고 유형 선택 화면이 보인다. 건너뛰기 버튼은 Show Skip Button을 켰을 때만 보인다.
+    /// 설정 화면의 "인트로 다시보기"(GameFlowController.IntroReplayRequests가 바뀜)로 다시 열 수 있다. 흐름은 그때 타이틀로 바뀌므로 닫으면 타이틀이 보인다.
     /// 연출만이다. 게임 흐름(GameFlowController)을 읽기만 하고 명령을 보내지 않는다. 혈당·기록과 관계없다.
     /// 화면 오브젝트(캔버스, 그림, 버튼)는 처음 열 때 코드로 만든다. 프리팹이 생기면 바꾼다.
     /// </summary>
@@ -44,6 +45,7 @@ namespace SugarDash.Presentation
         private Sprite _arrowSprite;
         private int _index;
         private bool _shown;
+        private int _replaySeen;
 
         /// <summary>컷툰이 떠 있다.</summary>
         public bool IsOpen => _root != null && _root.activeSelf;
@@ -53,6 +55,10 @@ namespace SugarDash.Presentation
         /// </summary>
         public static bool ShouldOpen(FlowScreen screen, bool alreadyShown, bool everyLaunch) =>
             !alreadyShown && (screen == FlowScreen.TypeSelect || everyLaunch && screen == FlowScreen.Title);
+
+        /// <summary>설정 화면에서 다시보기를 눌렀는지. 지금 본 횟수와 요청 횟수가 다르고 타이틀(다시보기를 누르면 바뀌는 화면)일 때 연다.</summary>
+        public static bool ShouldReplay(FlowScreen screen, int requests, int seen) =>
+            screen == FlowScreen.Title && requests != seen;
 
         /// <summary>index번째 칸이 마지막 칸인지. 마지막 칸에서 다음 화살표를 누르면 닫힌다.</summary>
         public static bool IsLast(int index, int count) => index >= count - 1;
@@ -64,6 +70,7 @@ namespace SugarDash.Presentation
         public IDisposable Bind(GameFlowController flow)
         {
             _flow = flow ?? throw new ArgumentNullException(nameof(flow));
+            _replaySeen = _flow.IntroReplayRequests;
             return new Unbinder(() =>
             {
                 _flow = null;
@@ -74,6 +81,13 @@ namespace SugarDash.Presentation
         private void Update()
         {
             if (_flow == null) return;
+            if (ShouldReplay(_flow.Screen, _flow.IntroReplayRequests, _replaySeen))
+            {
+                _replaySeen = _flow.IntroReplayRequests;
+                _shown = true;
+                Open();
+                return;
+            }
             if (!ShouldOpen(_flow.Screen, _shown, showEveryLaunch)) return;
             _shown = true;
             Open();
