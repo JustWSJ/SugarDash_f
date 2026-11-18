@@ -9,6 +9,40 @@ namespace SugarDash.Presentation.Tests
         private static StepAnswered Answer(string choiceId, bool helpInstead = false) =>
             new StepAnswered(1, HypoStep.Respond, choiceId, false, HypoErrorCode.None, helpInstead, 1, false, 0, 0);
 
+        private static StepAnswered AnswerAt(HypoStep step, string choiceId) =>
+            new StepAnswered(1, step, choiceId, false, HypoErrorCode.None, false, 1, false, 0, 0);
+
+        [TestCase("juice", "주스를 골랐어요")]
+        [TestCase("soda", "탄산음료를 골랐어요")]
+        [TestCase("apple", "사과를 골랐어요")]
+        [TestCase("cracker", "크래커를 골랐어요")]
+        public void For_RespondSnack_SaysPicked(string snackId, string expected)
+        {
+            Assert.That(AnswerFeedbackText.For(AnswerAt(HypoStep.Respond, snackId)), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void For_Type2Juice_SaysDrank()
+        {
+            Assert.That(AnswerFeedbackText.For(AnswerAt(HypoStep.HyperNotify, "juice")), Is.EqualTo("주스를 마셨어요"));
+        }
+
+        [TestCase("proper", "juice", "주스를 알맞게 마셨어요")]
+        [TestCase("under", "soda", "탄산음료를 조금 마셨어요")]
+        [TestCase("over", "cracker", "크래커를 많이 먹었어요")]
+        [TestCase("proper", "apple", "사과를 알맞게 먹었어요")]
+        public void For_Dose_NamesSnackAndVerb(string dose, string snackId, string expected)
+        {
+            Assert.That(AnswerFeedbackText.For(AnswerAt(HypoStep.Dose, dose), snackId), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void For_Dose_WithoutSnack_KeepsShortText()
+        {
+            Assert.That(AnswerFeedbackText.For(AnswerAt(HypoStep.Dose, "proper")), Is.EqualTo("알맞게 먹었어요"));
+            Assert.That(AnswerFeedbackText.For(AnswerAt(HypoStep.Dose, null), "juice"), Is.EqualTo("시간이 다 됐어요"));
+        }
+
         private static readonly string[] Forbidden = { "나쁜", "죽", "생존", "치료" };
 
         [TestCase("meter")]

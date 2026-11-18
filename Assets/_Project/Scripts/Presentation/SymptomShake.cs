@@ -13,6 +13,12 @@ namespace SugarDash.Presentation
         }
 
         /// <summary>
+        /// 강조할 때(튜토리얼 위험 인지 안내) 세기를 floor 밑으로 내려가지 않게 한다. 강조하지 않으면 그대로.
+        /// </summary>
+        public static double WithFloor(double intensity, bool emphasize, double floor) =>
+            emphasize ? System.Math.Max(intensity, floor) : intensity;
+
+        /// <summary>
         /// 주행 상태에 따른 흔들림 배율. 달리는 중 1, 탈락 장면(주행이 탈락 상태로 열려 있음) 동안 sceneScale,
         /// 일시정지·주행 없음은 0이다. 탈락 장면에서는 끄지 않고 살짝만 이어 간다.
         /// </summary>

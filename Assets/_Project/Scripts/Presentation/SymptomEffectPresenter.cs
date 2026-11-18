@@ -16,25 +16,31 @@ namespace SugarDash.Presentation
         public float frequency = 12f;
         [Tooltip("탈락 장면 동안 흔들림 배율(0~1). 끄지 않고 살짝만 이어 간다.")]
         [Range(0f, 1f)] public float eliminatedScale = 0.3f;
+        [Tooltip("튜토리얼 위험 인지 안내 동안의 가장 약한 흔들림 세기(0~1). 혈당이 기준에 막 닿아 흔들림이 약해도 이만큼은 흔든다.")]
+        [Range(0f, 1f)] public float tutorialMinIntensity = 0.7f;
 
         private RunController _run;
         private double _startGlucose;
         private double _lowGlucose;
+        private Func<bool> _emphasize;
 
         private Vector3 _lastWritten;
 
         /// <summary>마지막 ApplyShake가 카메라 기준 위치에 더한 오프셋.</summary>
         public Vector3 LastOffset { get; private set; }
 
-        public IDisposable Bind(RunController run, double shakeStartGlucose, double glucoseLow)
+        /// <param name="emphasize">참이면 흔들림을 tutorialMinIntensity 밑으로 내리지 않는다(튜토리얼 위험 인지). 없으면 쓰지 않는다.</param>
+        public IDisposable Bind(RunController run, double shakeStartGlucose, double glucoseLow, Func<bool> emphasize = null)
         {
             _run = run;
+            _emphasize = emphasize;
             _startGlucose = shakeStartGlucose;
             _lowGlucose = glucoseLow;
             return new Unbinder(() =>
             {
                 ApplyShake(0, 0f);
                 _run = null;
+                _emphasize = null;
             });
         }
 
@@ -44,7 +50,8 @@ namespace SugarDash.Presentation
         {
             // 2형 주행에는 화면 흔들림이 없다.
             double intensity = _run != null && _run.TrackType != TrackType.Type2
-                ? SymptomShake.Intensity(_run.Actual, _startGlucose, _lowGlucose) *
+                ? SymptomShake.WithFloor(SymptomShake.Intensity(_run.Actual, _startGlucose, _lowGlucose),
+                      _emphasize != null && _emphasize(), tutorialMinIntensity) *
                   SymptomShake.StateScale(_run.State, eliminatedScale)
                 : 0;
             ApplyShake(intensity, Time.time);

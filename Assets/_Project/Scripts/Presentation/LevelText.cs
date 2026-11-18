@@ -6,6 +6,9 @@ namespace SugarDash.Presentation
     // [문구 파일] 따옴표 안의 글자만 바꿀 수 있다. 상수 이름, 메서드, 코드 구조는 바꾸지 않고 `// 확정` 줄은 그대로 둔다(docs/team-rules.md 2.3절).
     public static class LevelText
     {
+        /// <summary>결과 화면에서 레벨이 오른 판에 레벨 원 위에 뜨는 띠 글자.</summary>
+        public const string LevelUpBadge = "레벨 업!";
+
         /// <summary>타이틀 왼쪽 위 원 안의 레벨 글자.</summary>
         public static string Level(int level) => $"{level}";
 

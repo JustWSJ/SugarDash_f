@@ -1,5 +1,6 @@
 using System;
 using SugarDash.Domain.Events;
+using SugarDash.Domain.Hypo;
 
 namespace SugarDash.Presentation
 {
@@ -11,10 +12,20 @@ namespace SugarDash.Presentation
     {
         private const string Notified = "어른에게 알렸어요";
 
-        public static string For(StepAnswered e)
+        /// <summary>
+        /// 고른 뒤 문구. 2단계(먹을 것 고르기)의 간식은 모두 "○○를 골랐어요"이고, 먹은 것은 3단계 양 문구가 말한다.
+        /// doseSnackId는 3단계에서 고른 간식 id(양 문구에 이름을 넣는다). 없으면 이름 없이 말한다.
+        /// </summary>
+        public static string For(StepAnswered e, string doseSnackId = null)
         {
             if (e == null) throw new ArgumentNullException(nameof(e));
             if (e.HelpInstead) return Notified;
+            if (e.Step == HypoStep.Respond && IsSnackId(e.ChoiceId)) return Picked(e.ChoiceId);
+            if (e.Step == HypoStep.Dose && !string.IsNullOrEmpty(doseSnackId))
+            {
+                string amount = DoseAmount(e.ChoiceId);
+                if (amount != null) return $"{FoodText.WithObjectParticle(doseSnackId)} {amount} {(IsDrink(doseSnackId) ? "마셨어요" : "먹었어요")}";
+            }
 
             switch (e.ChoiceId)
             {
@@ -29,9 +40,46 @@ namespace SugarDash.Presentation
                 case "run_again": return "다시 달리기를 골랐어요";
                 case "juice": return "주스를 마셨어요";
                 case "help": return Notified;
-                default: return $"{FoodText.WithObjectParticle(e.ChoiceId)} 골랐어요"; // 간식 id
+                default: return Picked(e.ChoiceId); // 간식 id
             }
         }
+
+        private static string Picked(string snackId) => $"{FoodText.WithObjectParticle(snackId)} 골랐어요";
+
+        // 간식 id가 아닌 선택지 id들.
+        private static bool IsSnackId(string choiceId)
+        {
+            switch (choiceId)
+            {
+                case null:
+                case "meter":
+                case "keep_running":
+                case "no_sugar":
+                case "under":
+                case "proper":
+                case "over":
+                case "recheck":
+                case "run_again":
+                case "help":
+                    return false;
+                default:
+                    return true;
+            }
+        }
+
+        private static string DoseAmount(string choiceId)
+        {
+            switch (choiceId)
+            {
+                case "under": return "조금";
+                case "proper": return "알맞게";
+                case "over": return "많이";
+                default: return null;
+            }
+        }
+
+        // 마시는 것이면 "마셨어요", 아니면 "먹었어요".
+        private static bool IsDrink(string foodId) => foodId == "juice" || foodId == "soda" || foodId == "water";
 
         public static string ForGuardianNotified() => Notified;
 

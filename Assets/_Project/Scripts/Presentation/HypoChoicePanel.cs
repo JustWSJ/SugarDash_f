@@ -30,6 +30,8 @@ namespace SugarDash.Presentation
         [SerializeField] private Button foodTemplate;
         [Tooltip("\"어른에게 알리기\" 버튼 바탕색")]
         [SerializeField] private Color helpColor = new Color(0.75f, 0.85f, 0.95f);
+        [Tooltip("선택지 그림 에셋(ChoicePictures). 비우거나 칸이 비면 그 버튼은 글자만 보인다.")]
+        [SerializeField] private ChoicePictures pictureAsset;
         [Tooltip("남은 시간 막대의 채움. 바탕을 꽉 채우게 두면 오른쪽 끝(anchorMax.x)을 남은 비율로 줄인다. 시간 초과가 없는 때는 막대 묶음을 숨긴다.")]
         [SerializeField] private RectTransform timeFill;
         [SerializeField] private GameObject timeBar;
@@ -58,7 +60,7 @@ namespace SugarDash.Presentation
             var subscriptions = new List<IDisposable>
             {
                 bus.Subscribe<HypoEventTriggered>(_ => recheckText.text = ""),
-                bus.Subscribe<StepAnswered>(e => _feedback = AnswerFeedbackText.For(e)),
+                bus.Subscribe<StepAnswered>(e => _feedback = AnswerFeedbackText.For(e, _run?.DoseSnackId)),
                 bus.Subscribe<PracticeRetried>(_ => _feedback = TutorialText.TryAgain),
                 bus.Subscribe<GuardianNotified>(_ => _feedback = AnswerFeedbackText.ForGuardianNotified()),
                 bus.Subscribe<RecheckFastForward>(e => recheckText.text = ChoicePanelText.RecheckResult(e.GlucoseAfter)),
@@ -106,69 +108,71 @@ namespace SugarDash.Presentation
                     bool emptyBag = _run.IsEmptyBag;
                     Show(emptyBag ? ChoicePanelText.EmptyBagTitle : ChoicePanelText.RespondTitle);
                     // 간식은 카드 칸에, 나머지는 그 아래 넓은 버튼으로. 각 묶음 안에서 순서를 섞는다.
-                    var snacks = new List<(string, Action)>();
+                    var snacks = new List<Choice>();
                     foreach (var snack in ChoiceOrder.RespondSnacks(_snacks, _random, emptyBag))
                     {
                         string id = snack.Id;
-                        snacks.Add((FoodText.Name(id), () => _run.ChooseSnack(id)));
+                        snacks.Add(new Choice(FoodText.Name(id), () => _run.ChooseSnack(id), Pictures.Food(id)));
                     }
                     AddFoods(ChoiceOrder.Shuffle(snacks, _random));
-                    var respond = new List<(string, Action)>();
-                    respond.Add((ChoicePanelText.KeepRunning, () => _run.ChooseKeepRunning()));
+                    var respond = new List<Choice>();
+                    respond.Add(Pick(ChoicePanelText.KeepRunning, ChoicePicture.KeepRunning, () => _run.ChooseKeepRunning()));
                     // 빈 간식 가방에서는 "먹을 게 없어요"를 빼 "어른에게 알리기"와 뜻이 겹치지 않게 한다.
-                    if (!emptyBag) respond.Add((ChoicePanelText.NoSugar, () => _run.ChooseNoSugar()));
+                    if (!emptyBag) respond.Add(Pick(ChoicePanelText.NoSugar, ChoicePicture.NoSugar, () => _run.ChooseNoSugar()));
                     AddShuffled(respond);
                     AddHelp(phase);
                     break;
                 case HypoPhase.Dose:
                     Show(ChoicePanelText.DoseTitle(_run.DoseSnackId));
-                    AddShuffled(new List<(string, Action)>
+                    // 양 그림은 고른 간식 그림 옆에 채움 칸으로 보여 준다(숫자 없음).
+                    var doseFood = Pictures.Food(_run.DoseSnackId);
+                    AddShuffled(new List<Choice>
                     {
-                        (ChoicePanelText.DoseUnder, () => _run.ChooseDose(DoseLevel.Under)),
-                        (ChoicePanelText.DoseProper, () => _run.ChooseDose(DoseLevel.Proper)),
-                        (ChoicePanelText.DoseOver, () => _run.ChooseDose(DoseLevel.Over)),
+                        new Choice(ChoicePanelText.DoseUnder, () => _run.ChooseDose(DoseLevel.Under), doseFood, Pictures.Dose(DoseLevel.Under)),
+                        new Choice(ChoicePanelText.DoseProper, () => _run.ChooseDose(DoseLevel.Proper), doseFood, Pictures.Dose(DoseLevel.Proper)),
+                        new Choice(ChoicePanelText.DoseOver, () => _run.ChooseDose(DoseLevel.Over), doseFood, Pictures.Dose(DoseLevel.Over)),
                     });
                     AddHelp(phase);
                     break;
                 case HypoPhase.Remeasure:
                     Show(ChoicePanelText.NextActionTitle);
-                    AddShuffled(new List<(string, Action)>
+                    AddShuffled(new List<Choice>
                     {
-                        (ChoicePanelText.Recheck, () => _run.ChooseRecheck()),
-                        (ChoicePanelText.RunAgain, () => _run.ChooseRunAgain(phase)),
+                        Pick(ChoicePanelText.Recheck, ChoicePicture.Recheck, () => _run.ChooseRecheck()),
+                        Pick(ChoicePanelText.RunAgain, ChoicePicture.RunAgain, () => _run.ChooseRunAgain(phase)),
                     });
                     AddHelp(phase);
                     break;
                 case HypoPhase.Notify:
                     Show(ChoicePanelText.NextActionTitle);
-                    Add(ChoicePanelText.RunAgain, () => _run.ChooseRunAgain(phase));
+                    Add(Pick(ChoicePanelText.RunAgain, ChoicePicture.RunAgain, () => _run.ChooseRunAgain(phase)));
                     AddHelp(phase);
                     break;
                 case HypoPhase.HyperNotify:
                     if (_run.TrackType == TrackType.Type2)
                     {
                         Show(ChoicePanelText.Type2TellTitle);
-                        AddShuffled(new List<(string, Action)>
+                        AddShuffled(new List<Choice>
                         {
-                            (ChoicePanelText.KeepRunning, () => _run.ChooseKeepRunning()),
-                            (ChoicePanelText.Juice, () => _run.ChooseJuice()),
+                            Pick(ChoicePanelText.KeepRunning, ChoicePicture.KeepRunning, () => _run.ChooseKeepRunning()),
+                            new Choice(ChoicePanelText.Juice, () => _run.ChooseJuice(), Pictures.Food("juice")),
                         });
                     }
                     else
                     {
                         Show(ChoicePanelText.HighTitle);
-                        Add(ChoicePanelText.KeepRunning, () => _run.ChooseKeepRunning());
+                        Add(Pick(ChoicePanelText.KeepRunning, ChoicePicture.KeepRunning, () => _run.ChooseKeepRunning()));
                     }
                     AddHelp(phase);
                     break;
                 case HypoPhase.LowNotify:
                     Show(ChoicePanelText.Type2TellTitle);
-                    Add(ChoicePanelText.KeepRunning, () => _run.ChooseKeepRunning());
+                    Add(Pick(ChoicePanelText.KeepRunning, ChoicePicture.KeepRunning, () => _run.ChooseKeepRunning()));
                     AddHelp(phase);
                     break;
                 case HypoPhase.GuardianPrompt:
                     Show(ChoicePanelText.GuardianPromptTitle);
-                    Add(ChoicePanelText.RunAgain, () => _run.ChooseRunAgain(phase));
+                    Add(Pick(ChoicePanelText.RunAgain, ChoicePicture.RunAgain, () => _run.ChooseRunAgain(phase)));
                     AddHelp(phase);
                     break;
                 default:
@@ -183,29 +187,50 @@ namespace SugarDash.Presentation
             root.SetActive(true);
         }
 
-        private void AddShuffled(List<(string Label, Action Action)> choices)
+        /// <summary>버튼 하나: 글자, 누르면 할 일, 그림(없으면 null), 양 그림(양 고르기만).</summary>
+        private readonly struct Choice
         {
-            foreach (var (label, action) in ChoiceOrder.Shuffle(choices, _random)) Add(label, action);
+            public Choice(string label, Action action, Sprite picture, Sprite amount = null)
+            {
+                Label = label;
+                Action = action;
+                Picture = picture;
+                Amount = amount;
+            }
+
+            public string Label { get; }
+            public Action Action { get; }
+            public Sprite Picture { get; }
+            public Sprite Amount { get; }
+        }
+
+        private ChoicePictureSet Pictures => ChoicePictures.Of(pictureAsset);
+
+        private Choice Pick(string label, ChoicePicture picture, Action action) => new Choice(label, action, Pictures.Of(picture));
+
+        private void AddShuffled(List<Choice> choices)
+        {
+            foreach (var choice in ChoiceOrder.Shuffle(choices, _random)) Add(choice);
         }
 
         private void AddHelp(HypoPhase phase)
         {
-            var button = Add(ChoicePanelText.TellAdult, () => _run.PressHelp(phase));
+            var button = Add(Pick(ChoicePanelText.TellAdult, ChoicePicture.TellAdult, () => _run.PressHelp(phase)));
             if (button.image != null) button.image.color = helpColor;
         }
 
         // 간식 카드. 카드 칸이 없으면 넓은 버튼으로 놓는다.
-        private void AddFoods(IEnumerable<(string Label, Action Action)> foods)
+        private void AddFoods(IEnumerable<Choice> foods)
         {
-            foreach (var (label, action) in foods)
+            foreach (var food in foods)
             {
                 if (foodContainer == null || foodTemplate == null)
                 {
-                    Add(label, action);
+                    Add(food);
                     continue;
                 }
                 foodContainer.gameObject.SetActive(true);
-                Make(foodTemplate, foodContainer, label, action);
+                Make(foodTemplate, foodContainer, food);
             }
         }
 
@@ -220,13 +245,17 @@ namespace SugarDash.Presentation
         /// <summary>막대 채움 비율(0~1).</summary>
         public static float TimeBarFill(double left) => Mathf.Clamp01((float)left);
 
-        private Button Add(string label, Action onClick) => Make(buttonTemplate, buttonContainer, label, onClick);
+        private Button Add(Choice choice) => Make(buttonTemplate, buttonContainer, choice);
 
-        private Button Make(Button template, Transform parent, string label, Action onClick)
+        private Button Make(Button template, Transform parent, Choice choice)
         {
             var button = Instantiate(template, parent);
             button.gameObject.SetActive(true);
-            button.GetComponentInChildren<Text>().text = label;
+            // 그림 칸이 있는 템플릿이면 그림까지, 없으면 글자만 채운다.
+            var view = button.GetComponent<ChoiceButtonView>();
+            if (view != null) view.Set(choice.Label, choice.Picture, choice.Amount);
+            else button.GetComponentInChildren<Text>().text = choice.Label;
+            var onClick = choice.Action;
             button.onClick.AddListener(() =>
             {
                 if (_run != null) onClick();

@@ -12,7 +12,7 @@ namespace SugarDash.Presentation
     // [빈 틀] 담당: 화면
     public sealed class TutorialPromptView : MonoBehaviour
     {
-        [Tooltip("설명 창 묶음. 화면 전체를 덮어 아래 패널·측정기 터치를 막는다. Root에 화면 전체 버튼(tapArea)을 붙인다.")]
+        [Tooltip("설명 창 묶음. 화면 전체를 덮어 아래 패널·측정기 터치를 막는다. 넘기기는 ▶·◀ 버튼으로만 한다.")]
         [SerializeField] private GameObject root;
         [SerializeField] private Text messageText;
         [Tooltip("\"다시 해봐요\" 문구. 설명 창과 따로 보이고 숨는다.")]
@@ -21,27 +21,50 @@ namespace SugarDash.Presentation
         [SerializeField] private GameObject retryBadge;
         [Tooltip("그림 자리 안의 그림. 그림(sprite)이 없으면 그리지 않고 빈 자리만 보인다.")]
         [SerializeField] private Image image;
+        [Tooltip("그림 자리 안에 음식 그림을 나란히 놓는 칸들(왼쪽부터). 장마다 음식 수만큼 켠다.")]
+        [SerializeField] private Image[] foodPictures;
+        [Tooltip("음식 그림 에셋(ChoicePictures). 선택 패널과 같은 에셋을 가리킨다.")]
+        [SerializeField] private ChoicePictures pictureAsset;
         [Tooltip("그림 자리 안의 밀기 화살표(오른쪽을 가리키는 그림). 이동·점프·슬라이드 안내에서 미는 방향으로 돌려, 그 방향으로 움직이며 나타났다 사라지기를 되풀이한다.")]
         [SerializeField] private Image swipeArrow;
         [Tooltip("화살표가 한 번 움직이는 거리(가운데에서 양쪽으로 이만큼).")]
         [SerializeField] private float swipeTravel = 45f;
         [Tooltip("화살표가 한 번 나타났다 사라지는 시간(실제 초).")]
         [SerializeField] private float swipePeriodSec = 1.2f;
-        [Tooltip("Root에 붙는 화면 전체 버튼. 화면 아무 곳이나 눌러 넘어간다.")]
+        [Tooltip("Root에 붙는 화면 전체 버튼. 아래 터치를 막기만 하고 눌러도 넘어가지 않는다(넘기기는 ▶ 버튼만).")]
         [SerializeField] private Button tapArea;
         [Tooltip("\"화면을 눌러요\" 작은 안내 글자. 박스 아래쪽에 둔다.")]
         [SerializeField] private Text hintText;
         [Tooltip("설명 창이 보인 뒤 이 시간(초)이 지나기 전의 터치는 무시한다.")]
         [SerializeField] private float tapDelaySec = 0.5f;
         [SerializeField] private Button skipButton;
+        [Header("장 넘기기 (설명이 여러 장일 때만 보임)")]
+        [Tooltip("앞 장 버튼. 첫 장에서는 숨긴다.")]
+        [SerializeField] private Button backButton;
+        [Tooltip("다음 장 버튼. 마지막 장에서 누르면 화면을 누른 것처럼 안내가 이어진다.")]
+        [SerializeField] private Button nextButton;
+        [Tooltip("쪽 번호(예: 1 / 3).")]
+        [SerializeField] private Text pageText;
 
         private GameFlowController _flow;
-        // 설명 창이 보이기 시작한 시각(unscaled). 보이지 않으면 음수.
+        // 설명 창(지금 장)이 보이기 시작한 시각(unscaled). 보이지 않으면 음수.
         private float _shownAt = -1f;
+        // 지금 안내의 몇 번째 장인지. 설명 창이 숨거나 안내가 바뀌면 0으로.
+        private int _page;
+        private TutorialStep? _pageStep;
 
         public static bool IsPromptVisible(TutorialStage stage) => stage == TutorialStage.Prompt;
         public static bool IsRetryVisible(TutorialStage stage) => stage == TutorialStage.Retry;
         public static bool AcceptsTap(float shownFor, float delay) => shownFor >= delay;
+
+        /// <summary>장이 더 남았는지. 남았으면 누를 때 다음 장으로 넘어가고, 마지막 장이면 안내를 넘긴다.</summary>
+        public static bool HasNextPage(int page, int pageCount) => page + 1 < pageCount;
+
+        /// <summary>앞 장 버튼을 보일지. 여러 장이고 첫 장이 아닐 때.</summary>
+        public static bool HasPrevPage(int page, int pageCount) => pageCount > 1 && page > 0;
+
+        /// <summary>쪽 번호 글자. 한 장이면 빈 글자.</summary>
+        public static string PageLabel(int page, int pageCount) => pageCount > 1 ? $"{page + 1} / {pageCount}" : "";
 
         /// <summary>안내가 가르치는 미는 방향. 이동·점프·슬라이드 안내만 있고 나머지는 Vector2.zero.</summary>
         public static Vector2 SwipeDirection(TutorialStep? step)
@@ -89,8 +112,9 @@ namespace SugarDash.Presentation
             if (root == null) Debug.LogWarning("TutorialPromptView: root가 비어 있다. 씬에서 연결해야 한다.");
             if (messageText == null) Debug.LogWarning("TutorialPromptView: messageText가 비어 있다. 씬에서 연결해야 한다.");
             if (retryText == null) Debug.LogWarning("TutorialPromptView: retryText가 비어 있다. 씬에서 연결해야 한다.");
-            if (tapArea != null) tapArea.onClick.AddListener(OnTap);
-            else Debug.LogWarning("TutorialPromptView: tapArea가 비어 있다. 씬에서 연결해야 한다.");
+            // 화면 아무 곳이나 눌러서는 넘어가지 않는다. tapArea는 아래 터치를 막기만 한다.
+            if (tapArea == null) Debug.LogWarning("TutorialPromptView: tapArea가 비어 있다. 아래 패널 터치가 막히지 않을 수 있다.");
+            if (nextButton == null) Debug.LogWarning("TutorialPromptView: nextButton이 비어 있다. 설명 창을 넘길 수 없다.");
             if (hintText != null) hintText.text = TutorialText.TapHint;
             if (skipButton != null)
             {
@@ -99,16 +123,21 @@ namespace SugarDash.Presentation
             }
             else Debug.LogWarning("TutorialPromptView: skipButton이 비어 있다. 씬에서 연결해야 한다.");
             if (retryText != null) retryText.text = TutorialText.TryAgain;
+            if (backButton != null) backButton.onClick.AddListener(OnBack);
+            if (nextButton != null) nextButton.onClick.AddListener(OnNext);
             if (image != null) image.enabled = image.sprite != null;
             SetActive(RetryObject, false);
             return new Unbinder(() =>
             {
-                if (tapArea != null) tapArea.onClick.RemoveListener(OnTap);
                 if (skipButton != null) skipButton.onClick.RemoveListener(OnSkip);
+                if (backButton != null) backButton.onClick.RemoveListener(OnBack);
+                if (nextButton != null) nextButton.onClick.RemoveListener(OnNext);
                 if (root != null) root.SetActive(false);
                 SetActive(RetryObject, false);
                 _flow = null;
                 _shownAt = -1f;
+                _page = 0;
+                _pageStep = null;
             });
         }
 
@@ -125,10 +154,27 @@ namespace SugarDash.Presentation
             if (text != null) text.text = label;
         }
 
-        private void OnTap()
+        // ▶ 버튼. 다음 장이 있으면 넘기고, 마지막 장이면 안내를 이어 간다.
+        private void OnNext()
         {
             if (!TapReady()) return;
-            _flow.Tutorial.Acknowledge();
+            var tutorial = _flow.Tutorial;
+            if (tutorial.Step != null && HasNextPage(_page, TutorialText.Pages(tutorial.Step.Value, tutorial.Type).Count))
+            {
+                // 다음 장. 장마다 터치 지연을 처음부터 센다.
+                _page++;
+                _shownAt = Time.unscaledTime;
+                return;
+            }
+            tutorial.Acknowledge();
+        }
+
+        // 앞 장으로. 지연은 다음 장과 같게 다시 센다.
+        private void OnBack()
+        {
+            if (!TapReady() || _page <= 0) return;
+            _page--;
+            _shownAt = Time.unscaledTime;
         }
 
         // 건너뛰기는 설명 창 밖 화면 왼쪽 아래 구석에 따로 있어 설명 창을 넘기는 터치와 겹치지 않는다. 지연 없이 받는다.
@@ -151,14 +197,48 @@ namespace SugarDash.Presentation
             bool prompt = IsPromptVisible(stage);
             _shownAt = NextShownAt(prompt, _shownAt, Time.unscaledTime);
             if (root != null && root.activeSelf != prompt) root.SetActive(prompt);
-            if (prompt && messageText != null && tutorial.Step != null)
-                messageText.text = TutorialText.For(tutorial.Step.Value, tutorial.Type);
+            if (!prompt || tutorial.Step != _pageStep)
+            {
+                _page = 0;
+                _pageStep = prompt ? tutorial.Step : null;
+            }
+            TutorialPage page = null;
+            int pageCount = 0;
+            if (prompt && tutorial.Step != null)
+            {
+                var pages = TutorialText.Pages(tutorial.Step.Value, tutorial.Type);
+                pageCount = pages.Count;
+                page = pages[Mathf.Min(_page, pages.Count - 1)];
+                if (messageText != null) messageText.text = page.Text;
+            }
+            DrawFoods(page);
+            if (backButton != null) SetActive(backButton.gameObject, HasPrevPage(_page, pageCount));
+            if (nextButton != null) SetActive(nextButton.gameObject, pageCount > 0);
+            if (pageText != null)
+            {
+                pageText.text = PageLabel(_page, pageCount);
+                SetActive(pageText.gameObject, pageCount > 1);
+            }
             bool skip = IsSkipVisible(_flow.Screen, _flow.IsPauseMenuOpen, tutorial.IsGuided, tutorial.CanSkip);
             if (skipButton != null && skipButton.gameObject.activeSelf != skip) skipButton.gameObject.SetActive(skip);
 
             SetActive(RetryObject, IsRetryVisible(stage));
             DrawSwipeArrow(prompt ? tutorial.Step : null);
             // 설명 창이 나타나는 연출은 Box의 ScreenPopIn이 한다.
+        }
+
+        private void DrawFoods(TutorialPage page)
+        {
+            if (foodPictures == null) return;
+            var set = ChoicePictures.Of(pictureAsset);
+            for (int i = 0; i < foodPictures.Length; i++)
+            {
+                var slot = foodPictures[i];
+                if (slot == null) continue;
+                var sprite = page != null && i < page.FoodIds.Count ? set.Food(page.FoodIds[i]) : null;
+                slot.sprite = sprite;
+                SetActive(slot.gameObject, sprite != null);
+            }
         }
 
         private void DrawSwipeArrow(TutorialStep? step)

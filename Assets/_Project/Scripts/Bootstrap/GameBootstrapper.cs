@@ -160,7 +160,9 @@ namespace SugarDash.Bootstrap
             _subscriptions.Add(choicePanel.Bind(_run, _bus, _config.Glucose.Snacks, Environment.TickCount));
             _subscriptions.Add(resultScreen.Bind(_flow));
             if (symptomEffect != null)
-                _subscriptions.Add(symptomEffect.Bind(_run, _config.Symptom.ShakeStartGlucose, _config.Elimination.GlucoseLow));
+                _subscriptions.Add(symptomEffect.Bind(_run, _config.Symptom.ShakeStartGlucose, _config.Elimination.GlucoseLow,
+                    // 튜토리얼 위험 인지 안내 동안은 흔들림을 또렷하게(설명 문구가 "화면이 흔들리면"으로 가르친다).
+                    () => _tutorial.IsGuided && _tutorial.Step == TutorialStep.HypoRecognize));
 
             // 빈 틀 화면은 씬에 연결된 것만 묶는다. 해제는 구독 목록에서 한다.
             if (titleScreen == null) Debug.LogWarning("titleScreen이 비어 있다. 화면이 보이지 않는다. docs/dev-scene.md 6.6절을 본다.");

@@ -16,5 +16,14 @@ namespace SugarDash.Presentation.Tests
         [Test] public void StateScale_Eliminated_IsSceneScale() => Assert.That(SymptomShake.StateScale(SugarDash.App.RunState.Eliminated, 0.3), Is.EqualTo(0.3));
         [Test] public void StateScale_Paused_IsZero() => Assert.That(SymptomShake.StateScale(SugarDash.App.RunState.Paused, 0.3), Is.EqualTo(0));
         [Test] public void StateScale_Idle_IsZero() => Assert.That(SymptomShake.StateScale(SugarDash.App.RunState.Idle, 0.3), Is.EqualTo(0));
+
+        [Test]
+        public void WithFloor_OnlyWhenEmphasized()
+        {
+            Assert.That(SymptomShake.WithFloor(0.4, true, 0.7), Is.EqualTo(0.7));
+            Assert.That(SymptomShake.WithFloor(0.9, true, 0.7), Is.EqualTo(0.9));
+            Assert.That(SymptomShake.WithFloor(0.4, false, 0.7), Is.EqualTo(0.4));
+            Assert.That(SymptomShake.WithFloor(0, false, 0.7), Is.EqualTo(0));
+        }
     }
 }

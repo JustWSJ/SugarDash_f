@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 068838c2a94f44f87938e3d34014e6a1, type: 3}
+  m_Name: ChoicePictures
+  m_EditorClassIdentifier: SugarDash.Presentation::SugarDash.Presentation.ChoicePictures
+  set:
+    foods:
+    - foodId: water
+      sprite: {fileID: 21300000, guid: d07b5111a226c4d09af7700fb60811b5, type: 3}
+    - foodId: juice
+      sprite: {fileID: 21300000, guid: 97b714df865134b0999a055a54eec75b, type: 3}
+    - foodId: soda
+      sprite: {fileID: 21300000, guid: d4ca07a5e73a2441c9f5295f85c9ea3e, type: 3}
+    - foodId: apple
+      sprite: {fileID: 21300000, guid: 6a0f6acbc2a2c4babac1238bdade0f32, type: 3}
+    - foodId: chicken
+      sprite: {fileID: 21300000, guid: 4bc5293f0d97f4adebc938ca703abd49, type: 3}
+    - foodId: pizza
+      sprite: {fileID: 21300000, guid: 05642138b6fe0483f8b21a0277032a89, type: 3}
+    - foodId: burger
+      sprite: {fileID: 21300000, guid: 9f16e8144a34543e5bc1c3fccb7c1a47, type: 3}
+    - foodId: cracker
+      sprite: {fileID: 21300000, guid: 71ceae59ce3b64b5f957cbdd6ba32b64, type: 3}
+    keepRunning: {fileID: 21300000, guid: 2f6817db70ac14173b57d687b30af3e2, type: 3}
+    noSugar: {fileID: 21300000, guid: b73ccaa4c73a94310a2e3281d4db62cb, type: 3}
+    recheck: {fileID: 21300000, guid: b7366411b1ee3444b9cfe82fa828a28c, type: 3}
+    runAgain: {fileID: 21300000, guid: f0f84743dc019416bb21c4280833c06d, type: 3}
+    tellAdult: {fileID: 21300000, guid: 117fd56cef5fc49c9b98fef4f318c2fd, type: 3}
+    doseUnder: {fileID: 21300000, guid: f243ba469c7e2415797bff41f09a7574, type: 3}
+    doseProper: {fileID: 21300000, guid: ee4e8569406b94598992350aa96bf5c6, type: 3}
+    doseOver: {fileID: 21300000, guid: 4f52ac9d95f8642068f8499ab0ecfd81, type: 3}

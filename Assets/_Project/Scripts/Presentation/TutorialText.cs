@@ -1,4 +1,5 @@
 // 기획 담당이 확정할 자리 채움 문구
+using System.Collections.Generic;
 using SugarDash.App;
 using SugarDash.Domain.Config;
 
@@ -12,11 +13,43 @@ namespace SugarDash.Presentation
     public static class TutorialText
     {
         public const string TryAgain = "다시 해봐요"; // 확정
-        public const string TapHint = "화면을 눌러요";
+        public const string TapHint = "화살표를 눌러요";
         public const string Skip = "건너뛰기"; // 확정
         public const string SettingsButton = "튜토리얼 다시하기"; // 확정
 
         private const string Notify = "어른에게 알리기를 골라요";
+
+        /// <summary>
+        /// 안내 하나의 설명 창 장들. 화면을 누를 때마다 다음 장으로 넘어가고, 마지막 장(For와 같은 문구)을 누르면 안내가 이어진다.
+        /// 간식·음식 안내 앞에는 음식 등급 설명 장이 붙는다(docs/food-evidence.md 1절의 등급 뜻만 쓴다).
+        /// </summary>
+        public static IReadOnlyList<TutorialPage> Pages(TutorialStep step, TrackType type)
+        {
+            string last = For(step, type);
+            switch (step)
+            {
+                case TutorialStep.Snack:
+                    return new[]
+                    {
+                        new TutorialPage("주스와 탄산음료는 빠른 당이에요. 먹고 곧 혈당이 올라요", "juice", "soda"),
+                        new TutorialPage("사과와 크래커는 느린 당이에요. 천천히 혈당이 올라요", "apple", "cracker"),
+                        new TutorialPage(last),
+                    };
+                case TutorialStep.FoodRow:
+                    return new[]
+                    {
+                        new TutorialPage("주스와 탄산음료는 먹고 곧 혈당이 올라요", "juice", "soda"),
+                        new TutorialPage("사과와 크래커는 천천히 혈당이 올라요", "apple", "cracker"),
+                        new TutorialPage("치킨, 피자, 햄버거는 처음엔 덜 오르고 뒤에 오래 올라요", "chicken", "pizza", "burger"),
+                        new TutorialPage("물은 혈당을 올리지 않아요", "water"),
+                        new TutorialPage(last),
+                    };
+                case TutorialStep.HypoRespond:
+                    return new[] { new TutorialPage(last, "juice", "soda") };
+                default:
+                    return new[] { new TutorialPage(last) };
+            }
+        }
 
         /// <summary>안내 하나의 설명 문구. 유형과 관계없이 같은 안내(이동, 점프, 슬라이드)는 같다.</summary>
         public static string For(TutorialStep step, TrackType type)

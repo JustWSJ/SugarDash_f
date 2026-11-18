@@ -48,8 +48,32 @@ namespace SugarDash.Presentation
         [Tooltip("경험치·레벨 오름 줄.")]
         [SerializeField] private Text levelText;
 
+        [Header("레벨 오름 연출")]
+        [Tooltip("레벨이 오른 판에만 켜는 것들(\"레벨 업!\" 띠, 반짝이).")]
+        [SerializeField] private GameObject levelUpDecor;
+        [SerializeField] private Text levelUpText;
+        [Tooltip("레벨이 오르면 한 번 커졌다 돌아오는 레벨 원.")]
+        [SerializeField] private RectTransform levelCircle;
+        [Tooltip("레벨 원이 커졌다 돌아오는 시간(실제 초). 결과 화면이 뜬 뒤 popDelaySec 뒤에 시작한다.")]
+        [SerializeField] private float popSec = 0.5f;
+        [SerializeField] private float popDelaySec = 0.3f;
+        [Tooltip("가장 커질 때의 배율.")]
+        [SerializeField] private float popScale = 1.3f;
+
         private GameFlowController _flow;
         private bool _shown;
+        // 레벨 원 연출이 시작된 시각(unscaled). 연출이 없으면 음수.
+        private float _popStart = -1f;
+
+        /// <summary>
+        /// 레벨 원 배율. delay 전과 delay+duration 뒤는 1, 그 사이에 1 → peak → 1로 한 번 부풀었다 돌아온다.
+        /// </summary>
+        public static float PopScaleAt(float elapsed, float delay, float duration, float peak)
+        {
+            float t = elapsed - delay;
+            if (t <= 0f || !(duration > 0f) || t >= duration) return 1f;
+            return 1f + (peak - 1f) * Mathf.Sin(Mathf.PI * t / duration);
+        }
 
         /// <summary>GameBootstrapper가 연결한다. 반환값을 Dispose하면 버튼 연결을 해제한다.</summary>
         public IDisposable Bind(GameFlowController flow)
@@ -62,6 +86,7 @@ namespace SugarDash.Presentation
             if (titleButton != null) titleButton.onClick.AddListener(OnTitle);
             if (scoreLabelText != null) scoreLabelText.text = ResultScreenText.ScoreLabel;
             if (newBestText != null) newBestText.text = ResultScreenText.NewBestBadge;
+            if (levelUpText != null) levelUpText.text = LevelText.LevelUpBadge;
 
             return new Unbinder(() =>
             {
@@ -74,11 +99,19 @@ namespace SugarDash.Presentation
         private void Update()
         {
             if (_flow == null) return;
+            if (_popStart >= 0f) Pop();
             if (_flow.IsShowingResult == _shown) return;
 
             _shown = _flow.IsShowingResult;
             if (_shown) Draw();
             else root.SetActive(false);
+        }
+
+        private void Pop()
+        {
+            float elapsed = Time.unscaledTime - _popStart;
+            if (levelCircle != null) levelCircle.localScale = Vector3.one * PopScaleAt(elapsed, popDelaySec, popSec, popScale);
+            if (elapsed >= popDelaySec + popSec) _popStart = -1f;
         }
 
         private void Draw()
@@ -89,6 +122,7 @@ namespace SugarDash.Presentation
                 summaryText.text = "";
                 SetActive(scoreCard, false);
                 SetActive(levelRow, false);
+                StartLevelUp(false);
                 root.SetActive(true);
                 return;
             }
@@ -119,6 +153,15 @@ namespace SugarDash.Presentation
             SetActive(levelRow, xpGained != null);
             if (levelNumberText != null) levelNumberText.text = LevelText.Level(level);
             if (levelText != null) levelText.text = LevelText.ResultLines(xpGained, leveledUp, level);
+            StartLevelUp(xpGained != null && leveledUp);
+        }
+
+        /// <summary>레벨이 오른 판이면 띠·반짝이를 켜고 레벨 원 연출을 시작한다. 아니면 끄고 원 크기를 되돌린다.</summary>
+        private void StartLevelUp(bool leveledUp)
+        {
+            SetActive(levelUpDecor, leveledUp);
+            _popStart = leveledUp ? Time.unscaledTime : -1f;
+            if (levelCircle != null) levelCircle.localScale = Vector3.one;
         }
 
         /// <summary>요약의 마무리 줄(맨 아래 줄)만 색을 입힌다(Text의 Rich Text). 마무리 줄이 없으면 그대로.</summary>
