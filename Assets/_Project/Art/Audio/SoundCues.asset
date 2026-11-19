@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29700105f679946198f453862baa62b3, type: 3}
+  m_Name: SoundCues
+  m_EditorClassIdentifier: SugarDash.Presentation::SugarDash.Presentation.SoundCues
+  tap: {fileID: 8300000, guid: 254205db1a3e741959afc00dca6e70e2, type: 3}
+  choose: {fileID: 8300000, guid: 6ac3a4ee7e8324e1b93875f3c1006802, type: 3}
+  warning: {fileID: 8300000, guid: b61d1cf206189441d9e66c24c489c547, type: 3}
+  alert: {fileID: 8300000, guid: 46f67f76b219c403ea28c41aebb25f59, type: 3}
+  countTick: {fileID: 8300000, guid: 251ae04757e5d45a78614cd884d66b17, type: 3}
+  countGo: {fileID: 8300000, guid: 1acf3d6f1c26243208b314169b7b10e0, type: 3}
+  result: {fileID: 8300000, guid: 6fcc55c9c1a764ddfb4aa3b619b0188f, type: 3}
+  levelUp: {fileID: 8300000, guid: 2d7e2cecd84f846a094604e6a3f4025b, type: 3}
+  eat: {fileID: 8300000, guid: bfb84a69b76542aa91c77d825e6aec32, type: 3}
+  volume: 0.8

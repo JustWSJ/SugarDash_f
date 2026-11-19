@@ -517,6 +517,20 @@ Unity 에디터 기본 배치:
 2. `Bootstrapper`의 `Screen Fade` 칸에 `ScreenFade`를 끌어다 놓는다. 비워 두면 전환 없이 바로 바뀐다.
 3. 덮개 색은 `ScreenFade > Overlay`의 `Image` `Color`에서, 시간은 `ScreenFade`의 `Duration Sec`에서 바꾼다. 색의 A(투명도)는 코드가 바꾸므로 R·G·B만 고친다.
 
+## 6.18 효과음 (SoundCues)
+
+버튼 누름, 선택, 게이지 경고, 선택 패널 열림, 재개 카운트다운(3·2·1과 출발), 결과, 레벨 업, 트랙 음식 먹기에 소리를 낸다. 정답·오답은 소리로 나누지 않는다. 소리만 내고 판정·기록을 바꾸지 않는다.
+
+1. Hierarchy 빈 곳에서 오른쪽 클릭 → `Create Empty`, 이름을 `SoundCues`로 한다(Canvas 밖 맨 위 단계).
+2. Inspector `Add Component`로 `Sound Cue View`를 더한다. `Audio Source`가 같이 붙는다. `Audio Source`의 `Play On Awake`는 끈다.
+3. `Sound Cue View` 칸:
+   - `Cues`: `Assets/_Project/Art/Audio/SoundCues` 에셋
+   - `Button Root`: `Canvas` (이 아래 버튼을 누르면 버튼 소리)
+   - `Skip Buttons Under`: 크기 1, `HypoChoice` (선택 패널 버튼은 고른 뒤 선택 소리가 대신 난다)
+   - `Level Up Delay Sec`: 결과 화면의 `Pop Delay Sec`과 같게(기본 0.3)
+4. `Bootstrapper`의 `Sound Cues` 칸에 `SoundCues` 오브젝트를 끌어다 놓는다. 비워 두면 소리가 나지 않는다.
+5. 소리 파일은 `SoundCues` 에셋의 칸에서 바꾼다. 칸을 비우면 그 소리만 나지 않는다. 소리 크기는 에셋의 `Volume`.
+
 ## 7. 러너 (캐릭터, 트랙, 입력)
 
 캐릭터와 트랙의 모양(캡슐, 상자, 구)은 실행하면 코드가 만든다. 여기서는 빈 오브젝트 3개에 컴포넌트를 붙이고 카메라만 연결한다.

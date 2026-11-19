@@ -51,3 +51,11 @@
   - 장애물이 패턴(묶음) 단위로 나오게 바뀌었다: [track-patterns.md](track-patterns.md). 지금은 예전과 같은 "장애물 하나" 패턴만 들어 있어 보기에는 거의 같다. 1형 저혈당 1단계(측정기 누르기) 동안에는 쉬운 패턴만 새로 나온다.
   - 팀원2(월드): `Assets/_Project/Art/World/TrackPatterns.asset`에 패턴을 만들 수 있다(roadmap 2.2절 "시작 가능"). Inspector에서 고치고, Console 경고가 없고 `ProjectAsset_PassesRules_AndSpacing` 테스트가 통과하면 push한다. `Timing` 칸은 바꾸지 않는다(team-rules 2.3절).
   - 확인 방법은 [dev-scene.md](dev-scene.md) 9.16절이다.
+
+## 공지 6
+
+- 날짜: 2026-11-19
+- 대상: 전원, 팀원1(캐릭터), 팀원2(월드)
+- 내용:
+  - 남은 소리: 팀원1(캐릭터)은 발소리, 점프, 슬라이드, 부딪힘. 팀원2(월드)는 배경음, 맵 환경음(roadmap 2.1절, 5.4절).
+  - 화면 효과음 9개(버튼, 선택, 경고, 알림, 카운트, 출발, 결과, 레벨 업, 먹기)는 들어왔다. 지금은 임시 소리라 파일만 바꾸면 된다: `Assets/_Project/Art/Audio/`의 `Sfx_*.wav`를 같은 이름의 새 파일로 덮어쓰면 그대로 들어간다. 바꾼 소리의 출처는 `Assets/_Project/Art/LICENSES.md`에 적는다.

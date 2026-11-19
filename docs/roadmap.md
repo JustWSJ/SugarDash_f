@@ -40,9 +40,9 @@
 
 | 담당 | 그림·모델 | 소리 | 기획 초안 | Unity 작업 | 빈 틀 채우기(코드) |
 | --- | --- | --- | --- | --- | --- |
-| 팀원1(캐릭터) | 주인공, 어른 캐릭터, 애니메이션(지친 상태 포함) | 발소리, 점프, 부딪힘, 먹기 | 캐릭터 상태 연출 콘티, 탈락 장면 콘티 | 캐릭터 프리팹, 애니메이터 컨트롤러 | 캐릭터 애니메이션 연결: 레인 이동·점프·슬라이드·멈춤 상태를 애니메이터에 전달, 2형 지친 상태 반영 |
+| 팀원1(캐릭터) | 주인공, 어른 캐릭터, 애니메이션(지친 상태 포함) | 발소리, 점프, 부딪힘 | 캐릭터 상태 연출 콘티, 탈락 장면 콘티 | 캐릭터 프리팹, 애니메이터 컨트롤러 | 캐릭터 애니메이션 연결: 레인 이동·점프·슬라이드·멈춤 상태를 애니메이터에 전달, 2형 지친 상태 반영 |
 | 팀원2(월드) | 트랙, 장애물, 쉬는 오브젝트(벤치, 게임기), 음식, 생활 환경 맵 3종, 낮·밤 조명 | 배경음, 맵 환경음 | 맵별 특성, 레벨 배치 패턴 | 맵·장애물·음식 프리팹, 조명 설정 | 맵 전환 보기(구간이 바뀌면 맵 교체), 낮·밤 조명·하늘 바꾸기 |
-| 구조(화면) | UI 시안, 아이콘, 선택지 그림, 글꼴, 앱 아이콘·스플래시 | 버튼, 경고, 정답·오답, 카운트다운 | 화면 문구, 의학 출처 발췌 조사 | UI 프리팹(배치) | 효과음 재생, 타이틀·유형 선택 화면 버튼, notice 아이콘·말풍선 표시 |
+| 구조(화면) | UI 시안, 아이콘, 선택지 그림, 글꼴, 앱 아이콘·스플래시 | 버튼, 경고, 선택, 카운트다운, 결과, 먹기 | 화면 문구, 의학 출처 발췌 조사 | UI 프리팹(배치) | 효과음 재생, 타이틀·유형 선택 화면 버튼, notice 아이콘·말풍선 표시 |
 | 구조 | | | 규칙 설계, 결정 사항 정리 | 씬 조립 | 규칙 코드(Domain, App, Infrastructure), 조립(Bootstrap), 설정, 빈 틀 만들기, 에셋 연결, 스크립트 PR 리뷰 |
 
 - 빈 틀에는 연습용 씬에서 혼자 시험할 수 있는 방법(예: Inspector에서 상태를 바꿔 보는 값)을 같이 넣음. 영역 담당 팀원이 게임 전체를 돌리지 않아도 확인할 수 있게 하기 위함
@@ -85,13 +85,13 @@
 | 구조(화면) | 타이틀·유형 선택·설정 UI: 시안을 바탕으로 `Assets/_Project/Art/UI/Screens/`의 `TitleScreen`·`TypeSelect`·`Settings` 프리팹 꾸미기(바탕 그림, 버튼 그림) | [dev-scene.md](dev-scene.md) 3.1·6.6절 | 완료(시안 모양, [ui-style.md](ui-style.md)). 바탕 그림은 시안 그림 임시 |
 | 구조(화면) | 한글 글꼴: 모든 화면 글자를 주아(OFL)로 통일 | [dev-scene.md](dev-scene.md) 3.2절, README 5절 | 완료 |
 | 구조(화면) | 화면 문구 초안: 유형 선택 안내, 타이틀, 2형 tell, 2형 결과 요약. `docs/handoff/`에 정리 | [type-select.md](type-select.md) 2.1·4.4·9.2절 | 완료([handoff/screen-text.md](handoff/screen-text.md)에 모든 화면 문구 정리, 확정은 담당자) |
-| 구조(화면) | `TitleScreenView`, `TypeSelectView`, `SettingsView` 채우기: 화면 배치, 버튼 그림·소리 | `Assets/_Project/Scripts/Presentation/Screen/TitleScreenView.cs`, `TypeSelectView.cs`, `SettingsView.cs`, [type-select.md](type-select.md) 2·11절 | 진행 중(구조). 시안 모양 넣음, 버튼 소리 남음 |
+| 구조(화면) | `TitleScreenView`, `TypeSelectView`, `SettingsView` 채우기: 화면 배치, 버튼 그림·소리 | `Assets/_Project/Scripts/Presentation/Screen/TitleScreenView.cs`, `TypeSelectView.cs`, `SettingsView.cs`, [type-select.md](type-select.md) 2·11절 | 완료(시안 모양, 버튼 소리 [ui-style.md](ui-style.md) 4절). 소리는 임시 전자음 |
 | 구조(화면) | notice 그림: 갈증 말풍선, 화장실 아이콘(고혈당), 떨리는 손(저혈당). 근거 [notice-evidence.md](notice-evidence.md) | [type-select.md](type-select.md) 11절 | 진행 중(구조). 임시 그림 넣음(`Sprites/Notice/`), 정식 그림으로 바꾸기 남음 |
 | 구조(화면) | `NoticeSignalView` 채우기: 고혈당 신호(갈증 말풍선, 화장실 아이콘 깜빡임), 저혈당 신호(떨리는 손) | `Assets/_Project/Scripts/Presentation/Screen/NoticeSignalView.cs`, [type-select.md](type-select.md) 11절 | 완료(말풍선 안 갈증·화장실 그림, 화장실 깜빡임, 떨리는 손 흔들림) |
 | 구조(화면) | `SleepTransitionView` 채우기: 수면 전환(잠자는 그림, 해·달 전환). 암전 길이는 Inspector 값 | `Assets/_Project/Scripts/Presentation/Screen/SleepTransitionView.cs`, [section2.md](section2.md) 5절 | 진행 중(구조). 남색 덮개와 달→해 그림 넣음, 잠자는 그림 남음 |
 | 구조(화면) | `TutorialPromptView` 채우기: 화면 전체를 덮어 아래 터치를 막고 ▶ 버튼으로 넘기는 설명 창(옅은 어두운 바탕 위 불투명 흰 박스, 검정 글자), 문구, `화살표를 눌러요` 안내 글자, 그림 자리, `건너뛰기`, `다시 해봐요`. `SettingsView`의 `튜토리얼 다시하기` 버튼 그림 | `Assets/_Project/Scripts/Presentation/Screen/TutorialPromptView.cs`, [tutorial.md](tutorial.md) 8절 | 진행 중(구조). 시안 모양과 그림 자리 넣음, 안내마다 그림 남음 |
 | 구조(화면) | `HabitPromptView` 채우기: 1형 혈당 재기 습관 순간의 말풍선(측정기 버튼 옆), 나타나고 사라지는 연출 | `Assets/_Project/Scripts/Presentation/Screen/HabitPromptView.cs`, [section2.md](section2.md) 7.1절 | 완료(시안 모양, 측정기 쪽 꼬리) |
-| 구조(화면) | `PauseMenuView` 채우기: 일시정지 버튼 아이콘, 메뉴 배치·그림, 버튼 소리 | `Assets/_Project/Scripts/Presentation/Screen/PauseMenuView.cs`, [pause-elimination.md](pause-elimination.md) 2·5절 | 진행 중(구조). 시안 모양 넣음, 버튼 소리 남음 |
+| 구조(화면) | `PauseMenuView` 채우기: 일시정지 버튼 아이콘, 메뉴 배치·그림, 버튼 소리 | `Assets/_Project/Scripts/Presentation/Screen/PauseMenuView.cs`, [pause-elimination.md](pause-elimination.md) 2·5절 | 완료(시안 모양, 버튼 소리). 소리는 임시 전자음 |
 | 구조(화면) | `EliminationSpeechView` 채우기: 탈락 장면 말풍선 그림, 어른 쪽 꼬리, 나타나는 연출 | `Assets/_Project/Scripts/Presentation/Screen/EliminationSpeechView.cs`, [pause-elimination.md](pause-elimination.md) 3.2·5절 | 완료(시안 모양, 아래쪽 꼬리) |
 | 구조(화면) | 음식 8종 표시 이름: 문구 파일 `FoodText`(선택 패널 버튼, 양 묻는 제목, 고른 뒤 문구). "을/를"은 받침에 맞춰 붙음 | `Assets/_Project/Scripts/Presentation/FoodText.cs` | 완료 |
 | 구조(화면) | 선택지 그림(2D): 음식 8종, 측정기, 양(조금·알맞게·많이), 어른에게 알리기, 다시 재기 | [food-evidence.md](food-evidence.md) | 진행 중(구조). 칸 연결과 임시 그림 넣음(`Sprites/Choice/`, 선택 패널 `Pictures` 칸), 정식 그림으로 바꾸기 남음 |
@@ -206,7 +206,9 @@
 
 | 작업 | 선행 |
 | --- | --- |
-| 배경음과 효과음: 점프, 슬라이드, 부딪힘, 음식 먹기, 혈당 경고, 측정, 선택, 정답·오답, 카운트다운, 결과 | 없음 |
+| 화면 효과음: 버튼, 선택, 혈당 경고, 선택 패널 열림, 카운트다운, 결과, 레벨 업, 트랙 음식 먹기. 정답·오답은 소리로 나누지 않음 | 완료(구조, `SoundCueView`, [ui-style.md](ui-style.md) 4절). 임시 전자음, 정식 소리로 바꾸기 남음 |
+| 캐릭터 효과음: 점프, 슬라이드, 부딪힘, 발소리 | 없음(팀원1) |
+| 배경음 | 없음 |
 | 맵별·낮밤 배경음 | 생활 환경 맵 목록, 하루 흐름 결정 |
 
 - 음성 안내는 2순위로 옮김(6절). 문구가 바뀔 때마다 다시 녹음하지 않도록 화면 문구가 확정된 뒤 함

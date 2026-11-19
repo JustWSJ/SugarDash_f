@@ -62,6 +62,7 @@ namespace SugarDash.Bootstrap
         [SerializeField] private ScreenFadeView screenFade;
         [SerializeField] private GuardianArrivalView guardianArrival;
         [SerializeField] private IntroCuttoonView introCuttoon;
+        [SerializeField] private SoundCueView soundCues;
         [Header("일시정지·탈락 장면")]
         [Tooltip("일시정지 메뉴에서 계속하기를 누른 뒤 3-2-1 길이(초). 세계가 달리던 중이었을 때만 쓴다.")]
         [SerializeField] private float pauseCountdownSec = 3f;
@@ -183,6 +184,8 @@ namespace SugarDash.Bootstrap
             if (eliminationSpeech != null) _subscriptions.Add(eliminationSpeech.Bind(_flow));
             if (screenFade != null) _subscriptions.Add(screenFade.Bind(_flow));
             if (introCuttoon != null) _subscriptions.Add(introCuttoon.Bind(_flow));
+            // 버튼 소리는 다른 화면이 버튼에 연결한 뒤에 건다(측정기는 HUD 명령이 먼저 이벤트를 낸다).
+            if (soundCues != null) _subscriptions.Add(soundCues.Bind(_flow, _run, _bus));
 
             // 장면이 바뀌면 트랙 배치를 그 장면 값으로 바로 바꾼다. 발행 시점에 CurrentScene은 이미 새 장면이다.
             _subscriptions.Add(_bus.Subscribe<SceneEntered>(e =>
