@@ -13,6 +13,8 @@ namespace SugarDash.Presentation
     {
         [Tooltip("비워 두면 자식에서 찾는다.")]
         [SerializeField] private Animator animator;
+        [Tooltip("장면에 맞춰 의상을 바꾸는 컴포넌트. 비워 두면 같은 오브젝트에서 찾는다. 없으면 의상을 바꾸지 않는다.")]
+        [SerializeField] private CharacterOutfitView outfit;
 
         private static readonly int IsRunningId = Animator.StringToHash("IsRunning");
         private static readonly int IsAirborneId = Animator.StringToHash("IsAirborne");
@@ -23,6 +25,8 @@ namespace SugarDash.Presentation
         private PlayerController _player;
         private int _lastSlideCount;
         private bool _wasSliding;
+        private string _lastSceneId;
+        private bool _outfitApplied;
 
         public void Init(RunController run, PlayerController player)
         {
@@ -30,10 +34,13 @@ namespace SugarDash.Presentation
             _player = player ?? throw new ArgumentNullException(nameof(player));
             if (animator == null) animator = GetComponentInChildren<Animator>();
             _lastSlideCount = player.SlideCount;
+            if (outfit == null) outfit = GetComponent<CharacterOutfitView>();
+            _outfitApplied = false;
         }
 
         private void LateUpdate()
         {
+            if (_run != null) UpdateOutfit();
             if (_run == null || animator == null) return;
 
             // TODO(캐릭터): 옆 이동·지친 상태 파라미터가 생기면 여기서 전달한다.
@@ -52,6 +59,18 @@ namespace SugarDash.Presentation
             if (sliding && _wasSliding && _player.SlideCount != _lastSlideCount) animator.Play(SlideStateId, 0, 0f);
             _lastSlideCount = _player.SlideCount;
             _wasSliding = sliding;
+        }
+
+        // 지금 장면 id를 의상 컴포넌트에 넘긴다. 장면이 실제로 바뀐 프레임에만 부른다.
+        // 장면 없는 구간(튜토리얼, 1구간)과 판 밖에서는 null이라 기본 의상을 입는다. 장면 id를 읽기만 한다.
+        private void UpdateOutfit()
+        {
+            if (outfit == null) return;
+            string sceneId = _run.CurrentScene?.Id;
+            if (_outfitApplied && sceneId == _lastSceneId) return;
+            _lastSceneId = sceneId;
+            _outfitApplied = true;
+            outfit.Show(sceneId);
         }
     }
 }
