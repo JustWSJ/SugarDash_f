@@ -912,6 +912,7 @@ MonoBehaviour:
   maxAmplitude: 0.3
   frequency: 12
   eliminatedScale: 0.3
+  tutorialMinIntensity: 0.7
 --- !u!224 &963224969 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1177348363282410040, guid: 9f2df01cef5014b5c9aeb0c018949f88, type: 3}
@@ -1151,7 +1152,7 @@ MonoBehaviour:
   stumbleSpeedFactor: 0.5
   cameraRig: {fileID: 961739753}
   cameraOffset: {x: 0, y: 4.5, z: -7}
-  viewPrefab: {fileID: 1958917026942392635, guid: a640653bc10bb354e8b4000466596398, type: 3}
+  viewPrefab: {fileID: 1596023372453244029, guid: 5f3f569099830cb4e93a7133a865781a, type: 3}
 --- !u!4 &1495567452
 Transform:
   m_ObjectHideFlags: 0
