@@ -6,6 +6,10 @@
 | `Characters/Cat/Cat_Player_v06.fbx` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
 | `Characters/Cat/CatCharacter.prefab` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
 | `Characters/Cat/CatAnimator_New.controller` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
+| `Characters/Cat/Cat_Player_v10_outfits.fbx` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
+| `Characters/Cat/Pajama_Print.png` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
+| `Characters/Cat/Pajama_Details.png` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
+| `Characters/Cat/CatCharacter_Outfits.prefab` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
 | `World/Obstacle_Low.fbx` | 직접 제작(AI 도구 활용) | 우승제 | 미정 |
 | `World/Obstacle_High.fbx` | 직접 제작(AI 도구 활용) | 우승제 | 미정 |
 | `World/Obstacle_LaneBlock.fbx` | 직접 제작(AI 도구 활용) | 우승제 | 미정 |
