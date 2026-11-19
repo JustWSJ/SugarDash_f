@@ -84,7 +84,7 @@
 | 구조(화면) | UI 디자인 시안(타이틀, 유형 선택, 설정, 혈당바, 측정기 버튼, 점수, 선택 패널, 카운트다운, 결과 화면). 웹 시안을 정하고 프리팹에 옮김 | [ui-style.md](ui-style.md) | 완료 |
 | 구조(화면) | 타이틀·유형 선택·설정 UI: 시안을 바탕으로 `Assets/_Project/Art/UI/Screens/`의 `TitleScreen`·`TypeSelect`·`Settings` 프리팹 꾸미기(바탕 그림, 버튼 그림) | [dev-scene.md](dev-scene.md) 3.1·6.6절 | 완료(시안 모양, [ui-style.md](ui-style.md)). 바탕 그림은 시안 그림 임시 |
 | 구조(화면) | 한글 글꼴: 모든 화면 글자를 주아(OFL)로 통일 | [dev-scene.md](dev-scene.md) 3.2절, README 5절 | 완료 |
-| 구조(화면) | 화면 문구 초안: 유형 선택 안내, 타이틀, 2형 tell, 2형 결과 요약. `docs/handoff/`에 정리 | [type-select.md](type-select.md) 2.1·4.4·9.2절 | 시작 가능 |
+| 구조(화면) | 화면 문구 초안: 유형 선택 안내, 타이틀, 2형 tell, 2형 결과 요약. `docs/handoff/`에 정리 | [type-select.md](type-select.md) 2.1·4.4·9.2절 | 완료([handoff/screen-text.md](handoff/screen-text.md)에 모든 화면 문구 정리, 확정은 담당자) |
 | 구조(화면) | `TitleScreenView`, `TypeSelectView`, `SettingsView` 채우기: 화면 배치, 버튼 그림·소리 | `Assets/_Project/Scripts/Presentation/Screen/TitleScreenView.cs`, `TypeSelectView.cs`, `SettingsView.cs`, [type-select.md](type-select.md) 2·11절 | 진행 중(구조). 시안 모양 넣음, 버튼 소리 남음 |
 | 구조(화면) | notice 그림: 갈증 말풍선, 화장실 아이콘(고혈당), 떨리는 손(저혈당). 근거 [notice-evidence.md](notice-evidence.md) | [type-select.md](type-select.md) 11절 | 진행 중(구조). 임시 그림 넣음(`Sprites/Notice/`), 정식 그림으로 바꾸기 남음 |
 | 구조(화면) | `NoticeSignalView` 채우기: 고혈당 신호(갈증 말풍선, 화장실 아이콘 깜빡임), 저혈당 신호(떨리는 손) | `Assets/_Project/Scripts/Presentation/Screen/NoticeSignalView.cs`, [type-select.md](type-select.md) 11절 | 완료(말풍선 안 갈증·화장실 그림, 화장실 깜빡임, 떨리는 손 흔들림) |
@@ -264,5 +264,6 @@
 | [log-format.md](log-format.md) | 기록 파일 형식 |
 | [result-screen.md](result-screen.md) | 결과 화면 |
 | [tutorial.md](tutorial.md) | 튜토리얼 판, 안내 순서, 기획 담당이 고칠 문구 |
+| [handoff/screen-text.md](handoff/screen-text.md) | 모든 화면 문구와 확정 여부, 문구 파일 위치 |
 | [dev-scene.md](dev-scene.md) | 개발용 씬 만들기와 확인 시나리오 |
 | [build.md](build.md) | 빌드 설정과 미정 항목 |

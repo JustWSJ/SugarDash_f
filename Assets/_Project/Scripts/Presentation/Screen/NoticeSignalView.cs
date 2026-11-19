@@ -42,9 +42,7 @@ namespace SugarDash.Presentation
         /// <summary>신호별 문구(docs/notice-evidence.md). 신호가 없으면 빈 문자열.</summary>
         public static string LabelOf(NoticeKind? signal)
         {
-            if (signal == NoticeKind.High) return "목말라요";
-            if (signal == NoticeKind.Low) return "몸이 떨려요";
-            return "";
+            return ScreenText.Signal(signal);
         }
 
         /// <summary>깜빡임 투명도. 주기의 처음과 끝이 1, 가운데가 minAlpha. 주기가 0 이하이면 1.</summary>

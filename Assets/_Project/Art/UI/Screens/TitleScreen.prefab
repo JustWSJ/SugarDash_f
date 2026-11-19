@@ -873,6 +873,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: SugarDash.Presentation::SugarDash.Presentation.TitleScreenView
   root: {fileID: 2166595845004767655}
   typeText: {fileID: 7234727053537005851}
+  logoText: {fileID: 3212398430877856578}
   startButton: {fileID: 8842079879554027107}
   settingsButton: {fileID: 4491776898552303613}
   levelBadge: {fileID: 3980516090508049116}

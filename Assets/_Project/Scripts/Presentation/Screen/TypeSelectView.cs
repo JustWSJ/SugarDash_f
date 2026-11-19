@@ -27,9 +27,11 @@ namespace SugarDash.Presentation
         public IDisposable Bind(GameFlowController flow)
         {
             _flow = flow ?? throw new ArgumentNullException(nameof(flow));
-            if (titleText != null) titleText.text = "어떤 당뇨가 있나요?";
-            if (guideText != null) guideText.text = "보호자와 함께 골라 주세요";
-            if (noteText != null) noteText.text = "나중에 설정에서 바꿀 수 있어요";
+            if (titleText != null) titleText.text = ScreenText.TypeSelectTitle;
+            if (guideText != null) guideText.text = ScreenText.TypeSelectGuide;
+            if (noteText != null) noteText.text = ScreenText.TypeSelectNote;
+            ButtonLabel.Set(type1Button, ScreenText.TypeName(TrackType.Type1));
+            ButtonLabel.Set(type2Button, ScreenText.TypeName(TrackType.Type2));
             if (type1Button != null) type1Button.onClick.AddListener(OnType1);
             else Debug.LogWarning("TypeSelectView: type1Button이 비어 있다. 씬에서 연결해야 한다.");
             if (type2Button != null) type2Button.onClick.AddListener(OnType2);

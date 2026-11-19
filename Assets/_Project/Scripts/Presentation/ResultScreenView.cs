@@ -87,6 +87,8 @@ namespace SugarDash.Presentation
             if (scoreLabelText != null) scoreLabelText.text = ResultScreenText.ScoreLabel;
             if (newBestText != null) newBestText.text = ResultScreenText.NewBestBadge;
             if (levelUpText != null) levelUpText.text = LevelText.LevelUpBadge;
+            ButtonLabel.Set(retryButton, ScreenText.Retry);
+            ButtonLabel.Set(titleButton, ScreenText.ResultQuit);
 
             return new Unbinder(() =>
             {

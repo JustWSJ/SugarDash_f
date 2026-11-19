@@ -24,7 +24,7 @@ namespace SugarDash.Presentation
             if (e.Step == HypoStep.Dose && !string.IsNullOrEmpty(doseSnackId))
             {
                 string amount = DoseAmount(e.ChoiceId);
-                if (amount != null) return $"{FoodText.WithObjectParticle(doseSnackId)} {amount} {(IsDrink(doseSnackId) ? "마셨어요" : "먹었어요")}";
+                if (amount != null) return $"{FoodText.WithObjectParticle(doseSnackId)} {amount} {(FoodText.IsDrink(doseSnackId) ? "마셨어요" : "먹었어요")}";
             }
 
             switch (e.ChoiceId)
@@ -77,9 +77,6 @@ namespace SugarDash.Presentation
                 default: return null;
             }
         }
-
-        // 마시는 것이면 "마셨어요", 아니면 "먹었어요".
-        private static bool IsDrink(string foodId) => foodId == "juice" || foodId == "soda" || foodId == "water";
 
         public static string ForGuardianNotified() => Notified;
 

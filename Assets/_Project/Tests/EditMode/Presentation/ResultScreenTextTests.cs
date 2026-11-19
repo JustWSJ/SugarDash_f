@@ -244,5 +244,17 @@ namespace SugarDash.Presentation.Tests
             foreach (var text in texts)
                 foreach (var word in Forbidden) Assert.That(text, Does.Not.Contain(word), text);
         }
+
+        [Test]
+        public void MissedLines_DoNotBlame()
+        {
+            var type1 = ResultScreenText.Summary(Summary(RunOutcome.Eliminated, Event(false), Event(false)));
+            var type2 = ResultScreenText.Summary(Type2Summary(new[] { false }, new[] { false }));
+            foreach (var text in new[] { type1, type2 })
+            {
+                Assert.That(text, Does.Not.Contain("아쉬"));
+                Assert.That(text, Does.Contain("있었어요"));
+            }
+        }
     }
 }

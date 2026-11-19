@@ -24,6 +24,9 @@ namespace SugarDash.Presentation
             }
         }
 
+        /// <summary>마시는 음식인지("마셨어요", "마실까요"를 쓴다). 아니면 "먹었어요", "먹을까요".</summary>
+        public static bool IsDrink(string id) => id == "juice" || id == "soda" || id == "water";
+
         /// <summary>이름에 "을/를"을 붙인다(받침이 있으면 을). 한글로 끝나지 않으면 "을(를)".</summary>
         public static string WithObjectParticle(string id)
         {

@@ -37,7 +37,13 @@ namespace SugarDash.Presentation
         public IDisposable Bind(GameFlowController flow)
         {
             _flow = flow ?? throw new ArgumentNullException(nameof(flow));
-            if (titleText != null) titleText.text = "설정";
+            if (titleText != null) titleText.text = ScreenText.SettingsTitle;
+            ButtonLabel.Set(type1Button, ScreenText.TypeName(TrackType.Type1));
+            ButtonLabel.Set(type2Button, ScreenText.TypeName(TrackType.Type2));
+            ButtonLabel.SetIn(type1CurrentBadge, ScreenText.CurrentType);
+            ButtonLabel.SetIn(type2CurrentBadge, ScreenText.CurrentType);
+            ButtonLabel.Set(introButton, ScreenText.IntroReplay);
+            ButtonLabel.Set(backButton, ScreenText.Back);
             if (type1Button != null && type1Button.image != null) _type1Color = type1Button.image.color;
             if (type2Button != null && type2Button.image != null) _type2Color = type2Button.image.color;
             if (type1Button != null) type1Button.onClick.AddListener(OnType1);
@@ -49,8 +55,7 @@ namespace SugarDash.Presentation
             if (tutorialButton != null)
             {
                 tutorialButton.onClick.AddListener(OnTutorial);
-                var label = tutorialButton.GetComponentInChildren<Text>();
-                if (label != null) label.text = TutorialText.SettingsButton;
+                ButtonLabel.Set(tutorialButton, TutorialText.SettingsButton);
             }
             else Debug.LogWarning("SettingsView: tutorialButton이 비어 있다. 씬에서 연결해야 한다.");
             if (backButton != null) backButton.onClick.AddListener(OnBack);

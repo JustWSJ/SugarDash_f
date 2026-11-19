@@ -14,6 +14,8 @@ namespace SugarDash.Presentation
         [Tooltip("화면 전체 묶음. 보이고 숨길 대상.")]
         [SerializeField] private GameObject root;
         [SerializeField] private Text typeText;
+        [Tooltip("위쪽 게임 이름 글자(로고 그림을 넣으면 비워 둔다).")]
+        [SerializeField] private Text logoText;
         [SerializeField] private Button startButton;
         [SerializeField] private Button settingsButton;
         [Header("레벨 표시(왼쪽 위)")]
@@ -31,17 +33,15 @@ namespace SugarDash.Presentation
         /// <summary>타이틀과 설정 화면에서 보인다. 설정 창은 어두워진 타이틀 위에 뜬다.</summary>
         public static bool IsVisible(FlowScreen screen) => screen == FlowScreen.Title || screen == FlowScreen.Settings;
 
-        public static string TypeLabel(TrackType? type)
-        {
-            if (type == TrackType.Type1) return "1형";
-            if (type == TrackType.Type2) return "2형";
-            return "";
-        }
+        public static string TypeLabel(TrackType? type) => ScreenText.TypeName(type);
 
         /// <summary>GameBootstrapper가 연결한다. 반환값을 Dispose하면 버튼 연결을 해제한다.</summary>
         public IDisposable Bind(GameFlowController flow)
         {
             _flow = flow ?? throw new ArgumentNullException(nameof(flow));
+            if (logoText != null) logoText.text = ScreenText.GameTitle;
+            ButtonLabel.Set(startButton, ScreenText.Start);
+            ButtonLabel.Set(settingsButton, ScreenText.Settings);
             if (startButton != null) startButton.onClick.AddListener(OnStart);
             else Debug.LogWarning("TitleScreenView: startButton이 비어 있다. 씬에서 연결해야 한다.");
             if (settingsButton != null) settingsButton.onClick.AddListener(OnSettings);

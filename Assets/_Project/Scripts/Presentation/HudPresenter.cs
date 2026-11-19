@@ -56,6 +56,8 @@ namespace SugarDash.Presentation
             glucoseBar.interactable = false;
             if (glucoseBar.fillRect != null) _barFill = glucoseBar.fillRect.GetComponent<Image>();
             meterText.text = "";
+            ButtonLabel.Set(meterButton, ScreenText.Meter);
+            if (warningText != null) warningText.text = ScreenText.GaugeWarning;
             meterButton.onClick.AddListener(OnMeter);
 
             var subscriptions = new List<IDisposable>

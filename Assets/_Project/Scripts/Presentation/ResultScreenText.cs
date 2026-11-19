@@ -108,7 +108,7 @@ namespace SugarDash.Presentation
             if (result.Events.Count == 0) return "이번에는 혈당이 낮아지지 않았어요";
 
             int good = result.Events.Count(e => e.AllCorrect);
-            if (good == 0) return $"혈당이 낮을 때 {result.Events.Count}번 모두 아쉬웠어요";
+            if (good == 0) return $"혈당이 낮을 때 {result.Events.Count}번 있었어요";
             if (good == result.Events.Count) return $"혈당이 낮을 때 {good}번 모두 잘 해냈어요";
             return $"혈당이 낮을 때 {result.Events.Count}번 중 {good}번 잘 해냈어요";
         }
@@ -117,7 +117,7 @@ namespace SugarDash.Presentation
         private static string NotifySummary(string level, int count, int good)
         {
             if (count == 0) return null;
-            if (good == 0) return $"혈당이 {level} 때 {count}번 모두 아쉬웠어요";
+            if (good == 0) return $"혈당이 {level} 때 {count}번 있었어요";
             if (good == count) return $"혈당이 {level} 때 {count}번 모두 바로 알렸어요";
             return $"혈당이 {level} 때 {count}번 중 {good}번 바로 알렸어요";
         }

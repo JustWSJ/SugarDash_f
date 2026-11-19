@@ -28,6 +28,8 @@ namespace SugarDash.Presentation
         {
             _flow = flow ?? throw new ArgumentNullException(nameof(flow));
             if (pausedText != null) pausedText.text = HudText.Paused;
+            ButtonLabel.Set(continueButton, ScreenText.Continue);
+            ButtonLabel.Set(titleButton, ScreenText.Quit);
             if (pauseButton != null) pauseButton.onClick.AddListener(OnPause);
             else Debug.LogWarning("PauseMenuView: pauseButton이 비어 있다. 씬에서 연결해야 한다.");
             if (continueButton != null) continueButton.onClick.AddListener(OnContinue);

@@ -50,5 +50,14 @@ namespace SugarDash.Presentation.Tests
             Assert.That(ChoicePanelText.RecheckResult(79.6), Does.Contain("80"));
             Assert.That(ChoicePanelText.RecheckResult(79.6), Does.Not.Contain("."));
         }
+
+        [Test]
+        public void DoseTitle_DrinkOrEat()
+        {
+            Assert.That(ChoicePanelText.DoseTitle("juice"), Is.EqualTo("주스를 얼마나 마실까요?"));
+            Assert.That(ChoicePanelText.DoseTitle("soda"), Is.EqualTo("탄산음료를 얼마나 마실까요?"));
+            Assert.That(ChoicePanelText.DoseTitle("cracker"), Is.EqualTo("크래커를 얼마나 먹을까요?"));
+            Assert.That(ChoicePanelText.DoseTitle("apple"), Is.EqualTo("사과를 얼마나 먹을까요?"));
+        }
     }
 }
