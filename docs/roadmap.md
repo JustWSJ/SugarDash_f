@@ -71,7 +71,7 @@
 | 팀원1(캐릭터) | 주인공 모델, 기본 애니메이션(달리기, 점프, 슬라이드, 옆 이동) | | 시작 가능 |
 | 팀원1(캐릭터) | 2형 상태 애니메이션: 지친 표정·느린 걸음·처진 자세(고혈당·저혈당), 앉아 쉬기. 체형은 바꾸지 않음. 연출 방향은 출처 확인 뒤 고칠 수 있음 | [type-tracks.md](type-tracks.md) 5절 | 시작 가능 |
 | 팀원1(캐릭터) | `CharacterStateView` 채우기: 보통·쉬는 중·지침(높음)·지침(낮음) 상태를 애니메이터에 연결 | `Assets/_Project/Scripts/Presentation/Character/CharacterStateView.cs`, [type-select.md](type-select.md) 11절 | 시작 가능 |
-| 팀원1(캐릭터) | `GuardianArrivalView` 채우기: 탈락 장면 어른 캐릭터 프리팹(발밑 기준점), 달려오기·서서 말하기 애니메이션. 지금은 주황색 캡슐 | `Assets/_Project/Scripts/Presentation/Character/GuardianArrivalView.cs`, [pause-elimination.md](pause-elimination.md) 3.2·5절 | 시작 가능 |
+| 팀원1(캐릭터) | `GuardianArrivalView` 채우기: 탈락 장면 어른 캐릭터 프리팹(발밑 기준점), 달려오기·서서 말하기 애니메이션 | `Assets/_Project/Scripts/Presentation/Character/GuardianArrivalView.cs`, [pause-elimination.md](pause-elimination.md) 3.2·5절 | 완료(`CatAdultNPC`, 오는 동안 걷기·다 오면 서기). 서서 말하기 동작은 없음(서 있기로 대신함) |
 | 팀원2(월드) | 1구간 트랙·배경, 장애물 3종(점프로 넘는 낮은 것, 슬라이드로 지나가는 높은 것, 옆으로 피하는 레인 막이) | | 진행 중(우승제) |
 | 팀원2(월드) | 쉬는 곳 오브젝트(벤치, 게임기) | | 시작 가능 |
 | 팀원2(월드) | 장애물 패턴 만들기: `TrackPatterns.asset`에 패턴 더하기(두 레인 막이, 골라 지나가기, 점프 뒤 슬라이드, 지그재그 등), 나오기 시작하는 거리·비율 정하기, Play로 지나가 보기. Console 경고가 없고 `ProjectAsset_PassesRules_AndSpacing` 테스트가 통과해야 push | [track-patterns.md](track-patterns.md) | 시작 가능 |

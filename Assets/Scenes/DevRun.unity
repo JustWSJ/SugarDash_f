@@ -1022,7 +1022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6edf6fb86b5f42c2a02d27c723c9955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SugarDash.Presentation::SugarDash.Presentation.GuardianArrivalView
-  guardianPrefab: {fileID: 0}
+  guardianPrefab: {fileID: 7606481384315301984, guid: 60f82b88f08a4a7a8065548609014235, type: 3}
   startOffset: {x: 3, y: 0, z: 8}
   standOffset: {x: 1.2, y: 0, z: 0}
   arriveSec: 1

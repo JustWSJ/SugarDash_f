@@ -22,14 +22,21 @@ namespace SugarDash.Presentation
         [Tooltip("시작 위치에서 옆까지 오는 시간(초). 탈락 장면 길이(Bootstrapper)보다 짧게 둔다.")]
         [SerializeField] private float arriveSec = 1f;
 
+        private static readonly int IsWalkingId = Animator.StringToHash("IsWalking");
+
         private GameFlowController _flow;
         private Transform _player;
         private Transform _guardian;
+        // 어른 프리팹의 애니메이터(IsWalking: 참이면 걷기, 거짓이면 서기). 기본 도형이면 null.
+        private Animator _animator;
         private float _elapsed;
 
         /// <summary>달려온 정도(0~1). 0초면 바로 옆에 선다.</summary>
         public static float Progress(float elapsed, float arriveSec) =>
             arriveSec <= 0f ? 1f : Mathf.Clamp01(elapsed / arriveSec);
+
+        /// <summary>아직 오는 중이면 걷기. 다 오면(진행 1) 선다.</summary>
+        public static bool IsWalking(float elapsed, float arriveSec) => Progress(elapsed, arriveSec) < 1f;
 
         /// <summary>GameBootstrapper가 연결한다. 반환값을 Dispose하면 연결을 해제한다.</summary>
         /// <param name="playerView">레인을 옮겨 다니는 주인공 모습(PlayerController.View).</param>
@@ -60,6 +67,7 @@ namespace SugarDash.Presentation
                 _guardian = guardianPrefab != null
                     ? Instantiate(guardianPrefab, transform).transform
                     : PrimitiveViews.CreateGuardian(transform);
+                _animator = _guardian.GetComponentInChildren<Animator>();
                 _elapsed = 0f;
             }
             else
@@ -71,7 +79,7 @@ namespace SugarDash.Presentation
             float t = Progress(_elapsed, arriveSec);
             _guardian.position = Vector3.Lerp(basePos + startOffset, basePos + standOffset, t);
             _guardian.LookAt(new Vector3(basePos.x, _guardian.position.y, basePos.z));
-            // TODO(캐릭터): t < 1이면 달리기, 다 오면 서서 말하기 애니메이션을 재생한다.
+            if (_animator != null) _animator.SetBool(IsWalkingId, IsWalking(_elapsed, arriveSec));
         }
 
         private void Hide()
@@ -79,6 +87,7 @@ namespace SugarDash.Presentation
             if (_guardian == null) return;
             Destroy(_guardian.gameObject);
             _guardian = null;
+            _animator = null;
         }
     }
 }

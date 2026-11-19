@@ -30,6 +30,15 @@ namespace SugarDash.Presentation.Tests
         }
 
         [Test]
+        public void GuardianArrival_WalksUntilArrived()
+        {
+            Assert.That(GuardianArrivalView.IsWalking(0f, 1f), Is.True);
+            Assert.That(GuardianArrivalView.IsWalking(0.99f, 1f), Is.True);
+            Assert.That(GuardianArrivalView.IsWalking(1f, 1f), Is.False, "다 오면 선다");
+            Assert.That(GuardianArrivalView.IsWalking(0f, 0f), Is.False, "0초면 바로 서 있다");
+        }
+
+        [Test]
         public void IntroCuttoon_Arrows()
         {
             // 두 장: 첫 장은 다음 화살표만, 둘째 장은 앞 장 화살표와 다음 화살표(누르면 닫힘).
