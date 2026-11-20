@@ -1,7 +1,7 @@
 # GlucoseModel 설계 결정 기록
 
 - 브랜치: `feat/glucose-model`
-- 상태: 설계 확정, 수치는 PLACEHOLDER (담당자 결정 전까지 `null`)
+- 상태: 설계 확정, 수치는 PLACEHOLDER (정하기 전까지 `null`)
 - 범위: 1형 주행 기준이다. 2형도 GlucoseModel(`dBG/dt` 합산식, 음식 흡수)을 그대로 쓰지만 별도 설정 파일(`game-config.type2.json`)과 규칙을 갖는다. 2형 혈당과 설정은 `docs/type-select.md` 4절과 8절, 방향은 `docs/type-tracks.md`를 본다. 이 문서의 측정기, 4단계, 급하강은 1형 전용이다. 표시 혈당 지연은 2형도 쓴다(혈당바만, 불변식 26).
 - 단위: 혈당 mg/dL, 시간은 명시하지 않으면 게임 초(game seconds)
 
@@ -76,7 +76,7 @@ RunController가 프레임마다 경과 시간을 셋으로 나눠 Domain에 넘
 - 명령은 지난 프레임의 Update가 끝난 시각에 처리되므로 마감이 지난 답은 정상 답으로 받지 않는다. 대신 판단 시간은 최대 한 프레임 짧게 잡힌다.
 - 달리기 강도(`activity`)는 달리는 동안 항상 1이다. 점프·슬라이드에 따른 차등은 두지 않는다.
 - 트랙 간식을 주우면 `runner.trackSnackServings`배만큼 혈당에 반영한다. 1단계(위험 인지) 중에도 반영하며 대처 단계 판정과는 무관하다. 세계가 멈춘 동안에는 주울 수 없다.
-- 트랙 간식은 `runner.trackSnackIntervalMinSec`~`trackSnackIntervalMaxSec`(worldDt 기준 초) 사이에서 매번 무작위로 고른 간격마다 하나씩 놓인다. 간식 종류는 `snacks` 목록에서 무작위로 고른다. 이 간격이 주행 중 혈당 균형을 직접 좌우하므로 담당자가 정할 값이다.
+- 트랙 간식은 `runner.trackSnackIntervalMinSec`~`trackSnackIntervalMaxSec`(worldDt 기준 초) 사이에서 매번 무작위로 고른 간격마다 하나씩 놓인다. 간식 종류는 `snacks` 목록에서 무작위로 고른다. 이 간격이 주행 중 혈당 균형을 직접 좌우하므로 맡은 팀원이 정할 값이다.
 - 장애물 충돌은 혈당과 무관하다. 부딪히면 잠깐 느려지는 연출(PlayerController)과 함께 바로 탈락한다(원인 `obstacle_hit`). 세계가 멈춘 동안(2~4단계 등)에는 충돌이 없다.
 - 러너 화면(캐릭터, 트랙)은 `RunController.LastWorldDt`로만 움직인다. 그래서 2~4단계·알리기 대기·재개 카운트다운·일시정지 중에는 멈추고, 1단계와 유예 시간에는 달린다.
 - 재개 카운트다운과 유예 시간에는 트랙의 장애물을 모두 치우고 새로 놓지 않는다. 간식은 계속 놓는다.

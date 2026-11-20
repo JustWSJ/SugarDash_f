@@ -57,5 +57,5 @@
 
 ## 7. 남은 것
 
-- 수치(담당자): `xp.perRun`, `xp.scoreRate`, 레벨별 `xpTotal`. 처음 레벨 5까지 추천.
+- 수치: `xp.perRun`, `xp.scoreRate`, 레벨별 `xpTotal`. 처음 레벨 5까지 추천.
 - 레벨 표시 그림(화면): 원, 상자, 채움 막대, 레벨 오름 연출.

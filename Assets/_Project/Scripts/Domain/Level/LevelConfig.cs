@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SugarDash.Domain.Level
 {
     /// <summary>
-    /// 플레이어 레벨 설정(docs/level.md). 두 유형이 같이 쓴다. 값은 게임 표현값이며 프로젝트 담당자가 정한다.
+    /// 플레이어 레벨 설정(docs/level.md). 두 유형이 같이 쓴다. 값은 게임 표현값이며 맡은 팀원이 정한다.
     /// </summary>
     public sealed class LevelConfig
     {

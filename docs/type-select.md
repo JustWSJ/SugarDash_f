@@ -1,7 +1,7 @@
 # 유형 선택과 2형 1구간 설계
 
 - 단위: 혈당 mg/dL, 거리 m(러너 월드 단위), 시간은 명시하지 않으면 게임 초
-- 수치: 이 문서의 새 수치는 모두 PLACEHOLDER(`null`)다. 담당자가 정하기 전까지 임의의 값으로 채우지 않는다. 에디터 전용 개발 설정만 테스트 픽스처 값을 쓴다(8.1절).
+- 수치: 이 문서의 새 수치는 모두 PLACEHOLDER(`null`)다. 맡은 팀원이 정하기 전까지 임의의 값으로 채우지 않는다. 에디터 전용 개발 설정만 테스트 픽스처 값을 쓴다(8.1절).
 - 의학 정보: 2형 신호, 음식별 혈당 영향, 2형 저혈당 여부·빈도는 세 출처(대한당뇨병학회 진료지침, ISPAD, ADA)로 확인한 뒤 값으로 넣는다. 이 문서는 틀만 정한다.
 - 바탕: [type-tracks.md](type-tracks.md)(방향), [glucose-model.md](glucose-model.md), [hyper-event.md](hyper-event.md), [log-format.md](log-format.md), [result-screen.md](result-screen.md)
 
@@ -336,7 +336,7 @@
 - 갈증·화장실 그림은 출처 확인 전까지 개발용 표시다. 출처 확인 결과에 따라 바뀔 수 있다고 PR과 할 일 목록에 적는다.
 
 
-## 12. 남은 결정 (담당자)
+## 12. 남은 결정
 | 정할 것 | 분야 |
 | --- | --- |
 | 2형 모든 수치(8.2절). 정함: [glucose-evidence.md](glucose-evidence.md), [game-values.md](game-values.md) | 결정, 의학 |
