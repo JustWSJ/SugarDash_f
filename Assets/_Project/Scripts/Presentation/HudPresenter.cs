@@ -11,7 +11,7 @@ namespace SugarDash.Presentation
 {
     /// <summary>
     /// 표시 혈당바, 게이지 경고, 측정기 버튼. 혈당바는 두 유형 모두 표시 혈당(지연된 값)만 보여 주고,
-    /// 표시 혈당에 따라 바 전체(채움) 색이 초록 → 노랑 → 빨강으로 바뀐다(BarColor). 측정기를 누르면 그때의 실제 혈당을 보여 준다.
+    /// 표시 혈당에 따라 바 전체(채움) 색이 초록·노랑·빨강 세 가지로 바뀐다(BarColor). 측정기를 누르면 그때의 실제 혈당을 보여 준다.
     /// </summary>
     public sealed class HudPresenter : MonoBehaviour
     {
@@ -149,26 +149,17 @@ namespace SugarDash.Presentation
         }
 
         /// <summary>
-        /// 혈당바 색. hypoThreshold 이하와 hyperThreshold 이상은 빨강, barGreenFrom~normalRangeMax는 초록이고,
-        /// 그 사이는 빨강 → 노랑 → 초록(가운데가 노랑)으로 점점 바뀐다.
+        /// 혈당바 색. 섞지 않고 세 가지 중 하나다. 높은데 초록으로 보여 좋은 상태로 오해하지 않게 한다.
+        /// 빨강: hypoThreshold 미만, hyperThreshold 초과. 노랑: hypoThreshold~barGreenFrom, normalRangeMax~hyperThreshold.
+        /// 초록: barGreenFrom~normalRangeMax. 값은 모두 지금 유형의 설정에서 읽는다.
         /// </summary>
         public static Color BarColor(double glucose, GlucoseLevelConfig levels, double barGreenFrom,
             Color red, Color yellow, Color green)
         {
-            if (glucose < barGreenFrom)
-                return Blend(Progress(glucose, levels.HypoThreshold, barGreenFrom), red, yellow, green);
-            if (glucose > levels.NormalRangeMax)
-                return Blend(Progress(glucose, levels.HyperThreshold, levels.NormalRangeMax), red, yellow, green);
+            if (glucose < levels.HypoThreshold || glucose > levels.HyperThreshold) return red;
+            if (glucose < barGreenFrom || glucose > levels.NormalRangeMax) return yellow;
             return green;
         }
-
-        // danger(빨강)에서 safe(초록)까지 어디쯤인지 0~1. danger 너머는 0.
-        private static float Progress(double glucose, double danger, double safe) =>
-            safe == danger ? 1f : Mathf.Clamp01((float)((glucose - danger) / (safe - danger)));
-
-        // 0 빨강, 0.5 노랑, 1 초록.
-        private static Color Blend(float t, Color red, Color yellow, Color green) =>
-            t < 0.5f ? Color.Lerp(red, yellow, t * 2f) : Color.Lerp(yellow, green, (t - 0.5f) * 2f);
 
         /// <summary>튜토리얼 조작 잠금에서 측정기가 허용되는지. 일반 판은 All이라 항상 허용된다.</summary>
         public static bool IsMeterAllowed(TutorialControls allowed) => (allowed & TutorialControls.Meter) != 0;
