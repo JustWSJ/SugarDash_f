@@ -9,7 +9,6 @@ namespace SugarDash.Presentation
     /// 트랙 물체 종류별 프리팹 묶음(Inspector에서 채움). 빈 칸은 null을 돌려주고, 그러면
     /// TrackItemLook이 다음 묶음이나 기본 도형으로 넘어간다. 프리팹은 발밑(바닥)을 기준점으로 만든다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     [Serializable]
     public sealed class TrackItemPrefabSet
     {
@@ -50,7 +49,6 @@ namespace SugarDash.Presentation
     /// 장면 하나(운동장, 놀이터 등)에서만 쓰는 프리팹 묶음. 장면별 장애물 모양(운동장 축구공, 놀이터 미끄럼틀 등)을 여기에 넣는다.
     /// 빈 칸은 기본 묶음을 쓴다. 장애물 종류 3개(낮은 것, 높은 것, 레인 막이)의 피하는 방법은 모양이 바뀌어도 그대로다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     [Serializable]
     public sealed class SceneTrackItemSet
     {

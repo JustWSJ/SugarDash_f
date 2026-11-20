@@ -1,7 +1,7 @@
 # UI 모양 기준
 
 - 범위: 화면(UI) 프리팹의 색, 버튼, 글자 크기, 그림. 웹 시안(구조(화면) 담당이 만든 Design 캔버스)을 정한 뒤 프리팹에 옮겼다.
-- 바탕: [roadmap.md](roadmap.md) 2.2절, [result-screen.md](result-screen.md), [level.md](level.md)
+- 바탕: [result-screen.md](result-screen.md), [level.md](level.md)
 
 ## 1. 색
 

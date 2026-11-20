@@ -10,7 +10,6 @@ namespace SugarDash.Presentation
     /// SceneLook이 맵 배경(SceneBackdropSwitcher)이 연결되지 않았을 때 자식으로 만들어 쓴다. 연출만이다.
     /// 만든 머티리얼은 이 컴포넌트가 없어질 때 지운다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     public sealed class PlaceholderBackdrops : MonoBehaviour
     {
         [Tooltip("장면별 도형 목록. 처음 값은 PlaceholderBackdropRecipes에 있다.")]

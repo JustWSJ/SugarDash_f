@@ -5,7 +5,6 @@ namespace SugarDash.Presentation
     /// <summary>
     /// 선택지·음식 그림 묶음 에셋. 선택 패널과 튜토리얼 설명 창이 같은 에셋을 가리켜, 그림을 한 곳에서만 바꾸면 된다.
     /// </summary>
-    // [빈 틀] 담당: 화면
     [CreateAssetMenu(menuName = "SugarDash/Choice Pictures", fileName = "ChoicePictures")]
     public sealed class ChoicePictures : ScriptableObject
     {

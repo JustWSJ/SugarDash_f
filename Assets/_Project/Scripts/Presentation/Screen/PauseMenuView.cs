@@ -9,7 +9,6 @@ namespace SugarDash.Presentation
     /// 주행 화면 구석의 일시정지 버튼과 일시정지 메뉴(계속하기, 타이틀로).
     /// 버튼은 GameFlowController.CanPause일 때만, 메뉴는 IsPauseMenuOpen일 때만 보인다. 명령은 GameFlowController로 넘긴다.
     /// </summary>
-    // [빈 틀] 담당: 화면
     public sealed class PauseMenuView : MonoBehaviour
     {
         [Tooltip("구석의 일시정지 버튼.")]
@@ -53,7 +52,6 @@ namespace SugarDash.Presentation
         {
             if (_flow == null) return;
             Show(_flow.CanPause, _flow.IsPauseMenuOpen);
-            // TODO(화면): 버튼 아이콘(일시정지 모양), 메뉴 배치, 버튼 소리를 꾸민다. 메뉴가 나타나는 연출은 MenuRoot의 ScreenPopIn이 한다.
         }
 
         private void Show(bool button, bool menu)

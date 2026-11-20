@@ -19,7 +19,6 @@ namespace SugarDash.Presentation
     /// <summary>
     /// 효과음 묶음 에셋. 칸을 비우면 그 소리는 나지 않는다. 같은 이름의 파일로 바꾸면 그대로 들어간다.
     /// </summary>
-    // [빈 틀] 담당: 화면
     [CreateAssetMenu(menuName = "SugarDash/Sound Cues", fileName = "SoundCues")]
     public sealed class SoundCues : ScriptableObject
     {

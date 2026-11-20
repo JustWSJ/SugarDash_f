@@ -8,7 +8,6 @@ namespace SugarDash.Presentation
     /// 트랙 물체(장애물, 음식, 쉬는 곳)의 모습을 만든다. TrackSpawner의 look 필드에 연결하면
     /// 이 클래스로 만들고, 비어 있으면 TrackSpawner가 PrimitiveViews로 만든다.
     /// </summary>
-    // [빈 틀] 담당: 월드
     public sealed class TrackItemLook : MonoBehaviour
     {
         [Tooltip("모든 구간에서 쓰는 기본 프리팹 묶음. 빈 칸은 기본 도형으로 나온다.")]

@@ -11,7 +11,6 @@ namespace SugarDash.Presentation
     /// 화면 효과음. 버튼 누름, 선택, 게이지 경고, 선택 패널 열림, 재개 카운트다운, 결과, 레벨 업, 트랙 음식 먹기에 소리를 낸다.
     /// 소리만 낸다. 판정·혈당·기록을 바꾸지 않고 정답·오답을 소리로 나누지 않는다.
     /// </summary>
-    // [빈 틀] 담당: 화면
     [RequireComponent(typeof(AudioSource))]
     public sealed class SoundCueView : MonoBehaviour
     {

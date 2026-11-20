@@ -6,7 +6,6 @@ namespace SugarDash.Presentation
     /// 월드 연출이 함께 쓰는 움직임 계산(위아래 흔들림, 회전, 깜빡임). 시간을 받아 값만 돌려주는 순수 함수다.
     /// TrackItemIdle(음식·쉬는 곳)과 TutorialLaneHighlightView(레인 띠)가 같이 쓴다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     public static class WorldMotion
     {
         /// <summary>위아래 흔들림 높이. period초마다 한 번 오르내리고, 폭은 ±amplitude다. period ≤ 0이면 0.</summary>

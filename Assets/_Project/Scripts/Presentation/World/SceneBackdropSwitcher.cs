@@ -7,7 +7,6 @@ namespace SugarDash.Presentation
     /// 장면별 맵 배경(운동장, 놀이터, 나들이, 집)을 켜고 끈다. 배경은 씬 안에 미리 놓아 둔 오브젝트이고,
     /// 한 번에 하나만 켠다. SceneLook이 장면 id(장면 없는 구간은 null)를 넘긴다. 연출만이다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     public sealed class SceneBackdropSwitcher : MonoBehaviour
     {
         [Tooltip("장면 id(schoolyard, playground, outing, home)별 배경 루트 오브젝트")]

@@ -28,7 +28,6 @@ namespace SugarDash.Presentation
     /// 선택 패널의 그림 묶음(Inspector에서 채움). 간식 카드, 넓은 버튼 왼쪽 그림, 양 그림에 쓴다.
     /// 빈 칸은 null을 돌려주고, 그러면 버튼은 그림 없이 글자만 보인다. 그림은 보여 주기만 하고 판정과 관계없다.
     /// </summary>
-    // [빈 틀] 담당: 화면
     [Serializable]
     public sealed class ChoicePictureSet
     {

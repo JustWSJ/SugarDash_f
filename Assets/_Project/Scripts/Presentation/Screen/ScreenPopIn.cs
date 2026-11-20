@@ -6,7 +6,6 @@ namespace SugarDash.Presentation
     /// 켜질 때 흐릿하고 조금 작은 상태에서 또렷해지며 나타나게 한다. 말풍선·메뉴·설명 창 오브젝트에 붙인다.
     /// 일시정지 중에도 움직이도록 실제 시간(unscaledDeltaTime)으로 돈다. 연출만이고 판정·보이고 숨기기를 바꾸지 않는다.
     /// </summary>
-    // [영역 파일] 담당: 화면
     [RequireComponent(typeof(CanvasGroup))]
     public sealed class ScreenPopIn : MonoBehaviour
     {

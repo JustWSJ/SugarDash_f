@@ -8,7 +8,6 @@ namespace SugarDash.Presentation
     /// 플레이어 상태를 캐릭터 애니메이터 파라미터로 전달한다. 외형 프리팹 루트에 붙인다.
     /// PlayerController가 외형을 만든 직후 Init을 부른다. 상태를 읽기만 하고 바꾸지 않는다.
     /// </summary>
-    // [영역 파일] 담당: 캐릭터
     public sealed class CharacterAnimatorView : MonoBehaviour
     {
         [Tooltip("비워 두면 자식에서 찾는다.")]
@@ -43,7 +42,6 @@ namespace SugarDash.Presentation
             if (_run != null) UpdateOutfit();
             if (_run == null || animator == null) return;
 
-            // TODO(캐릭터): 옆 이동·지친 상태 파라미터가 생기면 여기서 전달한다.
             bool running = _run.State == RunState.Running;
             bool frozen = _run.IsWorldFrozen;
             bool airborne = running && _player.IsAirborne;

@@ -9,7 +9,6 @@ namespace SugarDash.Presentation
     /// 튜토리얼 설명 창과 "다시 해봐요" 문구. TutorialController의 단계(Stage)만 보고 보이고 숨긴다.
     /// 판정과 시계는 건드리지 않고, 화면 터치와 "건너뛰기"는 GameFlowController에 명령으로 넘긴다.
     /// </summary>
-    // [빈 틀] 담당: 화면
     public sealed class TutorialPromptView : MonoBehaviour
     {
         [Tooltip("설명 창 묶음. 화면 전체를 덮어 아래 패널·측정기 터치를 막는다. 넘기기는 ▶·◀ 버튼으로만 한다.")]

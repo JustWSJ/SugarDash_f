@@ -64,8 +64,8 @@
 
 ### 3.2 어른과 말풍선
 
-- 어른 캐릭터가 옆 레인 앞쪽에서 나타나 주인공 바로 옆까지 달려와 선다(`GuardianArrivalView`, 캐릭터 담당). 오는 시간은 Inspector `Arrive Sec`(기본 1초)이며 장면 길이보다 짧게 둔다. 어른은 `CatAdultNPC` 프리팹이고, 애니메이터의 `IsWalking`을 오는 동안 참(걷기), 다 오면 거짓(서기)으로 둔다. 프리팹 칸이 비면 주황색 캡슐이 나온다.
-- 어른 옆에 말풍선 한 줄이 뜬다(`EliminationSpeechView`, 화면 담당). 문구는 탈락 이유 세 갈래마다 다르다(`EliminationText`, 자리 채움 초안).
+- 어른 캐릭터가 옆 레인 앞쪽에서 나타나 주인공 바로 옆까지 달려와 선다(`GuardianArrivalView`). 오는 시간은 Inspector `Arrive Sec`(기본 1초)이며 장면 길이보다 짧게 둔다. 어른은 `CatAdultNPC` 프리팹이고, 애니메이터의 `IsWalking`을 오는 동안 참(걷기), 다 오면 거짓(서기)으로 둔다. 프리팹 칸이 비면 주황색 캡슐이 나온다.
+- 어른 옆에 말풍선 한 줄이 뜬다(`EliminationSpeechView`). 문구는 탈락 이유 세 갈래마다 다르다(`EliminationText`, 자리 채움 초안).
 
 | 갈래 | 탈락 이유(`EliminationCause`) | 초안 문구 |
 | --- | --- | --- |
@@ -91,11 +91,11 @@
 
 ## 5. 빈 틀 채우기
 
-| 담당 | 파일 | 채울 것 |
-| --- | --- | --- |
-| 팀원1(캐릭터) | `Presentation/Character/GuardianArrivalView.cs` | 어른 캐릭터 프리팹(`Guardian Prefab` 칸, 발밑이 기준점), 달려오기·서서 말하기 애니메이션. 위치·시간 계산은 그대로 둔다 |
-| 팀원3(화면) | `Presentation/Screen/PauseMenuView.cs` | 일시정지 버튼 아이콘, 메뉴 배치·그림, 버튼 소리 |
-| 팀원3(화면) | `Presentation/Screen/EliminationSpeechView.cs` | 말풍선 그림, 어른 쪽 꼬리, 나타나는 연출 |
-| 기획 | `Presentation/EliminationText.cs` | 세 갈래 문구 확정(1절 하지 않는 것 지킴) |
+| 파일 | 채울 것 |
+| --- | --- |
+| `Presentation/Character/GuardianArrivalView.cs` | 어른 캐릭터 프리팹(`Guardian Prefab` 칸, 발밑이 기준점), 달려오기·서서 말하기 애니메이션 |
+| `Presentation/Screen/PauseMenuView.cs` | 일시정지 버튼 아이콘, 메뉴 배치·그림, 버튼 소리 |
+| `Presentation/Screen/EliminationSpeechView.cs` | 말풍선 그림, 어른 쪽 꼬리, 나타나는 연출 |
+| `Presentation/EliminationText.cs` | 세 갈래 문구 확정(1절 하지 않는 것 지킴) |
 
 - 확인은 [dev-scene.md](dev-scene.md) 9.15절 순서로 한다.

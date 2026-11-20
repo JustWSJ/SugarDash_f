@@ -7,7 +7,6 @@ using UnityEngine.UI;
 namespace SugarDash.Presentation
 {
     /// <summary>유형 선택 화면. Screen이 TypeSelect일 때만 보이고, 1형·2형 버튼으로 유형을 고른다.</summary>
-    // [빈 틀] 담당: 화면
     public sealed class TypeSelectView : MonoBehaviour
     {
         [Tooltip("화면 전체 묶음. 보이고 숨길 대상.")]
@@ -52,7 +51,6 @@ namespace SugarDash.Presentation
             if (_flow == null) return;
             var visible = IsVisible(_flow.Screen);
             if (root != null && root.activeSelf != visible) root.SetActive(visible);
-            // TODO(화면): 유형별 그림과 안내 음성·문구를 꾸민다.
         }
     }
 }

@@ -8,7 +8,6 @@ namespace SugarDash.Presentation
     /// 색 하나에 머티리얼 하나만 만들어 나눠 쓴다. 기본 도형마다 머티리얼 사본이 생기지 않게 한다.
     /// 만든 머티리얼은 저절로 지워지지 않으므로 다 쓰면 Dispose한다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     public sealed class ColorMaterialCache : IDisposable
     {
         private readonly Dictionary<Color, Material> _materials = new Dictionary<Color, Material>();

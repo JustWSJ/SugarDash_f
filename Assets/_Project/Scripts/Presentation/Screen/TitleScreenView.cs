@@ -8,7 +8,6 @@ namespace SugarDash.Presentation
 {
     /// <summary>타이틀 화면. Screen이 Title일 때만 보이고, 게임 타이틀 아래 지금 유형(1형·2형), 시작 버튼, 오른쪽 위 톱니바퀴 설정 버튼을 둔다.
     /// 레벨 기능이 켜져 있으면 왼쪽 위에 레벨 표시(원 안의 레벨, 원과 이어진 상자의 경험치)를 보인다.</summary>
-    // [빈 틀] 담당: 화면
     public sealed class TitleScreenView : MonoBehaviour
     {
         [Tooltip("화면 전체 묶음. 보이고 숨길 대상.")]
@@ -80,7 +79,6 @@ namespace SugarDash.Presentation
                 if (xpFill != null)
                     xpFill.anchorMax = new Vector2(XpFillAmount(_flow.TotalXp, _flow.LevelStartXp, _flow.NextLevelXp), xpFill.anchorMax.y);
             }
-            // TODO(화면): 배치(그림, 글자 크기)와 버튼 소리를 꾸민다.
         }
     }
 }

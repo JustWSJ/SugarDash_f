@@ -8,7 +8,6 @@ namespace SugarDash.Presentation
     /// 2구간 장면(맵 = 하루의 한 때)의 모습. SceneEntered를 받아 맵을 바꾼다. 빈 틀은 바닥 색만 바꾼다.
     /// 연출만이다. 세계·혈당을 바꾸지 않는다.
     /// </summary>
-    // [빈 틀] 담당: 월드
     public sealed class SceneLook : MonoBehaviour
     {
         [Tooltip("장면마다 색을 바꿀 바닥. 비워 두면 아무것도 바꾸지 않는다.")]

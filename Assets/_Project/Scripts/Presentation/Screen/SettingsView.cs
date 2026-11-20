@@ -7,7 +7,6 @@ using UnityEngine.UI;
 namespace SugarDash.Presentation
 {
     /// <summary>설정 화면. Screen이 Settings일 때만 보이고, 어두워진 타이틀 위에 창으로 뜬다. 버튼은 위에서부터 1형·2형, 인트로 다시보기, 튜토리얼 다시하기, 돌아가기. 지금 유형 버튼을 칠하고 왼쪽 위에 '지금'을 띄운다. 유형을 바꿔도 이 화면에 있고 돌아가기로 나간다.</summary>
-    // [빈 틀] 담당: 화면
     public sealed class SettingsView : MonoBehaviour
     {
         [Tooltip("화면 전체 묶음. 보이고 숨길 대상.")]
@@ -90,7 +89,6 @@ namespace SugarDash.Presentation
                 SetActive(type1CurrentBadge, type1);
                 SetActive(type2CurrentBadge, type2);
             }
-            // TODO(화면): 버튼 그림과 소리를 꾸민다.
         }
 
         private static void SetActive(GameObject target, bool active)

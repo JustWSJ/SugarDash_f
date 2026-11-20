@@ -1,7 +1,7 @@
 # 플레이어 레벨
 
 - 범위: 여러 판에 걸쳐 쌓이는 경험치와 레벨, 타이틀의 레벨 표시. 두 유형이 같이 쓴다.
-- 바탕: [game-values.md](game-values.md) 8절(수치), [result-screen.md](result-screen.md), [roadmap.md](roadmap.md) 2.2절
+- 바탕: [game-values.md](game-values.md) 8절(수치), [result-screen.md](result-screen.md)
 
 ## 1. 목적과 하지 않는 것
 

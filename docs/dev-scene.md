@@ -91,7 +91,7 @@ Unity 에디터 기본 배치:
 - `NoticeSignal`은 흰 말풍선(`Bubble`) 안에 신호 글자를 보여 주고, 높음 신호면 말풍선째 1초 주기로 흐려졌다 밝아진다(`Blink Period Sec`, `Blink Min Alpha`). `Settings`는 지금 유형 버튼을 `Current Type Color`로 칠한다.
 
 - **모양 고치기**: Project 창에서 프리팹을 더블클릭하면 Prefab Mode로 열린다. 거기서 고치고 저장한다(Prefab Mode는 자동 저장이 켜져 있으면 바로 저장된다). 씬은 고치지 않는다.
-- **구조 담당 팀원**: 화면에 오브젝트나 스크립트 칸을 더할 때는 Prefab Mode에서 프리팹 안에 더하고, 프리팹 안의 칸도 프리팹 안에서 연결한다. 씬에 있는 칸(`Bootstrapper`의 칸)만 씬에서 연결한다. 씬의 인스턴스에서 직접 바꾸는 것(인스턴스 오버라이드, Inspector에서 굵은 글자로 보인다)은 만들지 않는다.
+- 화면에 오브젝트나 스크립트 칸을 더할 때는 Prefab Mode에서 프리팹 안에 더하고, 프리팹 안의 칸도 프리팹 안에서 연결한다. 씬에 있는 칸(`Bootstrapper`의 칸)만 씬에서 연결한다. 씬의 인스턴스에서 직접 바꾸는 것(인스턴스 오버라이드, Inspector에서 굵은 글자로 보인다)은 만들지 않는다.
 - 5~6.11절의 처음부터 만드는 순서로 이 오브젝트들을 만들었다. 참고용으로 남겨 둔다. 새로 만든다면 같은 순서를 Prefab Mode 안에서 하면 된다.
 - **지금 모양의 기준은 프리팹이다.** 표의 위치·크기·글자 크기·색은 처음 만들 때 값이고, 시안을 옮기면서 바뀌었다(그림 칸, 말풍선 꼬리, 달·해 같은 오브젝트도 더해졌다). 지금 값은 프리팹을 열어 보고, 색·모양 규칙은 [ui-style.md](ui-style.md)를 본다.
 - 프리팹 안에서 프리팹 밖(다른 화면이나 씬 오브젝트)을 가리키는 칸은 지금 없다. 나중에 생기면 씬 오버라이드로만 남으므로 지우지 않는다.
@@ -380,7 +380,7 @@ Unity 에디터 기본 배치:
    - Hierarchy에서 `RetryText`가 `Root`와 같은 들여쓰기(둘 다 `TutorialPrompt` 바로 아래)인지 확인한다. `Root` 아래로 들어갔으면 끌어서 `TutorialPrompt` 위에 놓는다.
    - Pos X `0`, Pos Y `300`, Width `900`, Height `160`. Text 비움(코드가 `다시 해봐요`를 넣는다), Font Size 72, 가운데 정렬, Color 흰색(R·G·B·A `255`).
    - `Raycast Target` 체크를 끈다.
-9. 그림 자리(`Image` 칸)는 화면 담당 팀원이 채울 때 쓴다. 지금은 만들지 않고 비워 둔다.
+9. 그림 자리(`Image` 칸)는 그림을 넣을 때 쓴다. 지금은 만들지 않고 비워 둔다.
 
 `SkipButton`은 `Box`나 `Root` 안이 아니라 `TutorialPrompt` 바로 아래, 맨 마지막 자식으로 만든다(`UI > Legacy > Button`). Anchor Presets 왼쪽 아래(`bottom`·`left`, Alt·Shift 없이)에 Pivot X·Y `0`, Pos 24, 24, 크기 200 × 80, 자식 글자 Font Size 32(Text는 코드가 `건너뛰기`를 넣는다). 처음에는 꺼 둔다. 건너뛸 수 있는 튜토리얼 안내 구간이면 설명 창이 없어도 코드가 켠다. 측정기 버튼(아래 가운데)과 일시정지 버튼(오른쪽 위)과 겹치지 않는다. `건너뛰기`를 누르면 건너뛰기만 되고 화면 터치로는 세지 않는다. 박스나 글자 위를 눌러도 `Root`의 버튼이 받아 넘어간다.
 
@@ -429,7 +429,7 @@ Unity 에디터 기본 배치:
 
 ## 6.12 튜토리얼 레인 강조 (TutorialLaneHighlight)
 
-튜토리얼 트랙 안내에서 아이가 지나가야 할 레인에 노란 반투명 띠를 까는 빈 틀이다. 캐릭터 앞에서 안내 대상까지 레인마다 띠 하나를 코드가 만든다. 연출만이고 충돌·판정에 영향이 없다. 띠 모양은 월드 담당 팀원이 채운다.
+튜토리얼 트랙 안내에서 아이가 지나가야 할 레인에 노란 반투명 띠를 까는 빈 틀이다. 캐릭터 앞에서 안내 대상까지 레인마다 띠 하나를 코드가 만든다. 연출만이고 충돌·판정에 영향이 없다.
 
 1. Hierarchy **빈 곳**에서 오른쪽 클릭 → `Create Empty`(Canvas 밖, 최상위). 이름 `TutorialLaneHighlight`.
 2. Inspector의 `Transform` 칸 오른쪽 끝 `⋮` → `Reset`. Position `0, 0, 0`, Rotation `0, 0, 0`, Scale `1, 1, 1`이 되면 된다.
@@ -442,7 +442,7 @@ Unity 에디터 기본 배치:
 6. Cmd+S로 저장한다.
 7. 기대 결과: 일반 판에서는 띠가 보이지 않는다. 튜토리얼 판의 왼쪽 안내에서 설명 창이 뜨면 비어 있는 레인에 캐릭터 앞부터 벽까지 노란 띠가 보이고, 벽을 지나가면 사라진다(9.13절). Console에 `laneHighlight가 비어 있다` 경고가 없다.
 
-샌드박스(월드 담당 팀원이 혼자 모양을 시험할 때): `Sandbox Show`를 켜면 시작할 때 `Sandbox Lanes`(−1 왼쪽, 0 가운데, 1 오른쪽), `Sandbox Lane Width`(기본 `1.5`. 실제 레인 폭은 `Player`의 `Lane Width`, 기본 `2.5`), `Sandbox To Z`(띠 길이, 기본 `12`) 값으로 띠를 보여 준다. 단 `Bootstrapper`의 `Lane Highlight`에 연결돼 있으면 첫 프레임에 `Bootstrapper`가 띠를 숨긴다. 샌드박스로 볼 때는 `Lane Highlight` 칸을 잠시 비우고(경고가 한 번 뜨는 것은 정상), 다 보면 다시 연결하고 `Sandbox Show`를 끈다.
+샌드박스(혼자 모양을 시험할 때): `Sandbox Show`를 켜면 시작할 때 `Sandbox Lanes`(−1 왼쪽, 0 가운데, 1 오른쪽), `Sandbox Lane Width`(기본 `1.5`. 실제 레인 폭은 `Player`의 `Lane Width`, 기본 `2.5`), `Sandbox To Z`(띠 길이, 기본 `12`) 값으로 띠를 보여 준다. 단 `Bootstrapper`의 `Lane Highlight`에 연결돼 있으면 첫 프레임에 `Bootstrapper`가 띠를 숨긴다. 샌드박스로 볼 때는 `Lane Highlight` 칸을 잠시 비우고(경고가 한 번 뜨는 것은 정상), 다 보면 다시 연결하고 `Sandbox Show`를 끈다.
 
 ## 6.13 혈당 재기 습관 말풍선 (HabitPrompt)
 
@@ -541,7 +541,7 @@ Unity 에디터 기본 배치:
 4. `Player`를 선택하고 `Player Controller`의 `Camera Rig` 칸에 Hierarchy의 `Main Camera`를 끌어다 놓는다. 카메라 위치는 실행하면 코드가 맞춘다.
 5. `Main Camera`를 선택하고 `Add Component` → `SymptomEffectPresenter`. `Camera Target` 칸에 `Main Camera` 자신을 끌어다 놓는다(실제 혈당이 낮을수록 카메라만 흔들리고 UI는 흔들리지 않는다).
 6. `Track`의 `TrackSpawner`에 `Patterns` 칸이 있다. Project 창의 `Assets > _Project > Art > World > TrackPatterns`를 끌어다 놓는다(장애물 패턴 묶음, [track-patterns.md](track-patterns.md)). 비워 두면 장애물을 하나씩 무작위로 놓는다.
-   - `TrackSpawner`에 `Look` 칸(`TrackItemLook`)도 있다. 월드 담당 팀원이 `TrackItemLook`을 채워 push하면 구조 담당 팀원이 연결한다. 그전에는 비워 둔다. 비어 있으면 코드가 만든 기본 도형(상자, 구)이 나온다.
+   - `TrackSpawner`에 `Look` 칸(`TrackItemLook`)도 있다. `TrackItemLook`을 채운 뒤 연결한다. 그전에는 비워 둔다. 비어 있으면 코드가 만든 기본 도형(상자, 구)이 나온다.
 7. 그 밖의 값(속도, 점프 높이, 흔들림 폭 등)은 기본값 그대로 둔다. 나중에 감각을 맞출 때 Inspector에서 바꾼다(Play 중에 바꾼 값은 멈추면 되돌아간다).
 
 ## 8. 조립 지점 (GameBootstrapper)
@@ -937,7 +937,7 @@ macOS 기준 Finder에서 Cmd+Shift+G를 누르고 `~/Library/Application Suppor
 | 3 | Play, `시작하기` | 세 레인 모두 낮은 장애물인 줄이 자주 나온다. 점프로 넘는다 |
 | 4 | 2번의 `wall` 줄에서 `Left`·`Center`·`Right`를 모두 `Block`으로 바꾼다 | Console에 `wall: 1번째 줄은 세 레인이 모두 레인 막이라…` 노란 경고가 뜬다 |
 | 5 | Play | Console에 빨간 `패턴 묶음 … 쓰지 않는다` 오류가 뜨고 장애물이 하나씩 나온다 |
-| 6 | 멈추고 `wall` 패턴을 `-`로 지운 뒤 Cmd+S | 경고가 없다. `TrackPatterns.asset`이 바뀌었으면 커밋하지 않고 되돌린다(구조 담당 확인용 변경이다) |
+| 6 | 멈추고 `wall` 패턴을 `-`로 지운 뒤 Cmd+S | 경고가 없다. `TrackPatterns.asset`이 바뀌었으면 커밋하지 않고 되돌린다(확인용 변경이다) |
 | 7 | 저혈당이 올 때까지 달린다 | 1단계(측정기 누르기) 동안 새로 나오는 장애물은 쉬운 패턴뿐이다(지금은 모두 쉬운 패턴이라 차이가 없다) |
 
 

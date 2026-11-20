@@ -13,7 +13,6 @@ namespace SugarDash.Presentation
     /// 연출만이다. 게임 흐름(GameFlowController)을 읽기만 하고 명령을 보내지 않는다. 혈당·기록과 관계없다.
     /// 화면 오브젝트(캔버스, 그림, 버튼)는 처음 열 때 코드로 만든다. 프리팹이 생기면 바꾼다.
     /// </summary>
-    // [영역 파일] 담당: 화면(인트로 컷툰. 팀원2가 맡아 작성)
     public sealed class IntroCuttoonView : MonoBehaviour
     {
         [Tooltip("컷툰 그림. 보여 줄 순서대로 넣는다. 비어 있으면 컷툰을 열지 않는다.")]

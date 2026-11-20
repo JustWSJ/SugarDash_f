@@ -9,7 +9,6 @@ namespace SugarDash.Presentation
     /// 그 아래 프리팹을 그 높이만큼 내려 둔다. 결과적으로 발밑을 기준점으로 만든 프리팹이 바닥에 선다.
     /// 충돌은 계산으로 판정하므로 프리팹의 콜라이더·리지드바디는 지운다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     public static class TrackItemViewFactory
     {
         /// <summary>parent 아래에 물체 하나의 모습을 만든다. 지울 때는 돌려준 Transform의 GameObject를 지우면 된다.</summary>

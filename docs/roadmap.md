@@ -29,77 +29,10 @@
 - 성공 기준: 판이 끝난 뒤 아이가 "재밌다", "혈당 관리가 중요하다"를 함께 느낌
 - 자세한 내용과 남은 결정은 [type-tracks.md](type-tracks.md)에 있음
 
-## 2. 역할 분담
+## 2. 작업 지시
 
-- 구조 담당 팀원 1명, 영역 담당 팀원 3명: 팀원1(캐릭터), 팀원2(월드), 팀원3(화면)
-- 구조 담당 팀원이 `dev`에서 작업 브랜치를 만들어 큰 틀(규칙 코드, 빈 틀 스크립트)을 push하면, 영역 담당 팀원은 그 브랜치를 받아 그 위에서 빈 틀을 채우고 push함. 채우는 규칙은 [team-rules.md](team-rules.md) 2.1절, 브랜치 흐름은 8절에 있음
-- 작업 브랜치를 `dev`에 머지하는 것은 구조 담당 팀원이 함
-- 영역 담당 팀원은 자기 영역의 그림·모델, 소리, 기획 초안, 프리팹, 빈 틀 채우기를 함께 맡음
-
-### 2.1 영역별 담당
-
-| 담당 | 그림·모델 | 소리 | 기획 초안 | Unity 작업 | 빈 틀 채우기(코드) |
-| --- | --- | --- | --- | --- | --- |
-| 팀원1(캐릭터) | 주인공, 어른 캐릭터, 애니메이션(지친 상태 포함) | 발소리, 점프, 부딪힘 | 캐릭터 상태 연출 콘티, 탈락 장면 콘티 | 캐릭터 프리팹, 애니메이터 컨트롤러 | 캐릭터 애니메이션 연결: 레인 이동·점프·슬라이드·멈춤 상태를 애니메이터에 전달, 2형 지친 상태 반영 |
-| 팀원2(월드) | 트랙, 장애물, 쉬는 오브젝트(벤치, 게임기), 음식, 생활 환경 맵 3종, 낮·밤 조명 | 배경음, 맵 환경음 | 맵별 특성, 레벨 배치 패턴 | 맵·장애물·음식 프리팹, 조명 설정 | 맵 전환 보기(구간이 바뀌면 맵 교체), 낮·밤 조명·하늘 바꾸기 |
-| 구조(화면) | UI 시안, 아이콘, 선택지 그림, 글꼴, 앱 아이콘·스플래시 | 버튼, 경고, 선택, 카운트다운, 결과, 먹기 | 화면 문구, 의학 출처 발췌 조사 | UI 프리팹(배치) | 효과음 재생, 타이틀·유형 선택 화면 버튼, notice 아이콘·말풍선 표시 |
-| 구조 | | | 규칙 설계, 결정 사항 정리 | 씬 조립 | 규칙 코드(Domain, App, Infrastructure), 조립(Bootstrap), 설정, 빈 틀 만들기, 에셋 연결, 스크립트 PR 리뷰 |
-
-- 빈 틀에는 연습용 씬에서 혼자 시험할 수 있는 방법(예: Inspector에서 상태를 바꿔 보는 값)을 같이 넣음. 영역 담당 팀원이 게임 전체를 돌리지 않아도 확인할 수 있게 하기 위함
-
-### 2.2 할 일 목록
-
-- 이 목록은 일정표가 아니라 지금 단계에서 할 일의 목록임. 2.1절은 영역별로 앞으로 맡을 전체 범위임
-- 지금 작업: 유형 선택 + 2형 1구간, 2구간 공통 틀, 튜토리얼, 일시정지 메뉴·탈락 장면, 장애물 패턴. 설계 [type-select.md](type-select.md), [section2.md](section2.md), [tutorial.md](tutorial.md), [pause-elimination.md](pause-elimination.md), [track-patterns.md](track-patterns.md)
-- 작업 브랜치: `feat/section2-frame` 하나. 위 작업은 모두 이 브랜치에서 함(`feat/type-select`, `feat/tutorial`의 내용을 모두 포함함. 두 브랜치에는 더 push하지 않음)
-- 담당 칸: `구조`, `팀원1(캐릭터)`, `팀원2(월드)`, `구조(화면)`, `기획`(구조 담당 팀원이 맡음)
-- 상태: "대기(이유)" → "시작 가능" → "진행 중(이름)" → "완료". 상태를 바꾼 이 문서도 작업 브랜치에 함께 push함. 영역 담당 팀원은 자기 담당 줄 중 "시작 가능"인 일을 골라 시작하고 상태를 고침
-- 빈 틀 채우기는 구조 담당 팀원이 빈 틀을 작업 브랜치에 push한 뒤 "시작 가능"으로 바뀜. 작업은 작업 브랜치에서 하고 그 브랜치에 push함([team-rules.md](team-rules.md) 8절)
-- 빈 틀·자료 칸: 채울 빈 틀 파일이나 참고할 문서. 비어 있으면 에셋만 만드는 일
-
-| 담당 | 할 일 | 빈 틀·자료 | 상태 |
-| --- | --- | --- | --- |
-| 구조 | 2형 설정·로더, notice·tell 판정, 점수·결과 요약, 기록, 유형별 주행(음식·쉬기), 유형 저장, 화면 흐름(계획 작업 1~9) | | 완료 |
-| 구조 | 기존 화면의 2형 대응, 빈 틀 6개 만들기, 조립·개발 씬·문서, 작업 브랜치 push(계획 작업 10~12). 개발 씬 확인은 [dev-scene.md](dev-scene.md) 6.6~6.8, 9.10~9.11절 | | 완료 |
-| 구조 | 팀원이 push한 스크립트 확인, 작업 브랜치를 `dev`에 머지 | | 대기(빈 틀 채우기) |
-| 구조 | 2구간 2-A 공통 틀: 장면 설정·검증, 장면 진행과 기록, 주행 중 배치 바꾸기, 빈 틀 2개(`SceneLook`, `SleepTransitionView`), 조립·개발 씬 문서 | [section2.md](section2.md) | 완료 |
-| 구조 | 2구간 2-B 유형별 조건: 장면 조건 설정 자리(1형 운동장 달리기 감소, 2형 놀이터 쉬는 곳 간격, 나들이 음식 줄 간격·구성), 1형 혈당 재기 습관 순간(판정·기록·습관 확인률), 빈 틀 `HabitPromptView`, 조립·개발 씬 문서. 개발 씬 확인은 [dev-scene.md](dev-scene.md) 6.13, 9.14절 | [section2.md](section2.md) 7절 | 완료 |
-| 구조 | 튜토리얼 규칙 코드와 빈 틀: 튜토리얼 판 결정·건너뛰기·다시하기, 안내 순서(`TutorialController`), 연습 모드, 기록하지 않는 판, 안내 중 조작 잠금, 통과할 레인 강조, 설명 창 넘기기(지금은 ▶·◀ 버튼), 빈 틀 `TutorialPromptView`·`TutorialLaneHighlightView`, 조립·개발 씬 문서. 개발 씬 확인은 [dev-scene.md](dev-scene.md) 6.11, 9.13절 | [tutorial.md](tutorial.md) | 완료 |
-| 구조 | 일시정지 메뉴(버튼 숨김 조건, 계속하기 3-2-1, 타이틀로, 앱 복귀 시 메뉴)와 탈락 장면(장면 시간, 탈락 이유 세 갈래, 흔들림 약하게), 빈 틀 `PauseMenuView`·`EliminationSpeechView`·`GuardianArrivalView`, 조립·개발 씬 문서. 개발 씬 확인은 [dev-scene.md](dev-scene.md) 6.14~6.16, 9.15절 | [pause-elimination.md](pause-elimination.md) | 완료 |
-| 구조 | 장애물 패턴: 패턴 묶음 에셋(`TrackPatternSet`)과 지나갈 수 있는지 자동 확인, 패턴 고르기·놓기, 1형 1단계 쉬운 패턴만, 간식·음식 줄·쉬는 곳 주변 비움, 처음 패턴 6개, 조립·개발 씬 문서. 개발 씬 확인은 [dev-scene.md](dev-scene.md) 9.16절 | [track-patterns.md](track-patterns.md) | 완료 |
-| 구조 | 플레이어 레벨: 경험치·레벨 규칙과 검증, 진행 저장, 결과 화면 경험치 줄, 타이틀 왼쪽 위 레벨 표시 | [level.md](level.md) | 완료 |
-| 팀원1(캐릭터) | 주인공 모델, 기본 애니메이션(달리기, 점프, 슬라이드, 옆 이동) | | 시작 가능 |
-| 팀원1(캐릭터) | 2형 상태 애니메이션: 지친 표정·느린 걸음·처진 자세(고혈당·저혈당), 앉아 쉬기. 체형은 바꾸지 않음. 연출 방향은 출처 확인 뒤 고칠 수 있음 | [type-tracks.md](type-tracks.md) 5절 | 시작 가능 |
-| 팀원1(캐릭터) | `CharacterStateView` 채우기: 보통·쉬는 중·지침(높음)·지침(낮음) 상태를 애니메이터에 연결 | `Assets/_Project/Scripts/Presentation/Character/CharacterStateView.cs`, [type-select.md](type-select.md) 11절 | 시작 가능 |
-| 팀원1(캐릭터) | `GuardianArrivalView` 채우기: 탈락 장면 어른 캐릭터 프리팹(발밑 기준점), 달려오기·서서 말하기 애니메이션 | `Assets/_Project/Scripts/Presentation/Character/GuardianArrivalView.cs`, [pause-elimination.md](pause-elimination.md) 3.2·5절 | 완료(`CatAdultNPC`, 오는 동안 걷기·다 오면 서기). 서서 말하기 동작은 없음(서 있기로 대신함) |
-| 팀원2(월드) | 1구간 트랙·배경, 장애물 3종(점프로 넘는 낮은 것, 슬라이드로 지나가는 높은 것, 옆으로 피하는 레인 막이) | | 진행 중(우승제) |
-| 팀원2(월드) | 쉬는 곳 오브젝트(벤치, 게임기) | | 시작 가능 |
-| 팀원2(월드) | 장애물 패턴 만들기: `TrackPatterns.asset`에 패턴 더하기(두 레인 막이, 골라 지나가기, 점프 뒤 슬라이드, 지그재그 등), 나오기 시작하는 거리·비율 정하기, Play로 지나가 보기. Console 경고가 없고 `ProjectAsset_PassesRules_AndSpacing` 테스트가 통과해야 push | [track-patterns.md](track-patterns.md) | 시작 가능 |
-| 팀원2(월드) | 트랙 음식 모델 8종: 물, 주스, 탄산음료, 사과, 크래커, 치킨, 피자, 햄버거 | [type-select.md](type-select.md) 4.2절 | 시작 가능 |
-| 팀원2(월드) | 음식 8종·쉬는 곳 프리팹: 위 모델로 프리팹을 만들어 `TrackItemLook`에 연결할 수 있게 준비. 지금은 코드가 만든 기본 도형이 나옴 | [type-select.md](type-select.md) 4.2·5.2절 | 진행 중(우승제) |
-| 팀원2(월드) | `TrackItemLook` 채우기: 장애물·음식 id·쉬는 곳마다 프리팹 연결 | `Assets/_Project/Scripts/Presentation/World/TrackItemLook.cs`, [type-select.md](type-select.md) 11절 | 진행 중(우승제) |
-| 팀원2(월드) | `SceneLook` 채우기: 장면별 맵 배경(운동장, 놀이터, 나들이, 집), 때별 조명·하늘 | `Assets/_Project/Scripts/Presentation/World/SceneLook.cs`, [section2.md](section2.md) 5절 | 진행 중(우승제) |
-| 팀원2(월드) | `TrackItemLook` 장면별 장애물 모양(운동장 축구공, 놀이터 미끄럼틀 등) | `Assets/_Project/Scripts/Presentation/World/TrackItemLook.cs`, [section2.md](section2.md) 5절 | 진행 중(우승제) |
-| 팀원2(월드) | `TutorialLaneHighlightView` 채우기: 튜토리얼에서 지나가야 할 레인을 보여 주는 띠의 모양·색·반짝임. 지금은 노란 반투명 납작한 상자 | `Assets/_Project/Scripts/Presentation/World/TutorialLaneHighlightView.cs`, [tutorial.md](tutorial.md) 3.2·8절 | 진행 중(우승제) |
-| 구조(화면) | UI 디자인 시안(타이틀, 유형 선택, 설정, 혈당바, 측정기 버튼, 점수, 선택 패널, 카운트다운, 결과 화면). 웹 시안을 정하고 프리팹에 옮김 | [ui-style.md](ui-style.md) | 완료 |
-| 구조(화면) | 타이틀·유형 선택·설정 UI: 시안을 바탕으로 `Assets/_Project/Art/UI/Screens/`의 `TitleScreen`·`TypeSelect`·`Settings` 프리팹 꾸미기(바탕 그림, 버튼 그림) | [dev-scene.md](dev-scene.md) 3.1·6.6절 | 완료(시안 모양, [ui-style.md](ui-style.md)). 바탕 그림은 시안 그림 임시 |
-| 구조(화면) | 한글 글꼴: 모든 화면 글자를 주아(OFL)로 통일 | [dev-scene.md](dev-scene.md) 3.2절, README 5절 | 완료 |
-| 구조(화면) | 화면 문구 초안: 유형 선택 안내, 타이틀, 2형 tell, 2형 결과 요약. `docs/handoff/`에 정리 | [type-select.md](type-select.md) 2.1·4.4·9.2절 | 완료([handoff/screen-text.md](handoff/screen-text.md)에 모든 화면 문구 정리, 확정은 담당자) |
-| 구조(화면) | `TitleScreenView`, `TypeSelectView`, `SettingsView` 채우기: 화면 배치, 버튼 그림·소리 | `Assets/_Project/Scripts/Presentation/Screen/TitleScreenView.cs`, `TypeSelectView.cs`, `SettingsView.cs`, [type-select.md](type-select.md) 2·11절 | 완료(시안 모양, 버튼 소리 [ui-style.md](ui-style.md) 4절). 소리는 임시 전자음 |
-| 구조(화면) | notice 그림: 갈증 말풍선, 화장실 아이콘(고혈당), 떨리는 손(저혈당). 근거 [notice-evidence.md](notice-evidence.md) | [type-select.md](type-select.md) 11절 | 진행 중(구조). 임시 그림 넣음(`Sprites/Notice/`), 정식 그림으로 바꾸기 남음 |
-| 구조(화면) | `NoticeSignalView` 채우기: 고혈당 신호(갈증 말풍선, 화장실 아이콘 깜빡임), 저혈당 신호(떨리는 손) | `Assets/_Project/Scripts/Presentation/Screen/NoticeSignalView.cs`, [type-select.md](type-select.md) 11절 | 완료(말풍선 안 갈증·화장실 그림, 화장실 깜빡임, 떨리는 손 흔들림) |
-| 구조(화면) | `SleepTransitionView` 채우기: 수면 전환(잠자는 그림, 해·달 전환). 암전 길이는 Inspector 값 | `Assets/_Project/Scripts/Presentation/Screen/SleepTransitionView.cs`, [section2.md](section2.md) 5절 | 진행 중(구조). 남색 덮개와 달→해 그림 넣음, 잠자는 그림 남음 |
-| 구조(화면) | `TutorialPromptView` 채우기: 화면 전체를 덮어 아래 터치를 막고 ▶ 버튼으로 넘기는 설명 창(옅은 어두운 바탕 위 불투명 흰 박스, 검정 글자), 문구, `화살표를 눌러요` 안내 글자, 그림 자리, `건너뛰기`, `다시 해봐요`. `SettingsView`의 `튜토리얼 다시하기` 버튼 그림 | `Assets/_Project/Scripts/Presentation/Screen/TutorialPromptView.cs`, [tutorial.md](tutorial.md) 8절 | 진행 중(구조). 시안 모양과 그림 자리 넣음, 안내마다 그림 남음 |
-| 구조(화면) | `HabitPromptView` 채우기: 1형 혈당 재기 습관 순간의 말풍선(측정기 버튼 옆), 나타나고 사라지는 연출 | `Assets/_Project/Scripts/Presentation/Screen/HabitPromptView.cs`, [section2.md](section2.md) 7.1절 | 완료(시안 모양, 측정기 쪽 꼬리) |
-| 구조(화면) | `PauseMenuView` 채우기: 일시정지 버튼 아이콘, 메뉴 배치·그림, 버튼 소리 | `Assets/_Project/Scripts/Presentation/Screen/PauseMenuView.cs`, [pause-elimination.md](pause-elimination.md) 2·5절 | 완료(시안 모양, 버튼 소리). 소리는 임시 전자음 |
-| 구조(화면) | `EliminationSpeechView` 채우기: 탈락 장면 말풍선 그림, 어른 쪽 꼬리, 나타나는 연출 | `Assets/_Project/Scripts/Presentation/Screen/EliminationSpeechView.cs`, [pause-elimination.md](pause-elimination.md) 3.2·5절 | 완료(시안 모양, 아래쪽 꼬리) |
-| 구조(화면) | 음식 8종 표시 이름: 문구 파일 `FoodText`(선택 패널 버튼, 양 묻는 제목, 고른 뒤 문구). "을/를"은 받침에 맞춰 붙음 | `Assets/_Project/Scripts/Presentation/FoodText.cs` | 완료 |
-| 구조(화면) | 선택지 그림(2D): 음식 8종, 측정기, 양(조금·알맞게·많이), 어른에게 알리기, 다시 재기 | [food-evidence.md](food-evidence.md) | 진행 중(구조). 칸 연결과 임시 그림 넣음(`Sprites/Choice/`, 선택 패널 `Pictures` 칸), 정식 그림으로 바꾸기 남음 |
-| 구조(화면) | 레벨 표시 그림: 타이틀 왼쪽 위 원·경험치 상자·채움 막대, 레벨 오름 연출. 지금은 자리 채움 도형 | `Assets/_Project/Art/UI/Screens/TitleScreen.prefab`, [level.md](level.md) 5절 | 진행 중(구조). 시안 모양과 결과 화면 레벨 오름 연출(원 부풀기, `레벨 업!` 띠, 반짝이) 넣음 |
-| 구조(화면) | 화면 전환 덮개 `ScreenFadeView`: 화면이 바뀔 때 흰 덮개가 0.25초 동안 걷힘. 그림을 씌워도 그대로 동작 | [dev-scene.md](dev-scene.md) 6.17절 | 완료 |
-| 기획 | 탈락 장면 말풍선 문구 확정(`EliminationText`). 지금은 자리 채움 초안. 아이를 탓하지 않고 의학 설명을 넣지 않음 | `Assets/_Project/Scripts/Presentation/EliminationText.cs`, [pause-elimination.md](pause-elimination.md) 3.2절 | 시작 가능 |
-| 기획 | 습관 순간 말풍선 문구 확정(`HabitPromptText`). 지금은 자리 채움 초안 | `Assets/_Project/Scripts/Presentation/HabitPromptText.cs`, [section2.md](section2.md) 7.1절 | 시작 가능 |
-| 기획 | 튜토리얼 안내 문구 확정(`TutorialText`). 지금은 자리 채움 초안 | `Assets/_Project/Scripts/Presentation/TutorialText.cs`, [tutorial.md](tutorial.md) 6절 | 시작 가능 |
+- 할 일은 팀원마다 받은 작업 문서(리포지토리 밖)로 지시함
+- 작업 브랜치: `feat/section2-frame` 하나
 
 ## 3. 완료한 작업
 
@@ -181,7 +114,7 @@
 | 작업 | 선행 |
 | --- | --- |
 | 음식 그림: 선택 패널 버튼과 트랙 음식에 그림 쓰기(표시 이름은 `FoodText`로 정함) | 선택지 그림(2D), 트랙 음식 모델 |
-| 정식 게임 씬 만들기와 빌드 씬 등록. 지금 빌드 씬은 템플릿 `SampleScene`뿐이고 `DevRun`은 개발용. 이때 `SampleScene`도 지움. 팀원 작업이 다 들어온 뒤 마지막에 함 | 팀원 빈 틀 작업 통합 |
+| 정식 게임 씬 만들기와 빌드 씬 등록. 지금 빌드 씬은 템플릿 `SampleScene`뿐이고 `DevRun`은 개발용. 이때 `SampleScene`도 지움. 다른 작업이 다 들어온 뒤 마지막에 함 | 빈 틀 작업 통합 |
 | 그래픽 에셋 연결: 코드로 만든 기본 도형(PrimitiveViews)을 모델·프리팹으로 바꾸기 | 캐릭터, 트랙·배경, 장애물, 트랙 음식 모델 |
 
 ### 5.3 그래픽
@@ -207,7 +140,7 @@
 | 작업 | 선행 |
 | --- | --- |
 | 화면 효과음: 버튼, 선택, 혈당 경고, 선택 패널 열림, 카운트다운, 결과, 레벨 업, 트랙 음식 먹기. 정답·오답은 소리로 나누지 않음 | 완료(구조, `SoundCueView`, [ui-style.md](ui-style.md) 4절). 임시 전자음, 정식 소리로 바꾸기 남음 |
-| 캐릭터 효과음: 점프, 슬라이드, 부딪힘, 발소리 | 없음(팀원1) |
+| 캐릭터 효과음: 점프, 슬라이드, 부딪힘, 발소리 | 없음 |
 | 배경음 | 없음 |
 | 맵별·낮밤 배경음 | 생활 환경 맵 목록, 하루 흐름 결정 |
 
@@ -219,7 +152,7 @@
 | --- | --- |
 | 화면 문구 1차 검토는 마침. 치료·진단 주장, "나쁜 음식", 아이 탓하는 말투, "죽음"·"생존" 표현 없음. 결과 요약을 "혈당이 낮을 때·높을 때"로, 유형 선택 제목을 `어떤 당뇨가 있나요?`로 고침. 남은 것은 아래 행 | 없음 |
 | 고혈당 알리기 제목 `혈당이 높아요. 어떻게 할까요?` 확정(4.1절). 2형 tell 제목은 `몸이 신호를 보내요. 어떻게 할까요?`로 정함 | 없음 |
-| 1구간 장애물 패턴의 실제 구성과 난이도 확인(팀원2가 만든 패턴을 직접 해 보고 거리·비율 조정) | 팀원2 패턴 만들기(2.2절) |
+| 1구간 장애물 패턴의 실제 구성과 난이도 확인(만든 패턴을 직접 해 보고 거리·비율 조정) | 장애물 패턴 만들기([track-patterns.md](track-patterns.md)) |
 | 생활 환경 맵별 레벨 구성 | 생활 환경 맵 목록 결정 |
 
 ### 5.6 빌드·확인
@@ -256,9 +189,9 @@
 
 | 문서 | 내용 |
 | --- | --- |
-| [team-rules.md](team-rules.md) | 팀원·AI 에이전트가 지킬 작업 규칙, 팀원 작업 범위 |
+| [team-rules.md](team-rules.md) | 팀원·AI 에이전트가 지킬 작업 규칙 |
 | [medical-sources.md](medical-sources.md) | 의학 출처 판본과 항목별로 볼 장 |
-| [notices.md](notices.md) | 구조 담당 팀원이 팀원에게 전하는 공지. 에이전트가 pull한 뒤 새 공지를 알려 줌 |
+| [notices.md](notices.md) | 팀 공지. 에이전트가 pull한 뒤 새 공지를 알려 줌 |
 | [type-tracks.md](type-tracks.md) | 1형·2형 주행 확장 방향, 공유하는 것과 유형별로 다른 것, 2형 4단계, 남은 결정 |
 | [architecture.md](architecture.md) | 계층 구조, 참조 규칙, 테스트 실행 |
 | [glucose-model.md](glucose-model.md) | 1형 혈당 모델과 4단계 대처 규칙, 설정 구조, 남은 결정 사항(10절) |

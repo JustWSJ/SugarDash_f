@@ -8,7 +8,6 @@ namespace SugarDash.Presentation
     /// 트랙은 물체가 플레이어 쪽으로 다가오는 방식이라 배경도 같은 거리만큼 -z로 움직이고, 한 칸을 지나면 처음 자리로 돌아간다.
     /// 연출만이다. 거리 값을 바꾸지 않고 읽기만 한다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     public sealed class BackdropTileStrip
     {
         private readonly List<Transform> _tiles;

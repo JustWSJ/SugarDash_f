@@ -6,7 +6,6 @@ namespace SugarDash.Presentation
     /// <summary>
     /// PlaceholderShape 목록을 실제 오브젝트로 만든다. 콜라이더는 지운다(충돌은 계산으로 판정하고 배경은 부딪히지 않는다).
     /// </summary>
-    // [영역 파일] 담당: 월드
     public static class PlaceholderShapeFactory
     {
         /// <summary>parent 아래에 name 루트를 만들고 그 아래 도형을 모두 만든다.</summary>

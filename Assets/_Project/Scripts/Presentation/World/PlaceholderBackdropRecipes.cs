@@ -5,7 +5,6 @@ using UnityEngine;
 namespace SugarDash.Presentation
 {
     /// <summary>개발용 배경 한 장면분: 장면 id와 도형 목록. PlaceholderBackdrops가 Inspector 목록으로 든다.</summary>
-    // [영역 파일] 담당: 월드
     [Serializable]
     public sealed class PlaceholderScene
     {
@@ -19,7 +18,6 @@ namespace SugarDash.Presentation
     /// 여기 값은 PlaceholderBackdrops의 Inspector 목록 처음 값이며, Inspector에서 고칠 수 있다.
     /// 길(레인 3개, 폭 약 8)을 막지 않도록 모두 |x| ≥ 7 바깥에 둔다. 도형만 있고 글자·숫자·음식은 없다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     public static class PlaceholderBackdropRecipes
     {
         /// <summary>도형이 길에서 떨어져야 하는 최소 거리(길 가운데에서 x 방향).</summary>

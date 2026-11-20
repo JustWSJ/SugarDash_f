@@ -9,7 +9,6 @@ namespace SugarDash.Presentation
     /// 캐릭터 앞(z=0)에서 대상(toZ)까지 레인마다 띠 하나. 빈 틀은 노란 반투명 납작한 Cube를 쓴다.
     /// 연출만이다. 충돌체가 없고 장애물·충돌 판정에 영향을 주지 않는다.
     /// </summary>
-    // [빈 틀] 담당: 월드
     public sealed class TutorialLaneHighlightView : MonoBehaviour
     {
         private const float StripY = 0.02f;

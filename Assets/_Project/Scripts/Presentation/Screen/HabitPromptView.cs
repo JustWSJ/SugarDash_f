@@ -10,7 +10,6 @@ namespace SugarDash.Presentation
     /// 1형 혈당 재기 습관 순간의 말풍선(측정기 옆). 떠 있는 습관 순간(RunController.ActiveHabitMoment)만 보고 보이고 숨긴다.
     /// 혈당을 읽거나 판정하지 않고 세계를 멈추지 않는다. 측정은 지금 측정기 버튼으로 한다.
     /// </summary>
-    // [빈 틀] 담당: 화면
     public sealed class HabitPromptView : MonoBehaviour
     {
         [Tooltip("말풍선 전체(이 오브젝트의 자식). 습관 순간이 없으면 끈다.")]
@@ -35,7 +34,6 @@ namespace SugarDash.Presentation
         {
             if (_run == null) return;
             Show(_run.ActiveHabitMoment);
-            // TODO(화면): 측정기 쪽을 가리키는 말풍선 그림을 넣는다. 나타나는 연출은 Root의 ScreenPopIn이 한다.
         }
 
         private void Show(HabitMoment? moment)

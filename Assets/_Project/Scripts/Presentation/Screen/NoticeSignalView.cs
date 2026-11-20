@@ -11,7 +11,6 @@ namespace SugarDash.Presentation
     /// 높음은 물컵(갈증)과 깜빡이는 화장실 그림, 낮음은 좌우로 떨리는 손 그림이 글자 왼쪽에 붙는다.
     /// 혈당을 읽거나 판정하지 않는다.
     /// </summary>
-    // [빈 틀] 담당: 화면
     public sealed class NoticeSignalView : MonoBehaviour
     {
         [SerializeField] private Text signalText;

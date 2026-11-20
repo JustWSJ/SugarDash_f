@@ -18,7 +18,6 @@ namespace SugarDash.Presentation
     /// 캐릭터 상태를 연출로 바꾼다. 상태는 RunController의 쉬기 여부와 활성 신호로만 정한다.
     /// 혈당을 읽거나 판정하지 않는다. 지친 연출은 연출만이며 달리기 속도·충돌·거리를 바꾸지 않는다.
     /// </summary>
-    // [빈 틀] 담당: 캐릭터
     public sealed class CharacterStateView : MonoBehaviour
     {
         [Tooltip("켜면 주행과 상관없이 아래 샌드박스 상태를 보여 준다(연습용 씬).")]
@@ -58,7 +57,6 @@ namespace SugarDash.Presentation
 
         private void Apply(CharacterState state)
         {
-            // TODO(캐릭터): 상태별 애니메이터 파라미터·표정·자세를 연결한다.
             // 체형(몸 크기·비율)은 바꾸지 않는다. 표정, 걸음 속도 연출, 자세만 바꾼다.
         }
     }

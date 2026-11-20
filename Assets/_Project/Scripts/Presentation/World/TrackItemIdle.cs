@@ -6,7 +6,6 @@ namespace SugarDash.Presentation
     /// 음식·쉬는 곳 프리팹에 붙이는 제자리 연출(빙글빙글 돌기, 위아래 흔들림). 프리팹 안의 모델 오브젝트에 붙인다.
     /// 붙인 오브젝트의 로컬 회전·위치만 바꾼다. 트랙 위치, 충돌 판정, 혈당과는 관계없다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     public sealed class TrackItemIdle : MonoBehaviour
     {
         [Tooltip("초당 회전 각도(도). 0이면 돌지 않는다.")]

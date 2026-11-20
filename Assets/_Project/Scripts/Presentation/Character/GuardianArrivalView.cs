@@ -10,7 +10,6 @@ namespace SugarDash.Presentation
     /// 위치는 주인공 모습의 레인(x)·앞뒤(z)와 바닥 높이(y = 0) 기준이다. 프리팹은 발밑이 기준점이어야 한다.
     /// 프리팹이 없으면 기본 도형(캡슐)을 쓴다. 연출만이며 장면 길이·판정을 바꾸지 않는다.
     /// </summary>
-    // [빈 틀] 담당: 캐릭터
     public sealed class GuardianArrivalView : MonoBehaviour
     {
         [Tooltip("어른 캐릭터 프리팹. 비어 있으면 기본 도형을 쓴다.")]

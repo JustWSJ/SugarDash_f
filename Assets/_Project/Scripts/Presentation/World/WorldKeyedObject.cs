@@ -9,7 +9,6 @@ namespace SugarDash.Presentation
     /// TrackItemPrefabSet(음식 id → 음식 프리팹), SceneTrackItemSet(장면 id → 장애물 묶음),
     /// SceneBackdropSwitcher(장면 id → 맵 배경)가 같이 쓴다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     [Serializable]
     public struct WorldKeyedObject
     {

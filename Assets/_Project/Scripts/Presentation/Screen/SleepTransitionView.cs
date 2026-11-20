@@ -11,7 +11,6 @@ namespace SugarDash.Presentation
     /// 바로 검게 하는 까닭: 같은 순간 SceneLook이 다음 날 맵으로 바꾸므로, 서서히 어두워지면 바뀐 맵이 먼저 보인다.
     /// 연출만이다. RunController를 읽지 않고 세계·혈당을 멈추지 않는다.
     /// </summary>
-    // [빈 틀] 담당: 화면
     public sealed class SleepTransitionView : MonoBehaviour
     {
         [Tooltip("전체 화면 덮개 이미지(raycastTarget 끔). 비워 두면 아무것도 바꾸지 않는다.")]

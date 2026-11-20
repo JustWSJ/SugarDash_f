@@ -7,7 +7,6 @@ namespace SugarDash.Presentation
     /// 개발용 배경을 이루는 기본 도형 하나(상자, 공, 원기둥 등). 위치·크기·각도·색만 있다.
     /// 모델이 나오기 전까지 PlaceholderBackdropRecipes가 장면별로 이 목록을 만든다. 연출만이다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     [Serializable]
     public struct PlaceholderShape
     {

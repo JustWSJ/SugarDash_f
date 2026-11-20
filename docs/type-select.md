@@ -3,7 +3,7 @@
 - 단위: 혈당 mg/dL, 거리 m(러너 월드 단위), 시간은 명시하지 않으면 게임 초
 - 수치: 이 문서의 새 수치는 모두 PLACEHOLDER(`null`)다. 담당자가 정하기 전까지 임의의 값으로 채우지 않는다. 에디터 전용 개발 설정만 테스트 픽스처 값을 쓴다(8.1절).
 - 의학 정보: 2형 신호, 음식별 혈당 영향, 2형 저혈당 여부·빈도는 세 출처(대한당뇨병학회 진료지침, ISPAD, ADA)로 확인한 뒤 값으로 넣는다. 이 문서는 틀만 정한다.
-- 바탕: [type-tracks.md](type-tracks.md)(방향), [glucose-model.md](glucose-model.md), [hyper-event.md](hyper-event.md), [log-format.md](log-format.md), [result-screen.md](result-screen.md), [team-rules.md](team-rules.md)
+- 바탕: [type-tracks.md](type-tracks.md)(방향), [glucose-model.md](glucose-model.md), [hyper-event.md](hyper-event.md), [log-format.md](log-format.md), [result-screen.md](result-screen.md)
 
 ## 1. 목적과 이유
 
@@ -22,7 +22,7 @@
 - 2형 음식 아이템(간식 + 일반 음식). 음식마다 다른 흡수 곡선.
 - 쉬는 곳(move): 혈당이 높으면 계속 달리기, 낮으면 쉬기가 맞는 선택.
 - 지친 캐릭터 연출(연출만, 실제 속도 변화 없음).
-- 영역 담당 팀원이 채울 빈 틀(11절).
+- 캐릭터·월드·화면 연출 빈 틀(11절).
 
 ### 범위 밖
 - 1형 주행 변경. 1형은 지금 그대로 둔다. 1형 트랙에 일반 음식을 내보내는 것은 의학 정보를 확인한 뒤 따로 정한다.
@@ -61,7 +61,7 @@
 
 ### 2.1 화면 문구(개발용)
 화면 문구는 [handoff/screen-text.md](handoff/screen-text.md)에 모았다(문구 파일 `ScreenText`). 치료·진단을 주장하지 않는다.
-- 유형 선택: "어떤 당뇨가 있나요?" / 버튼 "1형", "2형". 보호자가 함께 고르도록 안내하는 한 줄을 둔다(문구는 화면 담당 초안).
+- 유형 선택: "어떤 당뇨가 있나요?" / 버튼 "1형", "2형". 보호자가 함께 고르도록 안내하는 한 줄을 둔다(문구는 초안).
 - 타이틀: 게임 타이틀("슈가대시", 그림 자리), 그 아래 지금 유형("1형" 또는 "2형"만), 그 아래 "시작", 오른쪽 위 설정 버튼(톱니바퀴 그림 자리).
 
 ## 3. 2형 한 판의 흐름
@@ -288,7 +288,7 @@
 
 ### 9.2 결과 화면 (`docs/result-screen.md`)
 - 틀은 같다: 제목, 요약, 점수, 최고 점수(유형별), 다시하기, 타이틀로.
-- 2형 요약: tell 이벤트가 있었을 때만 고혈당·저혈당 각각 한 줄("혈당이 높을 때 n번 중 m번 바로 알렸어요" 같은 개발용 문구). 문구는 화면 담당 초안을 받는다.
+- 2형 요약: tell 이벤트가 있었을 때만 고혈당·저혈당 각각 한 줄("혈당이 높을 때 n번 중 m번 바로 알렸어요" 같은 개발용 문구). 문구는 초안이다.
 - MetricsCalculator의 `Summarize`가 유형에 따라 2형 요약(`RunSummary`에 저혈당 tell 결과 추가)을 만든다. 1형 지표에는 2형 이벤트를 넣지 않는다.
 
 ### 9.3 점수 (ScoringService)
@@ -318,11 +318,11 @@
 
 - App이 유형에 따라 갈라지는 곳은 GameFlowController(흐름)와 RunSession 생성(Bootstrap 팩토리)으로 한정한다. 나머지 코드는 설정·세션이 주는 값으로 동작한다.
 
-## 11. 영역 빈 틀
+## 11. 연출 빈 틀
 
-빈 틀 규칙은 `docs/team-rules.md` 2.1절을 따른다. 영역 폴더(`Presentation/Character/`, `World/`, `Screen/`)를 이번에 만든다. 빈 틀마다 `Art/Sandbox/<이름>/`에서 혼자 시험할 수 있게 Inspector에서 상태를 바꿔 보는 값을 둔다.
+영역 폴더(`Presentation/Character/`, `World/`, `Screen/`)를 이번에 만든다. 빈 틀마다 `Art/Sandbox/<이름>/`에서 혼자 시험할 수 있게 Inspector에서 상태를 바꿔 보는 값을 둔다.
 
-| 영역 | 빈 틀 | 받는 것 | 채울 것 |
+| 폴더 | 빈 틀 | 받는 것 | 채울 것 |
 | --- | --- | --- | --- |
 | 캐릭터 | `Character/CharacterStateView` | 상태: 보통 / 쉬는 중 / 지침(고혈당 notice·tell) / 지침(저혈당 notice·tell) | 애니메이터 연결, 지친 표정·느린 걸음·처진 자세(연출만), 앉아 쉬기 |
 | 월드 | `World/TrackItemLook` | 아이템 종류(장애물, 음식 id, 쉬는 곳) | 종류별 프리팹 고르기. 없으면 지금 기본 도형 |
@@ -334,7 +334,6 @@
 - 이 여섯 개는 Presentation의 새 모듈이다.
 - 빈 틀은 받은 상태를 보여 주기만 한다. 상태 판정(notice인지, 쉬는 중인지)은 RunController가 노출하는 값으로 하고, 빈 틀 안에서 혈당을 보고 판단하지 않는다.
 - 갈증·화장실 그림은 출처 확인 전까지 개발용 표시다. 출처 확인 결과에 따라 바뀔 수 있다고 PR과 할 일 목록에 적는다.
-- 빈 틀을 작업 브랜치(처음에는 `feat/type-select`, 지금은 `feat/section2-frame`)에 push한 뒤 `docs/roadmap.md` 2.2절 할 일 목록의 빈 틀 채우기 줄을 "시작 가능"으로 바꾼다. 팀원은 이 브랜치를 받아 그 위에서 채우고 push한다(`docs/team-rules.md` 8절).
 
 
 ## 12. 남은 결정 (담당자)
@@ -346,25 +345,3 @@
 | 음식 목록과 음식별 값·출처. 정함: [food-evidence.md](food-evidence.md) | 결정, 의학 |
 | 유형 변경에 보호자 확인을 둘지 | 결정 |
 | 화면 문구(유형 선택, 타이틀, tell, 결과 요약). 정함(roadmap 4.2절) | 기획 |
-
-## 13. 팀원별로 알아야 할 것
-
-### 공통
-- 작업 브랜치는 `feat/section2-frame`이다(`docs/roadmap.md` 2.2절 맨 위).
-- 빈 틀은 받은 상태를 보여 주기만 한다. 빈 틀 안에서 혈당을 보고 판단하거나 세계·혈당을 바꾸지 않는다.
-- 갈증·화장실 그림과 화면 문구(2.1절)는 개발용이다. 의학 출처 확인 결과에 따라 바뀔 수 있다.
-- 화면·오브젝트의 모양(크기, 위치, 색, 그림, 애니메이션, 소리, 문구)은 바꿔도 되고 구조는 바꾸지 않는다([team-rules.md](team-rules.md) 2.3절).
-
-### 팀원1(캐릭터)
-- `Character/CharacterStateView`: 보통, 쉬는 중, 지침(높음), 지침(낮음) 네 상태를 애니메이터에 연결한다.
-- 지친 연출은 연출만이다. 달리기 속도, 충돌, 거리를 바꾸지 않는다.
-- 혈당 상태는 표정, 걸음, 자세로만 나타낸다. 체형은 바꾸지 않는다.
-
-### 팀원2(월드)
-- `World/TrackItemLook`: 장애물 3종, 음식 8종(id별), 쉬는 곳마다 프리팹을 고른다. 프리팹이 없으면 지금 기본 도형이 나온다.
-- 장애물 종류(`LowObstacle` 점프, `LaneBlock` 옆으로, `HighObstacle` 슬라이드)는 그림이 바뀌어도 그대로 둔다. 게임 규칙이 종류로 판정한다.
-- 음식이 "나쁜 음식"처럼 보이는 모양이나 연출을 넣지 않는다.
-
-### 팀원3(화면)
-- `Screen/TitleScreenView`, `TypeSelectView`, `SettingsView`: 화면 배치, 버튼 그림·소리. `root` 자식 오브젝트를 켜고 끄는 방식은 그대로 둔다.
-- `Screen/NoticeSignalView`: 고혈당 신호(갈증 말풍선, 화장실 아이콘 깜빡임), 저혈당 신호(`몸이 떨려요`, 떨리는 손). 근거는 [notice-evidence.md](notice-evidence.md).

@@ -9,7 +9,6 @@ namespace SugarDash.Presentation
     /// 탈락 장면에서 어른 옆에 뜨는 말풍선 한 줄. GameFlowController가 탈락 장면을 보여 주는 동안만 보이고,
     /// 문구는 탈락 이유(EliminatedBy)로 EliminationText가 정한다. 판정하지 않고 장면 길이를 바꾸지 않는다.
     /// </summary>
-    // [빈 틀] 담당: 화면
     public sealed class EliminationSpeechView : MonoBehaviour
     {
         [Tooltip("말풍선 전체(이 오브젝트의 자식). 탈락 장면이 아니면 끈다.")]
@@ -36,7 +35,6 @@ namespace SugarDash.Presentation
             bool visible = _flow.IsShowingElimination;
             Show(visible);
             if (visible && speechText != null) speechText.text = EliminationText.For(_flow.EliminatedBy);
-            // TODO(화면): 말풍선 그림, 어른 머리 위를 가리키는 꼬리를 넣는다. 나타나는 연출은 Root의 ScreenPopIn이 한다.
         }
 
         private void Show(bool visible)

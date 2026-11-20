@@ -9,7 +9,6 @@ namespace SugarDash.Presentation
     /// 해(Directional Light), 주변광, 하늘, 카메라 배경색, 안개를 blendSec 동안 섞어 바꾼다. 연출만이다.
     /// 바꾼 RenderSettings는 이 오브젝트가 없어질 때 원래 값으로 되돌린다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     public sealed class TimeOfDayLighting : MonoBehaviour
     {
         [Tooltip("해 역할의 Directional Light. 비워 두면 Lighting 창의 Sun Source를 쓰고, 그것도 없으면 해는 바꾸지 않는다.")]

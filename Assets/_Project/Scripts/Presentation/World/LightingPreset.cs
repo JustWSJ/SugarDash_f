@@ -7,7 +7,6 @@ namespace SugarDash.Presentation
     /// 때(아침, 오후, 저녁, 밤) 하나의 조명·하늘 값. TimeOfDayLighting이 Inspector 목록으로 들고 적용한다.
     /// 연출 값만 있다. 혈당·시간 수치가 아니다.
     /// </summary>
-    // [영역 파일] 담당: 월드
     [Serializable]
     public struct LightingPreset
     {

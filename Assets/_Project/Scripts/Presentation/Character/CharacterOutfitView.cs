@@ -9,7 +9,6 @@ namespace SugarDash.Presentation
     /// 의상 오브젝트를 켜고 끄기만 한다. 리그, Animator, 몸 메시, 이동은 건드리지 않는다. 연출만이다.
     /// 누가 Show를 부를지(게임 진행 연결)는 아직 정해지지 않았다. 그전에는 샌드박스 칸으로 시험한다.
     /// </summary>
-    // [영역 파일] 담당: 캐릭터
     // 장면 id에 따라 외형 프리팹 안의 의상 오브젝트만 켜고 끄는 연출 컴포넌트.
     public sealed class CharacterOutfitView : MonoBehaviour
     {

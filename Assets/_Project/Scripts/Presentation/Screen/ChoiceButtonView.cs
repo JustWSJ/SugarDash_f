@@ -7,7 +7,6 @@ namespace SugarDash.Presentation
     /// 선택 패널 버튼 하나의 글자와 그림 칸. HypoChoicePanel이 버튼 템플릿을 복제한 뒤 채운다.
     /// 그림이 없으면 그림 칸을 숨겨 글자만 보인다. 양 고르기는 간식 그림(icon) 옆에 양 그림(amount)을 하나 더 둔다.
     /// </summary>
-    // [빈 틀] 담당: 화면
     public sealed class ChoiceButtonView : MonoBehaviour
     {
         [SerializeField] private Text label;

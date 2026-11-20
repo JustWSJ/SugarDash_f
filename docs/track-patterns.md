@@ -1,6 +1,6 @@
-# 장애물 패턴 만들기 (팀원2·월드)
+# 장애물 패턴 만들기
 
-장애물은 미리 만든 **패턴**(묶음) 단위로 트랙에 놓인다. 패턴 목록은 에셋 하나(`Assets/_Project/Art/World/TrackPatterns.asset`)에 있고, 월드 담당 팀원이 Unity Inspector에서 만들고 고친다.
+장애물은 미리 만든 **패턴**(묶음) 단위로 트랙에 놓인다. 패턴 목록은 에셋 하나(`Assets/_Project/Art/World/TrackPatterns.asset`)에 있고, Unity Inspector에서 만들고 고친다.
 
 ## 1. 왜 패턴인가
 
@@ -26,7 +26,7 @@ Project 창에서 `Assets > _Project > Art > World > TrackPatterns`를 클릭하
 | `Mirror` | 켜면 좌우를 뒤집은 모양도 같은 비율로 나온다. 왼쪽용·오른쪽용을 따로 만들지 않아도 된다 |
 
 - 패턴과 패턴 사이는 18m(`Track`의 `Obstacle Spacing`)이다.
-- 아래쪽 `Timing`(최고 속도, 점프·레인 이동 시간, 반응 시간)은 **바꾸지 않는다**. 지나갈 수 있는지 계산하는 기준이고 구조 담당 팀원이 정한다.
+- 아래쪽 `Timing`(최고 속도, 점프·레인 이동 시간, 반응 시간)은 지나갈 수 있는지 계산하는 기준이다.
 
 ## 3. 꼭 지킬 규칙 (자동으로 확인함)
 
@@ -72,4 +72,4 @@ Project 창에서 `Assets > _Project > Art > World > TrackPatterns`를 클릭하
 2. Console에 노란 경고가 없는지 본다.
 3. `DevRun`을 열고 Play해서 직접 지나가 본다. 시작 직후에는 쉬운 패턴만, 달린 거리가 늘면 새 패턴이 섞여 나온다.
 4. 테스트 창(`Window > General > Test Runner`)에서 `EditMode` 탭 → `TrackPatternTests`를 펼쳐 `ProjectAsset_PassesRules_AndSpacing`을 선택하고 `Run Selected`. 초록색이면 된다.
-5. `TrackPatterns.asset` 파일만 커밋해 push한다. `DevRun` 씬은 고치지 않는다(team-rules 2절).
+5. 커밋해 push한다.
