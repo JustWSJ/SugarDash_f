@@ -7,6 +7,7 @@
 | `Characters/Cat/CatCharacter.prefab` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
 | `Characters/Cat/CatAnimator_New.controller` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
 | `Characters/Cat/Cat_Player_v10_outfits.fbx` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
+| `Characters/Cat/Cat_Player_v12_sit.fbx` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
 | `Characters/Cat/Pajama_Print.png` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
 | `Characters/Cat/Pajama_Details.png` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
 | `Characters/Cat/CatCharacter_Outfits.prefab` | 직접 제작(AI 도구 활용) | junsewon | 미정 |
