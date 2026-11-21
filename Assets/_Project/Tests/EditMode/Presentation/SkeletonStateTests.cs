@@ -21,6 +21,15 @@ namespace SugarDash.Presentation.Tests
         }
 
         [Test]
+        public void CharacterState_TiredBubbleOnlyForHigh()
+        {
+            Assert.That(CharacterStateView.BubbleTextOf(CharacterState.TiredHigh), Is.EqualTo("지쳤어요"));
+            Assert.That(CharacterStateView.BubbleTextOf(CharacterState.TiredLow), Is.Empty, "낮음은 HUD의 떨리는 손으로 보여 준다");
+            Assert.That(CharacterStateView.BubbleTextOf(CharacterState.Resting), Is.Empty);
+            Assert.That(CharacterStateView.BubbleTextOf(CharacterState.Normal), Is.Empty);
+        }
+
+        [Test]
         public void GuardianArrival_ProgressClampsToOne()
         {
             Assert.That(GuardianArrivalView.Progress(0f, 1f), Is.EqualTo(0f));

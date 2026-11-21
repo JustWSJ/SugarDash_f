@@ -46,6 +46,9 @@ namespace SugarDash.Presentation
         public const string Meter = "측정기";
         public const string GaugeWarning = "혈당 경고!";
 
+        /// <summary>2형 높음 신호일 때 캐릭터 머리 위 말풍선(지친 모습, docs/notice-evidence.md).</summary>
+        public const string Tired = "지쳤어요";
+
         /// <summary>2형 몸 신호 말풍선 글자(docs/notice-evidence.md). 신호가 없으면 빈 글자.</summary>
         public static string Signal(NoticeKind? signal)
         {

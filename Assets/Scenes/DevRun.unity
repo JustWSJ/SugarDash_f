@@ -1329,6 +1329,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: SugarDash.Presentation::SugarDash.Presentation.CharacterStateView
   sandboxMode: 0
   sandboxState: 0
+  font: {fileID: 12800000, guid: cc8e976697e7f46a1bf8a4f40f873b1f, type: 3}
+  bubbleOffset: {x: 0, y: 2.1, z: 0}
+  bubbleScale: 0.006
+  bubbleColor: {r: 1, g: 1, b: 1, a: 1}
+  bubbleTextColor: {r: 0.29, g: 0.2, b: 0.17, a: 1}
+  bobHeight: 0.06
+  bobPeriodSec: 1.2
 --- !u!1 &1614547514
 GameObject:
   m_ObjectHideFlags: 0
